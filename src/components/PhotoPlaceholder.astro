@@ -1,0 +1,49 @@
+---
+interface Props {
+  /** Qué foto debe ir aquí, para quien la reemplace. */
+  note: string;
+  ratio?: string;
+}
+const { note, ratio = '4 / 5' } = Astro.props;
+---
+
+<figure class="ph" style={`aspect-ratio: ${ratio}`} aria-label="Espacio reservado para una foto">
+  <figcaption>
+    <strong>Foto pendiente</strong>
+    <span>{note}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .ph {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: var(--color-steel);
+    color: var(--color-concrete);
+  }
+  .ph::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 2px dashed #5a5f62;
+    pointer-events: none;
+  }
+  figcaption {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    max-width: 28ch;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  strong {
+    font-size: 18px;
+  }
+  span {
+    color: #aab0b3;
+  }
+</style>

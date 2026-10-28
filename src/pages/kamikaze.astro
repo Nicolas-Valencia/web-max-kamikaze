@@ -3,14 +3,14 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import InterestForm from '../components/forms/InterestForm';
+import LeadForm from '../components/forms/LeadForm';
 import logo from '../assets/brand/kamikaze-logo-provisional.png';
 import { kamikaze as c } from '../content/kamikaze';
 import { site } from '../content/site';
 ---
 
 <Base title={c.meta.title} description={c.meta.description} brand="kamikaze">
-  <Header />
+  <Header other={{ href: '/max', label: 'Entrenar con Max' }} />
 
   <main id="contenido">
     <section class="hero wrap">
@@ -74,8 +74,9 @@ import { site } from '../content/site';
           <h2 id="registro" class="section-title">{c.form.title}</h2>
           <p class="copy">{c.form.text}</p>
         </div>
-        <InterestForm
+        <LeadForm
           client:visible
+          variant="kamikaze"
           privacyHref="/privacidad"
           fallbackWhatsapp={site.whatsapp.kamikaze}
         />

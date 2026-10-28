@@ -1,5 +1,5 @@
 /**
- * Validación del formulario de interesados de Kamikaze.
+ * Validación de los formularios (interesados de Kamikaze y sesión de prueba con Max).
  * Se usa en el navegador (feedback inmediato) y en el servidor (la que cuenta).
  */
 
@@ -19,42 +19,75 @@ export const schedules = [
   { id: 'sin-preferencia', label: 'Sin preferencia' },
 ] as const;
 
+export const places = [
+  { id: 'kamikaze', label: 'En Kamikaze' },
+  { id: 'domicilio', label: 'A domicilio, en Armenia' },
+  { id: 'sin-definir', label: 'Aún no lo sé' },
+] as const;
+
+export type FieldErrors = Record<string, string | undefined>;
+
+export type Validated<T> =
+  | { ok: true; data: T }
+  | { ok: false; errors: Record<string, string> };
+
 export type InterestInput = {
   name: string;
   whatsapp: string;
   email: string;
   discipline: string;
   schedule: string;
-  consent: true;
 };
 
-export type FieldErrors = Partial<Record<keyof InterestInput, string>>;
-
-export type ValidationResult =
-  | { ok: true; data: InterestInput }
-  | { ok: false; errors: FieldErrors };
+export type TrialInput = {
+  name: string;
+  whatsapp: string;
+  goal: string;
+  place: string;
+  schedule: string;
+};
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // Celular colombiano: 10 dígitos que empiezan por 3, con o sin +57.
 const CO_MOBILE = /^(?:\+?57)?(3\d{9})$/;
 
 const text = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
+const oneOf = (list: readonly { id: string }[], value: string) =>
+  list.some((item) => item.id === value);
 
-export function validateInterest(raw: unknown): ValidationResult {
-  const input = (raw ?? {}) as Record<string, unknown>;
-  const errors: FieldErrors = {};
-
+/** Campos que comparten todos los formularios: nombre, WhatsApp y consentimiento. */
+function commonFields(input: Record<string, unknown>, errors: Record<string, string>) {
   const name = text(input.name).replace(/\s+/g, ' ');
   if (name.length < 2) errors.name = 'Escribe tu nombre.';
   else if (name.length > 80) errors.name = 'El nombre es demasiado largo.';
 
-  const phone = text(input.whatsapp).replace(/[\s().-]/g, '');
-  const match = CO_MOBILE.exec(phone);
+  const match = CO_MOBILE.exec(text(input.whatsapp).replace(/[\s().-]/g, ''));
   if (!match) {
     errors.whatsapp =
       'Escribe un celular colombiano de 10 dígitos, por ejemplo 3001234567.';
   }
-  const whatsapp = match ? `+57${match[1]}` : '';
+
+  if (input.consent !== true) {
+    errors.consent = 'Debes autorizar el tratamiento de tus datos para continuar.';
+  }
+
+  return { name, whatsapp: match ? `+57${match[1]}` : '' };
+}
+
+function validateSchedule(input: Record<string, unknown>, errors: Record<string, string>) {
+  const schedule = text(input.schedule);
+  if (schedule && !oneOf(schedules, schedule)) {
+    errors.schedule = 'Elige una opción de la lista.';
+  }
+  return schedule;
+}
+
+const asRecord = (raw: unknown) => (raw ?? {}) as Record<string, unknown>;
+
+export function validateInterest(raw: unknown): Validated<InterestInput> {
+  const input = asRecord(raw);
+  const errors: Record<string, string> = {};
+  const { name, whatsapp } = commonFields(input, errors);
 
   const email = text(input.email);
   if (email && (email.length > 120 || !EMAIL.test(email))) {
@@ -62,23 +95,27 @@ export function validateInterest(raw: unknown): ValidationResult {
   }
 
   const discipline = text(input.discipline);
-  if (!disciplines.some((d) => d.id === discipline)) {
-    errors.discipline = 'Elige una disciplina.';
-  }
+  if (!oneOf(disciplines, discipline)) errors.discipline = 'Elige una disciplina.';
 
-  const schedule = text(input.schedule);
-  if (schedule && !schedules.some((s) => s.id === schedule)) {
-    errors.schedule = 'Elige una opción de la lista.';
-  }
-
-  if (input.consent !== true) {
-    errors.consent = 'Debes autorizar el tratamiento de tus datos para continuar.';
-  }
+  const schedule = validateSchedule(input, errors);
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
+  return { ok: true, data: { name, whatsapp, email, discipline, schedule } };
+}
 
-  return {
-    ok: true,
-    data: { name, whatsapp, email, discipline, schedule, consent: true },
-  };
+export function validateTrial(raw: unknown): Validated<TrialInput> {
+  const input = asRecord(raw);
+  const errors: Record<string, string> = {};
+  const { name, whatsapp } = commonFields(input, errors);
+
+  const goal = text(input.goal);
+  if (goal.length > 300) errors.goal = 'Escríbelo en 300 caracteres o menos.';
+
+  const place = text(input.place);
+  if (!oneOf(places, place)) errors.place = 'Elige dónde prefieres entrenar.';
+
+  const schedule = validateSchedule(input, errors);
+
+  if (Object.keys(errors).length > 0) return { ok: false, errors };
+  return { ok: true, data: { name, whatsapp, goal, place, schedule } };
 }

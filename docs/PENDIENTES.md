@@ -5,7 +5,9 @@ Actualizar este archivo en cada entrega.
 ## Contenido por aprobar con Max
 - Todos los textos de `src/content/home.ts` y `src/content/kamikaze.ts` marcados `provisional`.
 - Qué datos del formulario conservar y por cuánto tiempo, y quién responde a los interesados.
-- Biografía, trayectoria y certificaciones de Max.
+- Biografía, trayectoria y certificaciones de Max (la sección "Sobre Max" está oculta con `about.enabled: false` en `src/content/max.ts`).
+- Si los productos deportivos se promocionan en la web (sección oculta con `products.enabled: false`).
+- **Discrepancia:** el brief dice que Max entrena "en las instalaciones de Kamikaze o a domicilio", pero Kamikaze aún no tiene sede. Confirmar qué opciones existen hoy.
 - Modalidades, planes, precios y condiciones de reserva.
 - Zonas de cobertura de los entrenamientos a domicilio.
 - Filosofía, entrenadores, horarios y sede de Kamikaze.
@@ -14,7 +16,7 @@ Actualizar este archivo en cada entrega.
 
 ## Recursos por recibir
 - Logo definitivo de Kamikaze y logo de Max. El logo actual de Kamikaze es provisional.
-- Fotografías y videos reales, con permiso de uso.
+- Fotografías y videos reales, con permiso de uso. Hoy hay un marcador "Foto pendiente" en `/max`.
 - Correo de contacto.
 - Número de WhatsApp de Kamikaze, si será distinto al de Max.
 

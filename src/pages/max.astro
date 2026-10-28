@@ -1,0 +1,407 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
+import LeadForm from '../components/forms/LeadForm';
+import { max as c } from '../content/max';
+import { site } from '../content/site';
+
+const whatsappHref = site.whatsapp.max
+  ? `${site.whatsapp.max}?text=${encodeURIComponent(c.hero.whatsappMessage)}`
+  : null;
+---
+
+<Base title={c.meta.title} description={c.meta.description} brand="max">
+  <Header other={{ href: '/kamikaze', label: 'Ver Kamikaze' }} />
+
+  <main id="contenido">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <h1>{c.hero.title}</h1>
+        <p class="lead">{c.hero.text}</p>
+        <div class="actions">
+          <a class="cta" href="#sesion">{c.hero.primary}</a>
+          {
+            whatsappHref && (
+              <a class="cta-alt" href={whatsappHref} rel="noopener" target="_blank">
+                {c.hero.whatsapp}
+              </a>
+            )
+          }
+        </div>
+      </div>
+      <div class="hero-photo">
+        <PhotoPlaceholder note="Max entrenando. Reemplazar por una foto real." />
+      </div>
+    </section>
+
+    <section class="sheet-band" aria-label="Datos de cada sesión">
+      <dl class="sheet wrap">
+        {
+          c.sheet.items.map((i) => (
+            <div class="sheet-row">
+              <dt>{i.label}</dt>
+              <dd>{i.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="how wrap" aria-labelledby="como">
+      <h2 id="como" class="section-title">{c.how.title}</h2>
+      <ol class="steps">
+        {
+          c.how.steps.map((s) => (
+            <li>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="plans wrap" aria-labelledby="planes">
+      <div>
+        <h2 id="planes" class="section-title">{c.plans.title}</h2>
+        <p class="copy">{c.plans.intro}</p>
+      </div>
+      <dl class="pending">
+        {
+          c.plans.items.map((i) => (
+            <div class="pending-row">
+              <dt>{i}</dt>
+              <dd>Por definir</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    {
+      c.products.enabled && (
+        <section class="products wrap" aria-labelledby="productos">
+          <h2 id="productos" class="section-title">{c.products.title}</h2>
+          <p class="copy">{c.products.text}</p>
+        </section>
+      )
+    }
+
+    <section id="sesion" class="signup" aria-labelledby="registro">
+      <div class="wrap signup-grid">
+        <div>
+          <h2 id="registro" class="section-title">{c.form.title}</h2>
+          <p class="copy">{c.form.text}</p>
+        </div>
+        <LeadForm
+          client:visible
+          variant="max"
+          privacyHref="/privacidad"
+          fallbackWhatsapp={whatsappHref}
+        />
+      </div>
+    </section>
+
+    <section class="faq wrap" aria-labelledby="preguntas">
+      <h2 id="preguntas" class="section-title">{c.faq.title}</h2>
+      <div class="faq-list">
+        {
+          c.faq.items.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  main {
+    background: var(--brand-bg);
+    color: var(--brand-fg);
+  }
+  .wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  .section-title {
+    margin: 0 0 20px;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .copy {
+    max-width: 52ch;
+    margin: 0 0 14px;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  /* Portada */
+  .hero {
+    display: grid;
+    gap: 32px;
+    padding-block: 40px 48px;
+  }
+  h1 {
+    margin: 0 0 20px;
+    max-width: 12ch;
+    font-size: clamp(3.2rem, 15vw, 7.4rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+  }
+  .lead {
+    max-width: 46ch;
+    margin: 0 0 28px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .actions {
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 28px;
+    background: var(--brand-signal);
+    color: var(--brand-on-signal);
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cta-alt {
+    display: inline-flex;
+    align-items: center;
+    min-height: 56px;
+    color: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  .cta:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .hero-photo {
+    max-width: 420px;
+  }
+
+  /* Ficha: los datos confirmados de cada sesión */
+  .sheet-band {
+    border-block: 4px solid var(--brand-fg);
+  }
+  .sheet {
+    display: grid;
+    margin-block: 0;
+  }
+  .sheet-row {
+    display: grid;
+    gap: 2px;
+    padding-block: 16px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .sheet-row:first-child {
+    border-top: 0;
+  }
+  dt {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--brand-muted);
+  }
+  dd {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* Cómo funciona: sí es una secuencia, por eso va numerado */
+  .how {
+    padding-block: 64px;
+  }
+  .steps {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+  .steps li {
+    position: relative;
+    padding: 22px 0 22px 64px;
+    border-top: 1px solid var(--brand-line);
+    counter-increment: step;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .steps h3 {
+    margin: 0 0 6px;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .steps p {
+    max-width: 44ch;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+
+  /* Planes */
+  .plans {
+    display: grid;
+    gap: 28px;
+    padding-block: 56px;
+    border-top: 4px solid var(--brand-fg);
+  }
+  .pending {
+    margin: 0;
+  }
+  .pending-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 16px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .pending-row dt {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: inherit;
+  }
+  .pending-row dd {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--brand-muted);
+  }
+
+  .products {
+    padding-block: 56px;
+    border-top: 4px solid var(--brand-fg);
+  }
+
+  /* Registro */
+  .signup {
+    padding-block: 64px;
+    background: var(--color-steel);
+    color: var(--color-concrete);
+    --brand-fg: var(--color-concrete);
+    --brand-bg: var(--color-steel);
+    --brand-muted: #aab0b3;
+    --brand-line: #4a4f52;
+    --brand-signal: var(--color-concrete);
+    --brand-on-signal: var(--color-steel);
+    --brand-error: #ff8a8d;
+    --field-bg: #1a1c1d;
+  }
+  .signup-grid {
+    display: grid;
+    gap: 32px;
+  }
+
+  /* Preguntas */
+  .faq {
+    padding-block: 64px 80px;
+  }
+  details {
+    border-top: 1px solid var(--brand-line);
+  }
+  details:last-child {
+    border-bottom: 1px solid var(--brand-line);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding-block: 8px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  details p {
+    max-width: 52ch;
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+
+  @media (min-width: 900px) {
+    .wrap {
+      padding-inline: 40px;
+    }
+    .hero {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 72px;
+      align-items: end;
+      padding-block: 72px 64px;
+    }
+    .actions {
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: 32px;
+    }
+    .sheet {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .sheet-row {
+      padding: 24px 20px 24px 0;
+      border-top: 0;
+      border-left: 1px solid var(--brand-line);
+      padding-left: 20px;
+    }
+    .sheet-row:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+    .how,
+    .plans,
+    .products,
+    .signup {
+      padding-block: 96px;
+    }
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .steps li {
+      padding: 64px 0 0;
+    }
+    .steps li::before {
+      top: 12px;
+      font-size: 3.4rem;
+    }
+    .plans,
+    .signup-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .faq {
+      padding-block: 96px 112px;
+    }
+  }
+</style>

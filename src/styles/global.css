@@ -25,6 +25,8 @@
   --brand-line: #3a3a3a;
   --brand-signal: var(--color-signal);
   --brand-on-signal: var(--color-paper);
+  --brand-error: #ff8a8d;
+  --field-bg: var(--color-coal);
   --brand-stretch: 62%;
   --brand-display-weight: 900;
 }
@@ -36,6 +38,8 @@
   --brand-line: #a5aaad;
   --brand-signal: var(--color-steel);
   --brand-on-signal: var(--color-concrete);
+  --brand-error: #b00020;
+  --field-bg: #eceeef;
   --brand-stretch: 100%;
   --brand-display-weight: 800;
 }

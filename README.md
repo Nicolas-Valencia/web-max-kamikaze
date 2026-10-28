@@ -7,7 +7,7 @@ Un solo sitio con tres experiencias:
 | Ruta | Contenido | Estado |
 |---|---|---|
 | `/` | Selector entre Max y Kamikaze | Implementada (textos provisionales) |
-| `/max` | Entrenamiento personalizado | Pendiente |
+| `/max` | Entrenamiento personalizado y solicitud de sesión de prueba | Implementada (textos provisionales; el guardado requiere configurar Google Sheets) |
 | `/kamikaze` | Academia y registro de interesados | Implementada (textos provisionales; el guardado requiere configurar Google Sheets) |
 | `/privacidad` | Política de privacidad | Borrador provisional |
 
@@ -61,7 +61,12 @@ Copia `.env.example` a `.env`. El archivo `.env` no se sube al repositorio.
 | `GOOGLE_PRIVATE_KEY` | Llave privada de esa cuenta, en una línea con `\n` literales (solo servidor). |
 | `GOOGLE_SHEET_ID` | ID de la hoja donde se guardan los registros (solo servidor). |
 
-Sin las tres variables de Google, el formulario de Kamikaze responde con un error y **no guarda nada**. La hoja necesita una pestaña llamada `Kamikaze - interesados`, compartida con la cuenta de servicio como editora.
+Sin las tres variables de Google, el formulario de Kamikaze responde con un error y **no guarda nada**. La hoja necesita dos pestañas, con estos nombres exactos, y debe compartirse con la cuenta de servicio como editora:
+
+| Pestaña | Formulario | Columnas |
+|---|---|---|
+| `Kamikaze - interesados` | `/kamikaze` | fecha, nombre, WhatsApp, correo, disciplina, horario, consentimiento, origen |
+| `Max - sesión de prueba` | `/max` | fecha, nombre, WhatsApp, objetivo, lugar, horario, consentimiento, origen |
 
 ## Estructura
 
