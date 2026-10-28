@@ -1,0 +1,329 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import InterestForm from '../components/forms/InterestForm';
+import logo from '../assets/brand/kamikaze-logo-provisional.png';
+import { kamikaze as c } from '../content/kamikaze';
+import { site } from '../content/site';
+---
+
+<Base title={c.meta.title} description={c.meta.description} brand="kamikaze">
+  <Header />
+
+  <main id="contenido">
+    <section class="hero wrap">
+      <Image
+        class="hero-logo"
+        src={logo}
+        alt="Logo de Kamikaze Colombia (provisional)"
+        width={240}
+        height={240}
+        loading="eager"
+      />
+      <h1>{c.hero.title}</h1>
+      <p class="lead">{c.hero.text}</p>
+      <a class="cta" href="#interesado">{c.hero.action}</a>
+    </section>
+
+    <section class="disciplines" aria-labelledby="disciplinas">
+      <div class="wrap">
+        <h2 id="disciplinas" class="section-title">{c.disciplines.title}</h2>
+        <ul class="discipline-list">
+          {c.disciplines.items.map((d) => <li>{d}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="start wrap" aria-labelledby="empezar">
+      <h2 id="empezar" class="section-title">{c.start.title}</h2>
+      <div class="start-list">
+        {
+          c.start.items.map((i) => (
+            <div class="start-item">
+              <h3>{i.title}</h3>
+              <p>{i.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="prelaunch wrap" aria-labelledby="prelanzamiento">
+      <div>
+        <h2 id="prelanzamiento" class="section-title">{c.prelaunch.title}</h2>
+        <p class="copy">{c.prelaunch.intro}</p>
+        <p class="copy">{c.prelaunch.outro}</p>
+      </div>
+      <ul class="pending-list">
+        {
+          c.prelaunch.items.map((i) => (
+            <li>
+              <span>{i}</span>
+              <span class="tbd">Por definir</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="interesado" class="signup" aria-labelledby="registro">
+      <div class="wrap signup-grid">
+        <div>
+          <h2 id="registro" class="section-title">{c.form.title}</h2>
+          <p class="copy">{c.form.text}</p>
+        </div>
+        <InterestForm
+          client:visible
+          privacyHref="/privacidad"
+          fallbackWhatsapp={site.whatsapp.kamikaze}
+        />
+      </div>
+    </section>
+
+    <section class="faq wrap" aria-labelledby="preguntas">
+      <h2 id="preguntas" class="section-title">{c.faq.title}</h2>
+      <div class="faq-list">
+        {
+          c.faq.items.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  main {
+    background: var(--brand-bg);
+    color: var(--brand-fg);
+  }
+  .wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  .section-title {
+    margin: 0 0 24px;
+    font-size: clamp(1.9rem, 7vw, 3rem);
+    font-weight: 900;
+    font-stretch: 62%;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .copy {
+    max-width: 52ch;
+    margin: 0 0 14px;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  /* Portada */
+  .hero {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+    padding-block: 40px 56px;
+  }
+  .hero-logo {
+    width: 160px;
+    height: auto;
+  }
+  h1 {
+    margin: 0;
+    max-width: 11ch;
+    font-size: clamp(3rem, 15vw, 7.5rem);
+    font-weight: 900;
+    font-stretch: 62%;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+  .lead {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 28px;
+    background: var(--brand-signal);
+    color: var(--brand-on-signal);
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cta:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Disciplinas: el gesto tipográfico de la página */
+  .disciplines {
+    padding-block: 56px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .discipline-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .discipline-list li {
+    padding-block: 6px 2px;
+    border-top: 3px solid var(--color-ink);
+    font-size: clamp(3.4rem, 19vw, 10rem);
+    font-weight: 900;
+    font-stretch: 62%;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .discipline-list li:last-child {
+    border-bottom: 3px solid var(--color-ink);
+  }
+
+  /* Cómo empezar */
+  .start {
+    padding-block: 64px;
+  }
+  .start-list {
+    display: grid;
+    gap: 0;
+  }
+  .start-item {
+    padding-block: 22px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .start-item h3 {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-stretch: 75%;
+  }
+  .start-item p {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+
+  /* Prelanzamiento */
+  .prelaunch {
+    display: grid;
+    gap: 32px;
+    padding-block: 64px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .pending-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pending-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 16px;
+    border-top: 1px solid var(--brand-line);
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-stretch: 75%;
+  }
+  .pending-list .tbd {
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: 100%;
+    color: var(--brand-muted);
+  }
+
+  /* Registro */
+  .signup {
+    padding-block: 64px;
+    background: var(--color-coal);
+  }
+  .signup-grid {
+    display: grid;
+    gap: 32px;
+  }
+
+  /* Preguntas */
+  .faq {
+    padding-block: 64px 80px;
+  }
+  details {
+    border-top: 1px solid var(--brand-line);
+  }
+  details:last-child {
+    border-bottom: 1px solid var(--brand-line);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding-block: 8px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  details p {
+    max-width: 52ch;
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+
+  @media (min-width: 900px) {
+    .wrap {
+      padding-inline: 40px;
+    }
+    .hero {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'title logo'
+        'lead  logo'
+        'cta   logo';
+      column-gap: 64px;
+      align-items: start;
+      padding-block: 72px 88px;
+    }
+    h1 { grid-area: title; }
+    .lead { grid-area: lead; }
+    .cta { grid-area: cta; }
+    .hero-logo {
+      grid-area: logo;
+      width: 340px;
+    }
+    .disciplines,
+    .start,
+    .prelaunch,
+    .signup,
+    .faq {
+      padding-block: 96px;
+    }
+    .start-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .prelaunch,
+    .signup-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .faq {
+      padding-block: 96px 112px;
+    }
+  }
+</style>

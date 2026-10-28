@@ -25,6 +25,7 @@ const { title, description, brand = 'kamikaze' } = Astro.props;
     <meta property="og:locale" content={site.locale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <slot name="head" />
   </head>
   <body data-brand={brand}>
     <a class="skip" href="#contenido">Saltar al contenido</a>

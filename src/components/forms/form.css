@@ -1,0 +1,143 @@
+.form {
+  display: grid;
+  gap: 22px;
+  max-width: 560px;
+}
+
+.form .field {
+  display: grid;
+  gap: 8px;
+}
+
+.form label {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.form .optional {
+  font-weight: 400;
+  color: var(--brand-muted);
+}
+
+.form input[type='text'],
+.form input[type='tel'],
+.form input[type='email'],
+.form select {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 2px solid var(--brand-line);
+  border-radius: 0;
+  background: var(--color-coal);
+  color: var(--brand-fg);
+  font: inherit;
+  font-size: 17px;
+}
+
+.form input:hover,
+.form select:hover {
+  border-color: var(--brand-muted);
+}
+
+.form [aria-invalid='true'] {
+  border-color: #ff6b6f;
+}
+
+.form .field-error {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ff8a8d;
+}
+
+.form .check {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 14px;
+  align-items: start;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.form .check input {
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  accent-color: var(--color-signal);
+}
+
+.form .check a,
+.form-error a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.form .trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form .form-error {
+  padding: 14px 16px;
+  border-left: 4px solid #ff6b6f;
+  background: var(--color-coal);
+}
+
+.form .form-error p {
+  margin: 0;
+}
+
+.form .form-error p + p {
+  margin-top: 8px;
+}
+
+.form .submit {
+  min-height: 56px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 0;
+  background: var(--brand-signal);
+  color: var(--brand-on-signal);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.form .submit:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.form .submit:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.form-done {
+  max-width: 560px;
+  padding: 24px;
+  border-left: 6px solid var(--brand-signal);
+  background: var(--color-coal);
+}
+
+.form-done h3 {
+  margin: 0 0 8px;
+  font-size: 1.9rem;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+}
+
+.form-done h3:focus {
+  outline: none;
+}
+
+.form-done p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
+}
