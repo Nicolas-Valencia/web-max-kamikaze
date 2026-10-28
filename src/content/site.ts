@@ -5,6 +5,13 @@
  */
 export type Status = 'confirmed' | 'provisional';
 
+/**
+ * Marca un dato que falta. La interfaz lo resalta para que se vea en revisión.
+ * `npm run check:content` cuenta cuántos quedan: debe ser 0 antes de publicar.
+ */
+export const TBD = 'Falta revisar';
+export const tbd = (what: string) => `${TBD}: ${what}`;
+
 const whatsappMax = import.meta.env.PUBLIC_WHATSAPP_MAX as string | undefined;
 
 export const site = {

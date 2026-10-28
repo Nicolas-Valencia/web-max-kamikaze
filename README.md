@@ -48,7 +48,8 @@ Abre <http://localhost:4321> en el navegador.
 | `npm run check` | Revisa tipos y archivos `.astro` |
 | `npm run build` | Genera la versión de producción |
 | `npm run preview` | Sirve localmente la versión de producción |
-| `npm test` | Pruebas de la validación del formulario |
+| `npm test` | Pruebas de la validación de los formularios |
+| `npm run check:content` | Cuenta los datos que faltan y los textos sin aprobar; falla mientras quede alguno |
 
 ## Variables de entorno
 
@@ -83,12 +84,13 @@ src/
 
 ## Reglas de contenido
 
-El contenido vive en `src/content/`. Cada dato lleva un estado:
+El contenido vive en `src/content/`. Las páginas tienen ya su estructura y diseño finales; lo que falta se rellena así:
 
-- `confirmed`: confirmado por Max o por el equipo.
-- `provisional`: texto de trabajo, **no aprobado**. Debe reemplazarse antes de publicar.
+- **Dato que falta:** se escribe con `tbd('qué falta')` y la página lo muestra resaltado en amarillo como "Falta revisar: ...". Nunca se pone un precio, horario, dirección o fecha de ejemplo: solo ese marcador.
+- **Texto de trabajo:** los bloques con `status: 'provisional'` están redactados pero Max aún no los aprueba.
+- **Fotos:** los marcadores punteados llevan el mismo rótulo "Falta revisar" y la descripción de la foto que va en ese lugar.
 
-No se publican precios, horarios, dirección, fecha de apertura, testimonios ni certificaciones sin confirmación de Max. Las secciones sin datos reales se muestran como "próximamente" o se ocultan.
+Para completar un dato, reemplaza la llamada `tbd(...)` por el valor real. Antes de publicar, `npm run check:content` debe terminar sin errores.
 
 ## Pendientes
 

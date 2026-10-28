@@ -1,9 +1,10 @@
-import type { Status } from './site';
+import { tbd, type Status } from './site';
 
 /**
- * Contenido de /kamikaze. Los datos marcados 'confirmed' vienen del brief de Max.
- * Todo lo 'provisional' es redacción de trabajo y debe aprobarse antes de publicar.
- * No hay precios, horarios, dirección ni fecha de apertura: aún no existen.
+ * Contenido de /kamikaze con la estructura final de la página.
+ * - Los textos confirmados vienen del brief de Max.
+ * - Todo lo que falta está escrito con `tbd(...)` y se ve resaltado como "Falta revisar".
+ * - `status: 'provisional'` marca redacción de trabajo que Max debe aprobar.
  */
 export const kamikaze = {
   meta: {
@@ -26,33 +27,85 @@ export const kamikaze = {
     status: 'confirmed' as Status,
   },
 
+  about: {
+    title: 'La academia',
+    text: tbd('presentación de Kamikaze: filosofía, propuesta de valor y qué la diferencia'),
+  },
+
+  audience: {
+    title: 'Para quién es',
+    items: [
+      { label: 'Si estás empezando', value: 'No necesitas experiencia previa.' },
+      { label: 'Si ya entrenas', value: tbd('niveles y grupos') },
+      { label: 'Edades', value: tbd('edades mínimas y si se aceptan menores') },
+    ],
+  },
+
   start: {
     title: 'Cómo empezar',
     items: [
       {
         title: 'No necesitas experiencia',
         text: 'La academia recibe personas de distintos niveles y objetivos.',
-        status: 'confirmed' as Status,
       },
       {
         title: 'No necesitas uniforme',
         text: 'Al comienzo puedes venir con tu ropa deportiva.',
-        status: 'confirmed' as Status,
       },
       {
-        title: 'Habrá clases de prueba',
-        text: 'Todavía estamos definiendo cómo funcionarán. Te contamos en cuanto estén listas.',
-        status: 'provisional' as Status,
+        title: 'Haz una clase de prueba',
+        text: tbd('cómo funcionan las clases de prueba y la inscripción'),
       },
     ],
   },
 
-  prelaunch: {
-    title: 'Lo que todavía no está definido',
-    intro:
-      'Estamos preparando la academia y preferimos decírtelo claro: aún no hay sede, horarios ni precios publicados.',
-    items: ['Sede', 'Horarios', 'Precios', 'Fecha de apertura'],
-    outro: 'Quienes se registren abajo recibirán esa información primero.',
+  coaches: {
+    title: 'Entrenadores',
+    items: [
+      {
+        name: tbd('nombre del entrenador'),
+        role: tbd('disciplina que enseña'),
+        bio: tbd('experiencia que se puede publicar'),
+        photo: 'Foto del entrenador.',
+      },
+      {
+        name: tbd('nombre del entrenador'),
+        role: tbd('disciplina que enseña'),
+        bio: tbd('experiencia que se puede publicar'),
+        photo: 'Foto del entrenador.',
+      },
+    ],
+  },
+
+  schedule: {
+    title: 'Horarios',
+    head: ['Día', 'Hora', 'Disciplina', 'Nivel'],
+    rows: [
+      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
+      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
+      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
+    ],
+  },
+
+  venue: {
+    title: 'La sede',
+    items: [
+      { label: 'Ciudad', value: 'Armenia, Quindío' },
+      { label: 'Dirección', value: tbd('dirección de la sede') },
+      { label: 'Cómo llegar', value: tbd('indicaciones y referencias') },
+      { label: 'Capacidad', value: tbd('cupos máximos por clase') },
+    ],
+    photos: [
+      'Entrada de la sede.',
+      'Zona de entrenamiento.',
+      'Ring o tatami.',
+    ],
+  },
+
+  opening: {
+    title: 'Próxima apertura',
+    text: 'Kamikaze se prepara para abrir en Armenia. Regístrate y te escribimos cuando haya novedades.',
+    date: { label: 'Fecha de apertura', value: tbd('fecha de apertura') },
     status: 'provisional' as Status,
   },
 
@@ -65,36 +118,19 @@ export const kamikaze = {
   faq: {
     title: 'Preguntas frecuentes',
     items: [
-      {
-        q: '¿Necesito experiencia previa?',
-        a: 'No. Puedes empezar desde cero.',
-        status: 'confirmed' as Status,
-      },
+      { q: '¿Necesito experiencia previa?', a: 'No. Puedes empezar desde cero.' },
       {
         q: '¿Tengo que comprar un uniforme?',
         a: 'No al comienzo. Puedes asistir con tu propia ropa deportiva.',
-        status: 'confirmed' as Status,
       },
       {
         q: '¿Dónde queda la academia?',
-        a: 'Estará en Armenia, Quindío. La sede todavía no está definida.',
-        status: 'confirmed' as Status,
+        a: `Estará en Armenia, Quindío. ${tbd('dirección de la sede')}`,
       },
-      {
-        q: '¿Cuándo abre?',
-        a: 'Todavía no hay fecha. Si te registras, te avisamos cuando la haya.',
-        status: 'provisional' as Status,
-      },
-      {
-        q: '¿Cuánto cuesta y qué horarios habrá?',
-        a: 'Aún no está definido. Te lo contamos cuando esté confirmado.',
-        status: 'provisional' as Status,
-      },
-      {
-        q: '¿Habrá clase de prueba?',
-        a: 'Sí, está contemplada. Falta definir cómo funcionará.',
-        status: 'provisional' as Status,
-      },
+      { q: '¿Cuándo abre?', a: tbd('fecha de apertura') },
+      { q: '¿Cuánto cuesta?', a: tbd('precios de matrícula y mensualidad') },
+      { q: '¿Qué horarios habrá?', a: tbd('días y horas de las clases') },
+      { q: '¿Habrá clase de prueba?', a: tbd('cómo funciona la clase de prueba') },
     ],
   },
 } as const;

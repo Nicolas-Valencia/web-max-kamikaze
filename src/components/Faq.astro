@@ -1,0 +1,49 @@
+---
+import T from './T.astro';
+
+interface Props {
+  title: string;
+  items: readonly { q: string; a: string }[];
+  id: string;
+}
+const { title, items, id } = Astro.props;
+---
+
+<section class="wrap block" aria-labelledby={id}>
+  <h2 id={id} class="section-title">{title}</h2>
+  <div class="faq-list">
+    {
+      items.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p><T text={f.a} /></p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  details {
+    border-top: 1px solid var(--brand-line);
+  }
+  details:last-child {
+    border-bottom: 1px solid var(--brand-line);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding-block: 8px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  p {
+    max-width: 52ch;
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+</style>

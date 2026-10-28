@@ -2,14 +2,20 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Faq from '../components/Faq.astro';
+import T from '../components/T.astro';
 import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import LeadForm from '../components/forms/LeadForm';
 import { max as c } from '../content/max';
 import { site } from '../content/site';
 
-const whatsappHref = site.whatsapp.max
-  ? `${site.whatsapp.max}?text=${encodeURIComponent(c.hero.whatsappMessage)}`
-  : null;
+/** Enlace de WhatsApp con un mensaje inicial; null si el número aún no está configurado. */
+const wa = (message: string) =>
+  site.whatsapp.max ? `${site.whatsapp.max}?text=${encodeURIComponent(message)}` : null;
+
+const heroWa = wa(c.hero.whatsappMessage);
+const plansWa = wa(c.plans.whatsappMessage);
+const productsWa = wa(c.products.whatsappMessage);
 ---
 
 <Base title={c.meta.title} description={c.meta.description} brand="max">
@@ -23,8 +29,8 @@ const whatsappHref = site.whatsapp.max
         <div class="actions">
           <a class="cta" href="#sesion">{c.hero.primary}</a>
           {
-            whatsappHref && (
-              <a class="cta-alt" href={whatsappHref} rel="noopener" target="_blank">
+            heroWa && (
+              <a class="cta-alt" href={heroWa} rel="noopener" target="_blank">
                 {c.hero.whatsapp}
               </a>
             )
@@ -32,14 +38,14 @@ const whatsappHref = site.whatsapp.max
         </div>
       </div>
       <div class="hero-photo">
-        <PhotoPlaceholder note="Max entrenando. Reemplazar por una foto real." />
+        <PhotoPlaceholder note={c.hero.photo} />
       </div>
     </section>
 
     <section class="sheet-band" aria-label="Datos de cada sesión">
       <dl class="sheet wrap">
         {
-          c.sheet.items.map((i) => (
+          c.sheet.map((i) => (
             <div class="sheet-row">
               <dt>{i.label}</dt>
               <dd>{i.value}</dd>
@@ -49,7 +55,27 @@ const whatsappHref = site.whatsapp.max
       </dl>
     </section>
 
-    <section class="how wrap" aria-labelledby="como">
+    <section class="wrap block about" aria-labelledby="sobre">
+      <div class="about-photo">
+        <PhotoPlaceholder note={c.about.photo} />
+      </div>
+      <div>
+        <h2 id="sobre" class="section-title">{c.about.title}</h2>
+        <p class="copy"><T text={c.about.text} /></p>
+        <dl class="rows">
+          {
+            c.about.items.map((i) => (
+              <div>
+                <dt>{i.label}</dt>
+                <dd><T text={i.value} /></dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="wrap block" aria-labelledby="como">
       <h2 id="como" class="section-title">{c.how.title}</h2>
       <ol class="steps">
         {
@@ -63,38 +89,111 @@ const whatsappHref = site.whatsapp.max
       </ol>
     </section>
 
-    <section class="plans-band" aria-labelledby="planes">
-      <div class="plans wrap">
-      <div>
-        <h2 id="planes" class="section-title">{c.plans.title}</h2>
-        <p class="copy">{c.plans.intro}</p>
-      </div>
-      <dl class="pending">
+    <section class="wrap block" aria-labelledby="objetivos">
+      <h2 id="objetivos" class="section-title">{c.goals.title}</h2>
+      <ul class="goals">
         {
-          c.plans.items.map((i) => (
-            <div class="pending-row">
-              <dt>{i}</dt>
-              <dd>Por definir</dd>
+          c.goals.items.map((g) => (
+            <li>
+              <h3><T text={g.title} /></h3>
+              <p><T text={g.text} /></p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="wrap block" aria-labelledby="lugar">
+      <h2 id="lugar" class="section-title">{c.places.title}</h2>
+      <div class="places">
+        {
+          c.places.items.map((p) => (
+            <div>
+              <h3 class="sub-title">{p.title}</h3>
+              <dl class="rows">
+                {
+                  p.rows.map((r) => (
+                    <div>
+                      <dt>{r.label}</dt>
+                      <dd><T text={r.value} /></dd>
+                    </div>
+                  ))
+                }
+              </dl>
             </div>
           ))
         }
-      </dl>
       </div>
     </section>
 
-    {
-      c.products.enabled && (
-        <section class="plans-band" aria-labelledby="productos">
-          <div class="products wrap">
-            <h2 id="productos" class="section-title">{c.products.title}</h2>
-            <p class="copy">{c.products.text}</p>
-          </div>
-        </section>
-      )
-    }
+    <section class="band" aria-labelledby="planes">
+      <div class="wrap block">
+        <h2 id="planes" class="section-title">{c.plans.title}</h2>
+        <div class="plans">
+          {
+            c.plans.items.map((p) => (
+              <article class="plan">
+                <h3><T text={p.name} /></h3>
+                <dl class="rows">
+                  {
+                    p.rows.map((r) => (
+                      <div>
+                        <dt>{r.label}</dt>
+                        <dd><T text={r.value} /></dd>
+                      </div>
+                    ))
+                  }
+                </dl>
+                {
+                  plansWa && (
+                    <a class="plan-link" href={plansWa} rel="noopener" target="_blank">
+                      {c.plans.action}
+                    </a>
+                  )
+                }
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap block" aria-labelledby="productos">
+      <h2 id="productos" class="section-title">{c.products.title}</h2>
+      <p class="copy">{c.products.text}</p>
+      <ul class="products">
+        {
+          c.products.items.map((name) => (
+            <li>
+              <PhotoPlaceholder ratio="1 / 1" note={`Foto de ${name.toLowerCase()}.`} />
+              <h3>{name}</h3>
+              <p><T text={c.products.price} /></p>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        productsWa && (
+          <a class="cta-alt" href={productsWa} rel="noopener" target="_blank">
+            {c.products.action}
+          </a>
+        )
+      }
+    </section>
+
+    <section class="wrap block" aria-labelledby="galeria">
+      <h2 id="galeria" class="section-title">{c.gallery.title}</h2>
+      <ul class="gallery">
+        {
+          c.gallery.photos.map((note) => (
+            <li><PhotoPlaceholder ratio="1 / 1" note={note} /></li>
+          ))
+        }
+      </ul>
+    </section>
 
     <section id="sesion" class="signup" aria-labelledby="registro">
-      <div class="wrap signup-grid">
+      <div class="wrap block signup-grid">
         <div>
           <h2 id="registro" class="section-title">{c.form.title}</h2>
           <p class="copy">{c.form.text}</p>
@@ -103,24 +202,12 @@ const whatsappHref = site.whatsapp.max
           client:visible
           variant="max"
           privacyHref="/privacidad"
-          fallback={whatsappHref ? { href: whatsappHref, label: 'escribirnos por WhatsApp' } : null}
+          fallback={heroWa ? { href: heroWa, label: 'escribirnos por WhatsApp' } : null}
         />
       </div>
     </section>
 
-    <section class="faq wrap" aria-labelledby="preguntas">
-      <h2 id="preguntas" class="section-title">{c.faq.title}</h2>
-      <div class="faq-list">
-        {
-          c.faq.items.map((f) => (
-            <details>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </section>
+    <Faq id="preguntas" title={c.faq.title} items={c.faq.items} />
   </main>
 
   <Footer />
@@ -131,24 +218,11 @@ const whatsappHref = site.whatsapp.max
     background: var(--brand-bg);
     color: var(--brand-fg);
   }
-  .wrap {
-    width: 100%;
-    max-width: 1200px;
-    margin-inline: auto;
-    padding-inline: 20px;
-  }
-  .section-title {
-    margin: 0 0 20px;
-    font-size: clamp(2rem, 8vw, 3.2rem);
+  .sub-title {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-  .copy {
-    max-width: 52ch;
-    margin: 0 0 14px;
-    font-size: 18px;
-    line-height: 1.55;
+    letter-spacing: -0.01em;
   }
 
   /* Portada */
@@ -188,6 +262,10 @@ const whatsappHref = site.whatsapp.max
     font-weight: 700;
     text-decoration: none;
   }
+  .cta:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
   .cta-alt {
     display: inline-flex;
     align-items: center;
@@ -197,10 +275,6 @@ const whatsappHref = site.whatsapp.max
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 5px;
-  }
-  .cta:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
   }
   .hero-photo {
     max-width: 420px;
@@ -223,22 +297,28 @@ const whatsappHref = site.whatsapp.max
   .sheet-row:first-child {
     border-top: 0;
   }
-  dt {
+  .sheet dt {
     font-size: 16px;
     font-weight: 600;
     color: var(--brand-muted);
   }
-  dd {
+  .sheet dd {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.3;
   }
 
-  /* Cómo funciona: sí es una secuencia, por eso va numerado */
-  .how {
-    padding-block: 64px;
+  /* Sobre Max */
+  .about {
+    display: grid;
+    gap: 32px;
   }
+  .about-photo {
+    max-width: 420px;
+  }
+
+  /* Cómo funciona: sí es una secuencia, por eso va numerado */
   .steps {
     display: grid;
     margin: 0;
@@ -275,44 +355,107 @@ const whatsappHref = site.whatsapp.max
     color: var(--brand-muted);
   }
 
+  /* Objetivos: lista, no secuencia */
+  .goals {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .goals li {
+    display: grid;
+    gap: 6px;
+    padding-block: 20px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .goals li:last-child {
+    border-bottom: 1px solid var(--brand-line);
+  }
+  .goals h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .goals p {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--brand-muted);
+  }
+
+  /* Dónde entrenas */
+  .places {
+    display: grid;
+    gap: 40px;
+  }
+
   /* Planes */
-  .plans-band {
+  .band {
     border-top: 4px solid var(--brand-fg);
   }
   .plans {
     display: grid;
-    gap: 28px;
-    padding-block: 56px;
+    gap: 40px;
   }
-  .pending {
-    margin: 0;
+  .plan {
+    padding-top: 16px;
+    border-top: 4px solid var(--brand-fg);
   }
-  .pending-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding-block: 16px;
-    border-top: 1px solid var(--brand-line);
+  .plan h3 {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
-  .pending-row dt {
-    font-size: 1.3rem;
+  .plan-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 52px;
+    margin-top: 16px;
+    padding: 0 22px;
+    background: var(--brand-signal);
+    color: var(--brand-on-signal);
+    font-size: 17px;
     font-weight: 700;
-    color: inherit;
+    text-decoration: none;
   }
-  .pending-row dd {
-    font-size: 16px;
-    font-weight: 500;
+  .plan-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Productos */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 12px;
+    margin: 28px 0;
+    padding: 0;
+    list-style: none;
+  }
+  .products h3 {
+    margin: 12px 0 2px;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+  .products p {
+    margin: 0;
+    font-size: 17px;
     color: var(--brand-muted);
   }
 
-  .products {
-    padding-block: 56px;
+  /* Galería */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  /* Registro */
+  /* Solicitud de sesión: tema oscuro propio */
   .signup {
-    padding-block: 64px;
     background: var(--color-steel);
     color: var(--color-concrete);
     --brand-fg: var(--color-concrete);
@@ -330,46 +473,16 @@ const whatsappHref = site.whatsapp.max
     gap: 32px;
   }
 
-  /* Preguntas */
-  .faq {
-    padding-block: 64px 80px;
-  }
-  details {
-    border-top: 1px solid var(--brand-line);
-  }
-  details:last-child {
-    border-bottom: 1px solid var(--brand-line);
-  }
-  summary {
-    display: flex;
-    align-items: center;
-    min-height: 60px;
-    padding-block: 8px;
-    font-size: 19px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  details p {
-    max-width: 52ch;
-    margin: 0 0 20px;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
-  }
-
   @media (min-width: 900px) {
-    .wrap {
-      padding-inline: 40px;
-    }
-    h1 {
-      max-width: none;
-      font-size: clamp(4rem, 6.2vw, 5.8rem);
-    }
     .hero {
       grid-template-columns: 1.4fr 1fr;
       gap: 72px;
       align-items: end;
       padding-block: 72px 64px;
+    }
+    h1 {
+      max-width: none;
+      font-size: clamp(4rem, 6.2vw, 5.8rem);
     }
     .actions {
       grid-auto-flow: column;
@@ -380,20 +493,18 @@ const whatsappHref = site.whatsapp.max
       grid-template-columns: repeat(5, 1fr);
     }
     .sheet-row {
-      padding: 24px 20px 24px 0;
+      padding: 24px 20px 24px 20px;
       border-top: 0;
       border-left: 1px solid var(--brand-line);
-      padding-left: 20px;
     }
     .sheet-row:first-child {
       border-left: 0;
       padding-left: 0;
     }
-    .how,
-    .plans,
-    .products,
-    .signup {
-      padding-block: 96px;
+    .about {
+      grid-template-columns: 1fr 1.3fr;
+      gap: 80px;
+      align-items: start;
     }
     .steps {
       grid-template-columns: repeat(3, 1fr);
@@ -406,13 +517,30 @@ const whatsappHref = site.whatsapp.max
       top: 12px;
       font-size: 3.4rem;
     }
-    .plans,
-    .signup-grid {
+    .goals li {
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: baseline;
+    }
+    .places {
       grid-template-columns: 1fr 1fr;
       gap: 80px;
     }
-    .faq {
-      padding-block: 96px 112px;
+    .plans {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+    .products {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .signup-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
     }
   }
 </style>

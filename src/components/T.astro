@@ -1,0 +1,10 @@
+---
+/** Muestra un texto del contenido; si es un dato pendiente, lo resalta como "Falta revisar". */
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+const missing = text.includes('Falta revisar');
+---
+
+{missing ? <mark class="tbd">{text}</mark> : text}

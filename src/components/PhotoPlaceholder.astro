@@ -9,7 +9,7 @@ const { note, ratio = '4 / 5' } = Astro.props;
 
 <figure class="ph" style={`aspect-ratio: ${ratio}`} aria-label="Espacio reservado para una foto">
   <figcaption>
-    <strong>Foto pendiente</strong>
+    <strong>Falta revisar</strong>
     <span>{note}</span>
   </figcaption>
 </figure>
@@ -22,14 +22,15 @@ const { note, ratio = '4 / 5' } = Astro.props;
     width: 100%;
     margin: 0;
     padding: 20px;
-    background: var(--color-steel);
+    min-width: 0;
+    background: var(--ph-bg, var(--color-steel));
     color: var(--color-concrete);
   }
   .ph::before {
     content: '';
     position: absolute;
     inset: 12px;
-    border: 2px dashed #5a5f62;
+    border: 2px dashed #ffe14d;
     pointer-events: none;
   }
   figcaption {
@@ -37,11 +38,16 @@ const { note, ratio = '4 / 5' } = Astro.props;
     display: grid;
     gap: 4px;
     max-width: 28ch;
+    overflow-wrap: anywhere;
     font-size: 16px;
     line-height: 1.4;
   }
   strong {
-    font-size: 18px;
+    justify-self: start;
+    padding: 0 0.3em;
+    background: #ffe14d;
+    color: #000;
+    font-size: 17px;
   }
   span {
     color: #aab0b3;

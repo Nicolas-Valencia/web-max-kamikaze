@@ -1,6 +1,6 @@
 # Pendientes
 
-Actualizar este archivo en cada entrega.
+Actualizar este archivo en cada entrega. Los datos concretos que faltan están marcados en la web como "Falta revisar"; `npm run check:content` los cuenta.
 
 ## Contenido por aprobar con Max
 - Todos los textos de `src/content/home.ts` y `src/content/kamikaze.ts` marcados `provisional`.

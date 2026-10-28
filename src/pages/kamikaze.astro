@@ -3,6 +3,9 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Faq from '../components/Faq.astro';
+import T from '../components/T.astro';
+import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import LeadForm from '../components/forms/LeadForm';
 import logo from '../assets/brand/kamikaze-logo-provisional.png';
 import { kamikaze as c } from '../content/kamikaze';
@@ -28,7 +31,7 @@ import { site } from '../content/site';
     </section>
 
     <section class="disciplines" aria-labelledby="disciplinas">
-      <div class="wrap">
+      <div class="wrap block">
         <h2 id="disciplinas" class="section-title">{c.disciplines.title}</h2>
         <ul class="discipline-list">
           {c.disciplines.items.map((d) => <li>{d}</li>)}
@@ -36,42 +39,116 @@ import { site } from '../content/site';
       </div>
     </section>
 
-    <section class="start wrap" aria-labelledby="empezar">
+    <section class="wrap block about" aria-labelledby="academia">
+      <div>
+        <h2 id="academia" class="section-title">{c.about.title}</h2>
+        <p class="copy"><T text={c.about.text} /></p>
+      </div>
+      <div>
+        <h3 class="sub-title">{c.audience.title}</h3>
+        <dl class="rows">
+          {
+            c.audience.items.map((i) => (
+              <div>
+                <dt>{i.label}</dt>
+                <dd><T text={i.value} /></dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="wrap block start" aria-labelledby="empezar">
       <h2 id="empezar" class="section-title">{c.start.title}</h2>
       <div class="start-list">
         {
           c.start.items.map((i) => (
             <div class="start-item">
               <h3>{i.title}</h3>
-              <p>{i.text}</p>
+              <p><T text={i.text} /></p>
             </div>
           ))
         }
       </div>
     </section>
 
-    <section class="prelaunch wrap" aria-labelledby="prelanzamiento">
-      <div>
-        <h2 id="prelanzamiento" class="section-title">{c.prelaunch.title}</h2>
-        <p class="copy">{c.prelaunch.intro}</p>
-        <p class="copy">{c.prelaunch.outro}</p>
-      </div>
-      <ul class="pending-list">
+    <section class="wrap block" aria-labelledby="entrenadores">
+      <h2 id="entrenadores" class="section-title">{c.coaches.title}</h2>
+      <div class="coaches">
         {
-          c.prelaunch.items.map((i) => (
-            <li>
-              <span>{i}</span>
-              <span class="tbd">Por definir</span>
-            </li>
+          c.coaches.items.map((coach) => (
+            <article class="coach">
+              <PhotoPlaceholder ratio="1 / 1" note={coach.photo} />
+              <h3><T text={coach.name} /></h3>
+              <p class="role"><T text={coach.role} /></p>
+              <p class="bio"><T text={coach.bio} /></p>
+            </article>
           ))
         }
-      </ul>
+      </div>
+    </section>
+
+    <section class="wrap block" aria-labelledby="horarios">
+      <h2 id="horarios" class="section-title">{c.schedule.title}</h2>
+      <table class="schedule">
+        <caption class="sr-only">Horario de clases por día, hora, disciplina y nivel</caption>
+        <thead>
+          <tr>{c.schedule.head.map((h) => <th scope="col">{h}</th>)}</tr>
+        </thead>
+        <tbody>
+          {
+            c.schedule.rows.map((row) => (
+              <tr>
+                {row.map((cell, i) => (
+                  <td data-label={c.schedule.head[i]}>
+                    <T text={cell} />
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <section class="wrap block venue" aria-labelledby="sede">
+      <div>
+        <h2 id="sede" class="section-title">{c.venue.title}</h2>
+        <dl class="rows">
+          {
+            c.venue.items.map((i) => (
+              <div>
+                <dt>{i.label}</dt>
+                <dd><T text={i.value} /></dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div class="venue-photos">
+        {
+          c.venue.photos.map((note, i) => (
+            <div class:list={['venue-photo', { wide: i === 0 }]}>
+              <PhotoPlaceholder ratio={i === 0 ? '16 / 9' : '4 / 3'} note={note} />
+            </div>
+          ))
+        }
+      </div>
     </section>
 
     <section id="interesado" class="signup" aria-labelledby="registro">
-      <div class="wrap signup-grid">
+      <div class="wrap block signup-grid">
         <div>
-          <h2 id="registro" class="section-title">{c.form.title}</h2>
+          <h2 class="section-title">{c.opening.title}</h2>
+          <p class="copy">{c.opening.text}</p>
+          <dl class="rows opening">
+            <div>
+              <dt>{c.opening.date.label}</dt>
+              <dd><T text={c.opening.date.value} /></dd>
+            </div>
+          </dl>
+          <h3 id="registro" class="sub-title form-title">{c.form.title}</h3>
           <p class="copy">{c.form.text}</p>
         </div>
         <LeadForm
@@ -83,19 +160,7 @@ import { site } from '../content/site';
       </div>
     </section>
 
-    <section class="faq wrap" aria-labelledby="preguntas">
-      <h2 id="preguntas" class="section-title">{c.faq.title}</h2>
-      <div class="faq-list">
-        {
-          c.faq.items.map((f) => (
-            <details>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </section>
+    <Faq id="preguntas" title={c.faq.title} items={c.faq.items} />
   </main>
 
   <Footer />
@@ -105,26 +170,24 @@ import { site } from '../content/site';
   main {
     background: var(--brand-bg);
     color: var(--brand-fg);
+    --ph-bg: var(--color-coal);
   }
-  .wrap {
-    width: 100%;
-    max-width: 1200px;
-    margin-inline: auto;
-    padding-inline: 20px;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
-  .section-title {
-    margin: 0 0 24px;
-    font-size: clamp(1.9rem, 7vw, 3rem);
-    font-weight: 900;
-    font-stretch: 62%;
-    line-height: 0.95;
-    text-transform: uppercase;
+  .sub-title {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-stretch: 75%;
   }
-  .copy {
-    max-width: 52ch;
-    margin: 0 0 14px;
-    font-size: 18px;
-    line-height: 1.55;
+  .form-title {
+    margin-top: 40px;
   }
 
   /* Portada */
@@ -172,7 +235,6 @@ import { site } from '../content/site';
 
   /* Disciplinas: el gesto tipográfico de la página */
   .disciplines {
-    padding-block: 56px;
     background: var(--color-paper);
     color: var(--color-ink);
   }
@@ -194,13 +256,15 @@ import { site } from '../content/site';
     border-bottom: 3px solid var(--color-ink);
   }
 
-  /* Cómo empezar */
-  .start {
-    padding-block: 64px;
+  /* Presentación y público */
+  .about {
+    display: grid;
+    gap: 40px;
   }
+
+  /* Cómo empezar */
   .start-list {
     display: grid;
-    gap: 0;
   }
   .start-item {
     padding-block: 22px;
@@ -220,77 +284,90 @@ import { site } from '../content/site';
     color: var(--brand-muted);
   }
 
-  /* Prelanzamiento */
-  .prelaunch {
+  /* Entrenadores */
+  .coaches {
     display: grid;
-    gap: 32px;
-    padding-block: 64px;
-    border-top: 1px solid var(--brand-line);
+    gap: 40px;
   }
-  .pending-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .pending-list li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding-block: 16px;
-    border-top: 1px solid var(--brand-line);
+  .coach h3 {
+    margin: 20px 0 2px;
     font-size: 1.6rem;
     font-weight: 800;
     font-stretch: 75%;
   }
-  .pending-list .tbd {
+  .coach p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .coach .role {
+    color: var(--brand-muted);
+    margin-bottom: 8px;
+  }
+
+  /* Horarios: tabla en escritorio, filas apiladas en móvil */
+  .schedule {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .schedule thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .schedule tr {
+    display: grid;
+    gap: 6px;
+    padding-block: 16px;
+    border-top: 1px solid var(--brand-line);
+  }
+  .schedule tbody tr:last-child {
+    border-bottom: 1px solid var(--brand-line);
+  }
+  .schedule td {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .schedule td::before {
+    content: attr(data-label);
     font-size: 16px;
     font-weight: 500;
-    font-stretch: 100%;
     color: var(--brand-muted);
   }
 
-  /* Registro */
+  /* Sede */
+  .venue {
+    display: grid;
+    gap: 40px;
+  }
+  .venue-photos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .venue-photo.wide {
+    grid-column: 1 / -1;
+  }
+
+  /* Próxima apertura y registro */
   .signup {
-    padding-block: 64px;
     background: var(--color-coal);
   }
   .signup-grid {
     display: grid;
     gap: 32px;
   }
-
-  /* Preguntas */
-  .faq {
-    padding-block: 64px 80px;
-  }
-  details {
-    border-top: 1px solid var(--brand-line);
-  }
-  details:last-child {
-    border-bottom: 1px solid var(--brand-line);
-  }
-  summary {
-    display: flex;
-    align-items: center;
-    min-height: 60px;
-    padding-block: 8px;
-    font-size: 19px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  details p {
+  .opening {
     max-width: 52ch;
-    margin: 0 0 20px;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
   }
 
   @media (min-width: 900px) {
-    .wrap {
-      padding-inline: 40px;
-    }
     .hero {
       grid-template-columns: 1fr auto;
       grid-template-areas:
@@ -308,24 +385,48 @@ import { site } from '../content/site';
       grid-area: logo;
       width: 340px;
     }
-    .disciplines,
-    .start,
-    .prelaunch,
-    .signup,
-    .faq {
-      padding-block: 96px;
+    .about,
+    .venue,
+    .signup-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
     }
     .start-list {
       grid-template-columns: repeat(3, 1fr);
       gap: 40px;
     }
-    .prelaunch,
-    .signup-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
+    .coaches {
+      grid-template-columns: repeat(2, minmax(0, 360px));
+      gap: 64px;
     }
-    .faq {
-      padding-block: 96px 112px;
+    .schedule thead {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+    }
+    .schedule th {
+      padding: 0 16px 12px 0;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--brand-muted);
+    }
+    .schedule tr {
+      display: table-row;
+      padding: 0;
+    }
+    .schedule td {
+      display: table-cell;
+      padding: 18px 16px 18px 0;
+      border-top: 1px solid var(--brand-line);
+    }
+    .schedule td::before {
+      content: none;
+    }
+    .schedule tbody tr:last-child td {
+      border-bottom: 1px solid var(--brand-line);
     }
   }
 </style>
