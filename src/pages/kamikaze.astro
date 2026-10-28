@@ -78,7 +78,7 @@ import { site } from '../content/site';
           client:visible
           variant="kamikaze"
           privacyHref="/privacidad"
-          fallbackWhatsapp={site.whatsapp.kamikaze}
+          fallback={{ href: site.socials.kamikaze.url, label: 'escribirnos por Instagram' }}
         />
       </div>
     </section>
@@ -141,6 +141,7 @@ import { site } from '../content/site';
   h1 {
     margin: 0;
     max-width: 11ch;
+    text-wrap: balance;
     font-size: clamp(3rem, 15vw, 7.5rem);
     font-weight: 900;
     font-stretch: 62%;

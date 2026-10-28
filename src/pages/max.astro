@@ -63,7 +63,8 @@ const whatsappHref = site.whatsapp.max
       </ol>
     </section>
 
-    <section class="plans wrap" aria-labelledby="planes">
+    <section class="plans-band" aria-labelledby="planes">
+      <div class="plans wrap">
       <div>
         <h2 id="planes" class="section-title">{c.plans.title}</h2>
         <p class="copy">{c.plans.intro}</p>
@@ -78,13 +79,16 @@ const whatsappHref = site.whatsapp.max
           ))
         }
       </dl>
+      </div>
     </section>
 
     {
       c.products.enabled && (
-        <section class="products wrap" aria-labelledby="productos">
-          <h2 id="productos" class="section-title">{c.products.title}</h2>
-          <p class="copy">{c.products.text}</p>
+        <section class="plans-band" aria-labelledby="productos">
+          <div class="products wrap">
+            <h2 id="productos" class="section-title">{c.products.title}</h2>
+            <p class="copy">{c.products.text}</p>
+          </div>
         </section>
       )
     }
@@ -99,7 +103,7 @@ const whatsappHref = site.whatsapp.max
           client:visible
           variant="max"
           privacyHref="/privacidad"
-          fallbackWhatsapp={whatsappHref}
+          fallback={whatsappHref ? { href: whatsappHref, label: 'escribirnos por WhatsApp' } : null}
         />
       </div>
     </section>
@@ -155,7 +159,8 @@ const whatsappHref = site.whatsapp.max
   }
   h1 {
     margin: 0 0 20px;
-    max-width: 12ch;
+    max-width: 13ch;
+    text-wrap: balance;
     font-size: clamp(3.2rem, 15vw, 7.4rem);
     font-weight: 800;
     letter-spacing: -0.035em;
@@ -271,11 +276,13 @@ const whatsappHref = site.whatsapp.max
   }
 
   /* Planes */
+  .plans-band {
+    border-top: 4px solid var(--brand-fg);
+  }
   .plans {
     display: grid;
     gap: 28px;
     padding-block: 56px;
-    border-top: 4px solid var(--brand-fg);
   }
   .pending {
     margin: 0;
@@ -301,7 +308,6 @@ const whatsappHref = site.whatsapp.max
 
   .products {
     padding-block: 56px;
-    border-top: 4px solid var(--brand-fg);
   }
 
   /* Registro */
@@ -313,6 +319,7 @@ const whatsappHref = site.whatsapp.max
     --brand-bg: var(--color-steel);
     --brand-muted: #aab0b3;
     --brand-line: #4a4f52;
+    --brand-control: #8c9295;
     --brand-signal: var(--color-concrete);
     --brand-on-signal: var(--color-steel);
     --brand-error: #ff8a8d;
@@ -353,6 +360,10 @@ const whatsappHref = site.whatsapp.max
   @media (min-width: 900px) {
     .wrap {
       padding-inline: 40px;
+    }
+    h1 {
+      max-width: none;
+      font-size: clamp(4rem, 6.2vw, 5.8rem);
     }
     .hero {
       grid-template-columns: 1.4fr 1fr;

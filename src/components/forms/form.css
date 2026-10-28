@@ -27,7 +27,7 @@
   width: 100%;
   min-height: 52px;
   padding: 0 14px;
-  border: 2px solid var(--brand-line);
+  border: 2px solid var(--brand-control);
   border-radius: 0;
   background: var(--field-bg);
   color: var(--brand-fg);
@@ -38,7 +38,7 @@
 .form input:hover,
 .form select:hover,
 .form textarea:hover {
-  border-color: var(--brand-muted);
+  border-color: var(--brand-fg);
 }
 
 .form [aria-invalid='true'] {

@@ -16,7 +16,8 @@ export const max = {
   },
 
   hero: {
-    title: 'Muay Thai a tu medida, uno a uno.',
+    // Espacios no separables (\u00A0) para que "a" no quede sola al final de una línea.
+    title: 'Muay Thai a\u00A0tu medida, uno a\u00A0uno.',
     text: 'Entrenamiento personalizado con Max en Armenia, Quindío. Empiezas con una evaluación y el entrenamiento se adapta a tus objetivos.',
     primary: 'Solicitar sesión de prueba',
     whatsapp: 'Consultar disponibilidad por WhatsApp',

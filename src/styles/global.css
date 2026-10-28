@@ -23,6 +23,7 @@
   --brand-fg: var(--color-paper);
   --brand-muted: #a8a8a8;
   --brand-line: #3a3a3a;
+  --brand-control: #8a8a8a;
   --brand-signal: var(--color-signal);
   --brand-on-signal: var(--color-paper);
   --brand-error: #ff8a8d;
@@ -36,6 +37,7 @@
   --brand-fg: var(--color-steel);
   --brand-muted: #4a4f52;
   --brand-line: #a5aaad;
+  --brand-control: #6b7073;
   --brand-signal: var(--color-steel);
   --brand-on-signal: var(--color-concrete);
   --brand-error: #b00020;

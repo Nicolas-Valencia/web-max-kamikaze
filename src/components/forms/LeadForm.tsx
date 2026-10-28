@@ -114,11 +114,11 @@ const variants = {
 interface Props {
   variant: keyof typeof variants;
   privacyHref: string;
-  /** Enlace de WhatsApp de respaldo si el registro falla. Puede ser null. */
-  fallbackWhatsapp: string | null;
+  /** Canal alternativo para ofrecer si el registro falla. Puede ser null. */
+  fallback: { href: string; label: string } | null;
 }
 
-export default function LeadForm({ variant, privacyHref, fallbackWhatsapp }: Props) {
+export default function LeadForm({ variant, privacyHref, fallback }: Props) {
   const config: Variant = variants[variant];
   const [values, setValues] = useState<Values>(() => ({
     ...Object.fromEntries(config.fields.map((f) => [f.name, ''])),
@@ -311,12 +311,11 @@ export default function LeadForm({ variant, privacyHref, fallbackWhatsapp }: Pro
         {status === 'error' && (
           <div className="form-error" role="alert">
             <p>
-              No pudimos guardar tus datos. Revisa tu conexión e inténtalo de
-              nuevo en un momento.
+              No pudimos guardar tus datos. Inténtalo de nuevo en un momento.
             </p>
-            {fallbackWhatsapp && (
+            {fallback && (
               <p>
-                Si prefieres, <a href={fallbackWhatsapp}>escríbenos por WhatsApp</a>.
+                También puedes <a href={fallback.href}>{fallback.label}</a>.
               </p>
             )}
           </div>
