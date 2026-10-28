@@ -1,0 +1,79 @@
+---
+import { site } from '../content/site';
+---
+
+<footer class="footer">
+  <p class="where">{site.city}</p>
+  <ul class="links">
+    <li>
+      <a href={site.socials.max.url} rel="noopener" target="_blank">
+        Instagram de Max <span>{site.socials.max.handle}</span>
+      </a>
+    </li>
+    <li>
+      <a href={site.socials.kamikaze.url} rel="noopener" target="_blank">
+        Instagram de Kamikaze <span>{site.socials.kamikaze.handle}</span>
+      </a>
+    </li>
+    {
+      site.whatsapp.max && (
+        <li>
+          <a href={site.whatsapp.max} rel="noopener" target="_blank">
+            Escribir a Max por WhatsApp
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</footer>
+
+<style>
+  .footer {
+    display: grid;
+    gap: 20px;
+    padding: 28px 20px 40px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border-top: 1px solid #3a3a3a;
+  }
+  .where {
+    margin: 0;
+    font-size: 15px;
+    color: #a8a8a8;
+  }
+  .links {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .links a {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    align-items: center;
+    min-height: 48px;
+    font-size: 17px;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  .links a span {
+    font-weight: 400;
+    color: #a8a8a8;
+  }
+  @media (min-width: 900px) {
+    .footer {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 28px 40px;
+    }
+    .links {
+      grid-auto-flow: column;
+      gap: 32px;
+    }
+  }
+</style>

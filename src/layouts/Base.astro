@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import { site } from '../content/site';
+
+interface Props {
+  title: string;
+  description: string;
+  brand?: 'max' | 'kamikaze';
+}
+
+const { title, description, brand = 'kamikaze' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body data-brand={brand}>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <slot />
+    {
+      import.meta.env.DEV && (
+        <p class="dev-flag">Desarrollo: contenido provisional</p>
+      )
+    }
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: 12px;
+    top: -64px;
+    z-index: 50;
+    padding: 12px 16px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .skip:focus {
+    top: 12px;
+  }
+  .dev-flag {
+    position: fixed;
+    right: 8px;
+    bottom: 8px;
+    z-index: 40;
+    margin: 0;
+    padding: 4px 8px;
+    background: var(--color-signal);
+    color: var(--color-paper);
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+</style>
