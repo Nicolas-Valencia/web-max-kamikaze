@@ -1,11 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
+import StickyCta from '../components/StickyCta.astro';
+import SectionHead from '../components/SectionHead.astro';
 import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Testimonials from '../components/Testimonials.astro';
 import T from '../components/T.astro';
+import RefPhoto from '../components/RefPhoto.astro';
 import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import LeadForm from '../components/forms/LeadForm';
+import portrait from '../assets/reference/max-portrait.jpg';
+import gallery1 from '../assets/reference/gallery-1.jpg';
+import gallery2 from '../assets/reference/gallery-2.jpg';
+import gallery3 from '../assets/reference/gallery-3.jpg';
+import gallery4 from '../assets/reference/gallery-4.jpg';
 import { max as c } from '../content/max';
 import { site } from '../content/site';
 
@@ -16,38 +26,58 @@ const wa = (message: string) =>
 const heroWa = wa(c.hero.whatsappMessage);
 const plansWa = wa(c.plans.whatsappMessage);
 const productsWa = wa(c.products.whatsappMessage);
+const consultHref = heroWa ?? '#sesion';
+const consultExternal = Boolean(heroWa);
+
+const gallery = [
+  { src: gallery1, ratio: '16 / 9', position: '50% 40%', area: 'a' },
+  { src: gallery2, ratio: '4 / 5', position: '50% 25%', area: 'b' },
+  { src: gallery3, ratio: '16 / 8', position: '50% 50%', area: 'c' },
+  { src: gallery4, ratio: '16 / 8', position: '50% 40%', area: 'd' },
+] as const;
 ---
 
 <Base title={c.meta.title} description={c.meta.description} brand="max">
-  <Header other={{ href: '/kamikaze', label: 'Ver Kamikaze' }} />
+  <SiteHeader brand="max" links={c.nav} cta={c.cta} />
 
   <main id="contenido">
-    <section class="hero wrap">
-      <div class="hero-copy">
-        <h1>{c.hero.title}</h1>
-        <p class="lead">{c.hero.text}</p>
-        <div class="actions">
-          <a class="cta" href="#sesion">{c.hero.primary}</a>
+    <!-- 1. Portada tipográfica -->
+    <section class="hero" aria-labelledby="titular">
+      <div class="wrap hero-body">
+        <ul class="chips mono">
+          {c.hero.chips.map((chip, i) => <li class:list={{ red: i === 0 }}>{chip}</li>)}
+        </ul>
+        <h1 id="titular" class="display">
           {
-            heroWa && (
-              <a class="cta-alt" href={heroWa} rel="noopener" target="_blank">
-                {c.hero.whatsapp}
-              </a>
-            )
+            c.hero.lines.map((l, i) => (
+              <span class:list={['line', { accent: i === c.hero.lines.length - 1 }]}>{l}</span>
+            ))
           }
+        </h1>
+        <div class="hero-foot">
+          <p class="lead">{c.hero.text}</p>
+          <div class="actions">
+            <a class="btn btn-primary btn-arrow" href="#sesion">{c.hero.primary}</a>
+            <a class="method mono" href="#metodo">{c.hero.method} ↓</a>
+            {
+              heroWa && (
+                <a class="wa" href={heroWa} rel="noopener" target="_blank">
+                  {c.hero.whatsapp}
+                </a>
+              )
+            }
+          </div>
         </div>
-      </div>
-      <div class="hero-photo">
-        <PhotoPlaceholder note={c.hero.photo} />
       </div>
     </section>
 
-    <section class="sheet-band" aria-label="Datos de cada sesión">
-      <dl class="sheet wrap">
+    <!-- 2. Franja de datos confirmados -->
+    <section class="strip" aria-label="Datos del entrenamiento">
+      <dl class="wrap strip-grid">
         {
-          c.sheet.map((i) => (
-            <div class="sheet-row">
-              <dt>{i.label}</dt>
+          c.strip.map((i) => (
+            <div>
+              <dt class="mono">{i.label}</dt>
               <dd>{i.value}</dd>
             </div>
           ))
@@ -55,13 +85,24 @@ const productsWa = wa(c.products.whatsappMessage);
       </dl>
     </section>
 
-    <section class="wrap block about" aria-labelledby="sobre">
+    <!-- 3. Filosofía y entrenador -->
+    <section id="sobre" class="wrap block about" aria-labelledby="t-sobre">
       <div class="about-photo">
-        <PhotoPlaceholder note={c.about.photo} />
+        <RefPhoto src={portrait} alt="Retrato de un entrenador de Muay Thai" ratio="4 / 5" position="50% 20%" />
+        <div class="about-card">
+          <p class="mono">{c.about.photo.label}</p>
+          <p class="who">{c.about.photo.name}</p>
+          <p class="role"><T text={c.about.photo.role} /></p>
+        </div>
       </div>
       <div>
-        <h2 id="sobre" class="section-title">{c.about.title}</h2>
-        <p class="copy"><T text={c.about.text} /></p>
+        <p class="eyebrow">{c.about.eyebrow}</p>
+        <h2 id="t-sobre" class="display">
+          {c.about.lines.map((l) => <span class="line">{l}</span>)}
+          <span class="line accent">{c.about.accent}</span>
+        </h2>
+        <blockquote class="quote"><T text={c.about.quote} /></blockquote>
+        <p class="body"><T text={c.about.text} /></p>
         <dl class="rows">
           {
             c.about.items.map((i) => (
@@ -75,41 +116,68 @@ const productsWa = wa(c.products.whatsappMessage);
       </div>
     </section>
 
-    <section class="wrap block" aria-labelledby="como">
-      <h2 id="como" class="section-title">{c.how.title}</h2>
+    <!-- 4. Método -->
+    <section id="metodo" class="wrap block" aria-labelledby="t-metodo">
+      <SectionHead id="t-metodo" eyebrow={c.how.eyebrow} title={c.how.title} accent={c.how.accent} />
       <ol class="steps">
         {
-          c.how.steps.map((s) => (
-            <li>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
+          c.how.steps.map((s, i) => (
+            <li class="card">
+              <span class="num mono">{`0${i + 1}`}</span>
+              <h3 class="display">{s.title}</h3>
+              <p class="body">{s.text}</p>
             </li>
           ))
         }
       </ol>
     </section>
 
-    <section class="wrap block" aria-labelledby="objetivos">
-      <h2 id="objetivos" class="section-title">{c.goals.title}</h2>
-      <ul class="goals">
+    <!-- 5. Servicios -->
+    <section id="servicios" class="wrap block" aria-labelledby="t-servicios">
+      <SectionHead
+        id="t-servicios"
+        eyebrow={c.services.eyebrow}
+        title={c.services.title}
+        accent={c.services.accent}
+      />
+      <div class="services">
         {
-          c.goals.items.map((g) => (
-            <li>
-              <h3><T text={g.title} /></h3>
-              <p><T text={g.text} /></p>
-            </li>
+          c.services.items.map((s, i) => (
+            <article class="card service">
+              <div class="service-main">
+                <p class="mono kicker">{`Modalidad 0${i + 1}`}</p>
+                <h3 class="display"><T text={s.title} /></h3>
+                <p class="body"><T text={s.desc} /></p>
+              </div>
+              <dl class="specs">
+                {
+                  s.specs.map((sp) => (
+                    <div>
+                      <dt class="mono">{sp.label}</dt>
+                      <dd><T text={sp.value} /></dd>
+                    </div>
+                  ))
+                }
+              </dl>
+              <a
+                class="btn btn-outline"
+                href={consultHref}
+                target={consultExternal ? '_blank' : undefined}
+                rel={consultExternal ? 'noopener' : undefined}
+              >
+                {c.services.action}
+              </a>
+            </article>
           ))
         }
-      </ul>
-    </section>
+      </div>
 
-    <section class="wrap block" aria-labelledby="lugar">
-      <h2 id="lugar" class="section-title">{c.places.title}</h2>
+      <h3 class="places-title display">{c.places.title}</h3>
       <div class="places">
         {
           c.places.items.map((p) => (
-            <div>
-              <h3 class="sub-title">{p.title}</h3>
+            <article class="card">
+              <h4 class="display">{p.title}</h4>
               <dl class="rows">
                 {
                   p.rows.map((r) => (
@@ -120,427 +188,606 @@ const productsWa = wa(c.products.whatsappMessage);
                   ))
                 }
               </dl>
-            </div>
+            </article>
           ))
         }
       </div>
     </section>
 
-    <section class="band" aria-labelledby="planes">
-      <div class="wrap block">
-        <h2 id="planes" class="section-title">{c.plans.title}</h2>
-        <div class="plans">
-          {
-            c.plans.items.map((p) => (
-              <article class="plan">
-                <h3><T text={p.name} /></h3>
-                <dl class="rows">
-                  {
-                    p.rows.map((r) => (
-                      <div>
-                        <dt>{r.label}</dt>
-                        <dd><T text={r.value} /></dd>
-                      </div>
-                    ))
-                  }
-                </dl>
-                {
-                  plansWa && (
-                    <a class="plan-link" href={plansWa} rel="noopener" target="_blank">
-                      {c.plans.action}
-                    </a>
-                  )
-                }
-              </article>
-            ))
-          }
-        </div>
+    <!-- 6. Perfiles -->
+    <section id="perfiles" class="wrap block" aria-labelledby="t-perfiles">
+      <SectionHead
+        id="t-perfiles"
+        eyebrow={c.profiles.eyebrow}
+        title={c.profiles.title}
+        accent={c.profiles.accent}
+      >
+        {c.profiles.text}
+      </SectionHead>
+      <div class="cards three">
+        {
+          c.profiles.items.map((p, i) => (
+            <article class:list={['card', { 'card-featured': i === 0 }]}>
+              <p class="mono kicker">{p.tag}</p>
+              <h3 class="display">{p.title}</h3>
+              <p class="body">{p.text}</p>
+              <p class="goal mono"><T text={p.goal} /></p>
+            </article>
+          ))
+        }
       </div>
     </section>
 
-    <section class="wrap block" aria-labelledby="productos">
-      <h2 id="productos" class="section-title">{c.products.title}</h2>
-      <p class="copy">{c.products.text}</p>
+    <!-- 7. Planes -->
+    <section id="planes" class="wrap block" aria-labelledby="t-planes">
+      <SectionHead
+        id="t-planes"
+        eyebrow={c.plans.eyebrow}
+        title={c.plans.title}
+        accent={c.plans.accent}
+        sub={c.plans.sub}
+      >
+        <T text={c.plans.note} />
+      </SectionHead>
+      <div class="plans">
+        {
+          c.plans.items.map((p, i) => (
+            <article class:list={['card', 'plan', { 'card-featured': i === c.plans.featured }]}>
+              <p class="mono kicker"><T text={p.tag} /></p>
+              <h3 class="display"><T text={p.name} /></h3>
+              <div class="price">
+                <p class="mono">{p.priceLabel}</p>
+                <p class="amount"><T text={p.price} /></p>
+                <p class="mono per"><T text={p.per} /></p>
+              </div>
+              <ul class="features">
+                {p.features.map((f) => <li><T text={f} /></li>)}
+              </ul>
+              <a
+                class:list={['btn', i === c.plans.featured ? 'btn-primary' : 'btn-outline']}
+                href={plansWa ?? '#sesion'}
+                target={plansWa ? '_blank' : undefined}
+                rel={plansWa ? 'noopener' : undefined}
+              >
+                {c.plans.action}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- 8. Testimonios -->
+    <section class="wrap block" aria-labelledby="t-alumnos">
+      <SectionHead
+        id="t-alumnos"
+        eyebrow={c.testimonials.eyebrow}
+        title={c.testimonials.title}
+        accent={c.testimonials.accent}
+      />
+      <Testimonials items={c.testimonials.items} />
+    </section>
+
+    <!-- 9. Equipo deportivo -->
+    <section id="equipo" class="wrap block" aria-labelledby="t-equipo">
+      <SectionHead
+        id="t-equipo"
+        eyebrow={c.products.eyebrow}
+        title={c.products.title}
+        accent={c.products.accent}
+      >
+        {c.products.text}
+      </SectionHead>
       <ul class="products">
         {
           c.products.items.map((name) => (
-            <li>
+            <li class="card">
               <PhotoPlaceholder ratio="1 / 1" note={`Foto de ${name.toLowerCase()}.`} />
-              <h3>{name}</h3>
-              <p><T text={c.products.price} /></p>
+              <h3 class="display">{name}</h3>
+              <p class="mono"><T text={c.products.price} /></p>
             </li>
           ))
         }
       </ul>
       {
         productsWa && (
-          <a class="cta-alt" href={productsWa} rel="noopener" target="_blank">
+          <a class="btn btn-outline products-cta" href={productsWa} rel="noopener" target="_blank">
             {c.products.action}
           </a>
         )
       }
     </section>
 
-    <section class="wrap block" aria-labelledby="galeria">
-      <h2 id="galeria" class="section-title">{c.gallery.title}</h2>
-      <ul class="gallery">
+    <!-- 10. Galería -->
+    <section id="galeria" class="wrap block" aria-labelledby="t-galeria">
+      <SectionHead
+        id="t-galeria"
+        eyebrow={c.gallery.eyebrow}
+        title={c.gallery.title}
+        accent={c.gallery.accent}
+      />
+      <div class="gallery">
         {
-          c.gallery.photos.map((note) => (
-            <li><PhotoPlaceholder ratio="1 / 1" note={note} /></li>
+          gallery.map((g, i) => (
+            <figure class={`g g-${g.area}`}>
+              <RefPhoto src={g.src} alt="" ratio={g.ratio} position={g.position} tag="top-right" />
+              <figcaption class="mono"><T text={c.gallery.captions[i]} /></figcaption>
+            </figure>
           ))
         }
-      </ul>
-    </section>
-
-    <section id="sesion" class="signup" aria-labelledby="registro">
-      <div class="wrap block signup-grid">
-        <div>
-          <h2 id="registro" class="section-title">{c.form.title}</h2>
-          <p class="copy">{c.form.text}</p>
-        </div>
-        <LeadForm
-          client:visible
-          variant="max"
-          privacyHref="/privacidad"
-          fallback={heroWa ? { href: heroWa, label: 'escribirnos por WhatsApp' } : null}
-        />
       </div>
     </section>
 
-    <Faq id="preguntas" title={c.faq.title} items={c.faq.items} />
+    <!-- 11. Solicitud de sesión -->
+    <section id="sesion" class="signup" aria-labelledby="registro">
+      <div class="wrap block signup-grid">
+        <div>
+          <p class="eyebrow">// Sesión de prueba</p>
+          <h2 id="registro" class="display">{c.form.title}</h2>
+          <p class="copy">{c.form.text}</p>
+        </div>
+        <div class="card form-card">
+          <LeadForm
+            client:visible
+            variant="max"
+            privacyHref="/privacidad"
+            fallback={heroWa ? { href: heroWa, label: 'escribirnos por WhatsApp' } : null}
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Preguntas frecuentes -->
+    <Faq id="preguntas" eyebrow={c.faq.eyebrow} title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
+
+    <!-- 13. Cierre -->
+    <FinalCta
+      title={c.final.title}
+      accent={c.final.accent}
+      text={c.final.text}
+      primary={{ href: '#sesion', label: c.final.primary }}
+      secondary={heroWa ? { href: heroWa, label: c.final.secondary } : null}
+    />
   </main>
 
   <Footer />
+  <StickyCta href="#sesion" label={c.cta.label} />
 </Base>
 
 <style>
   main {
-    background: var(--brand-bg);
-    color: var(--brand-fg);
+    background: var(--color-ink);
   }
-  .sub-title {
+  .body {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  .kicker {
     margin: 0 0 12px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
+    color: var(--color-signal);
+  }
+  .line {
+    display: block;
   }
 
-  /* Portada */
+  /* Portada tipográfica */
   .hero {
-    display: grid;
-    gap: 32px;
-    padding-block: 40px 48px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .hero-body {
+    padding-block: 56px 56px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 32px;
+    padding: 0;
+    list-style: none;
+  }
+  .chips li {
+    padding: 6px 10px;
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+    color: var(--color-subtle);
+    font-size: 11px;
+  }
+  .chips li.red {
+    border-color: var(--color-signal);
+    background: var(--color-signal);
+    color: var(--color-bone);
+    font-weight: 700;
   }
   h1 {
-    margin: 0 0 20px;
-    max-width: 13ch;
-    text-wrap: balance;
-    font-size: clamp(3.2rem, 15vw, 7.4rem);
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 0.92;
+    margin-bottom: 40px;
+    font-size: clamp(3.4rem, 18vw, 10rem);
+    line-height: 0.88;
+  }
+  .hero-foot {
+    display: grid;
+    gap: 28px;
   }
   .lead {
-    max-width: 46ch;
-    margin: 0 0 28px;
-    font-size: 20px;
-    line-height: 1.5;
+    max-width: 50ch;
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.6;
+    color: rgba(242, 240, 235, 0.85);
   }
   .actions {
     display: grid;
-    gap: 12px;
-    justify-items: start;
+    gap: 8px;
+    justify-items: stretch;
   }
-  .cta {
+  .method,
+  .wa {
     display: inline-flex;
     align-items: center;
-    min-height: 56px;
-    padding: 0 28px;
-    background: var(--brand-signal);
-    color: var(--brand-on-signal);
-    font-size: 18px;
-    font-weight: 700;
+    min-height: 48px;
+    color: var(--color-subtle);
     text-decoration: none;
   }
-  .cta:hover {
+  .wa {
+    font-size: 15px;
     text-decoration: underline;
     text-underline-offset: 4px;
   }
-  .cta-alt {
-    display: inline-flex;
-    align-items: center;
-    min-height: 56px;
-    color: inherit;
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 5px;
-  }
-  .hero-photo {
-    max-width: 420px;
+  .method:hover,
+  .wa:hover {
+    color: var(--color-bone);
   }
 
-  /* Ficha: los datos confirmados de cada sesión */
-  .sheet-band {
-    border-block: 4px solid var(--brand-fg);
+  /* Franja de datos */
+  .strip {
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-surface);
   }
-  .sheet {
+  .strip-grid {
     display: grid;
+    grid-template-columns: 1fr 1fr;
     margin-block: 0;
   }
-  .sheet-row {
-    display: grid;
-    gap: 2px;
-    padding-block: 16px;
-    border-top: 1px solid var(--brand-line);
+  .strip-grid > div {
+    padding: 20px 12px 20px 0;
+    border-bottom: 1px solid var(--color-line);
   }
-  .sheet-row:first-child {
-    border-top: 0;
+  .strip-grid > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
   }
-  .sheet dt {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--brand-muted);
+  .strip dt {
+    color: var(--color-muted);
   }
-  .sheet dd {
-    margin: 0;
-    font-size: 1.25rem;
+  .strip dd {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
 
-  /* Sobre Max */
+  /* Filosofía */
   .about {
     display: grid;
-    gap: 32px;
+    gap: 40px;
   }
   .about-photo {
-    max-width: 420px;
+    position: relative;
+    max-width: 480px;
+    border: 1px solid var(--color-line);
+    padding: 12px;
+    background: var(--color-card);
+  }
+  .about-card {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--color-signal);
+    background: rgba(10, 10, 10, 0.88);
+  }
+  .about-card p {
+    margin: 0;
+  }
+  .about-card .mono {
+    color: var(--color-signal);
+  }
+  .who {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .role {
+    font-size: 15px;
+    color: var(--color-muted);
+  }
+  .about h2 {
+    margin-bottom: 28px;
+    font-size: clamp(2.6rem, 10vw, 4.6rem);
+  }
+  .quote {
+    margin: 0 0 20px;
+    padding-left: 18px;
+    border-left: 2px solid var(--color-line);
+    font-size: 19px;
+    line-height: 1.6;
+  }
+  .about .body {
+    margin-bottom: 28px;
   }
 
-  /* Cómo funciona: sí es una secuencia, por eso va numerado */
-  .steps {
+  /* Método */
+  .steps,
+  .cards {
     display: grid;
+    gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
-    counter-reset: step;
   }
-  .steps li {
-    position: relative;
-    padding: 22px 0 22px 64px;
-    border-top: 1px solid var(--brand-line);
-    counter-increment: step;
+  .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 18px;
+    background: var(--color-signal);
+    font-weight: 700;
   }
-  .steps li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 14px;
-    font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 2rem;
     line-height: 1;
   }
-  .steps h3 {
-    margin: 0 0 6px;
-    font-size: 1.4rem;
-    font-weight: 800;
-  }
-  .steps p {
-    max-width: 44ch;
-    margin: 0;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
-  }
 
-  /* Objetivos: lista, no secuencia */
-  .goals {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .goals li {
+  /* Servicios en filas */
+  .services {
     display: grid;
-    gap: 6px;
-    padding-block: 20px;
-    border-top: 1px solid var(--brand-line);
+    gap: 16px;
   }
-  .goals li:last-child {
-    border-bottom: 1px solid var(--brand-line);
+  .service {
+    display: grid;
+    gap: 24px;
+    align-items: center;
   }
-  .goals h3 {
+  .service-main h3 {
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+  }
+  .specs {
+    display: grid;
+    gap: 8px;
     margin: 0;
-    font-size: 1.4rem;
-    font-weight: 800;
   }
-  .goals p {
-    max-width: 46ch;
+  .specs > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .specs dt {
+    min-width: 96px;
+    color: var(--color-muted);
+  }
+  .specs dd {
     margin: 0;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
+    font-size: 15px;
+    font-weight: 600;
   }
-
-  /* Dónde entrenas */
+  .places-title {
+    margin: 56px 0 20px;
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
   .places {
     display: grid;
-    gap: 40px;
+    gap: 16px;
+  }
+  .places h4 {
+    margin: 0 0 8px;
+    font-size: 1.8rem;
+  }
+
+  /* Perfiles */
+  .goal {
+    margin: 20px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
   }
 
   /* Planes */
-  .band {
-    border-top: 4px solid var(--brand-fg);
-  }
   .plans {
     display: grid;
-    gap: 40px;
+    gap: 16px;
   }
   .plan {
-    padding-top: 16px;
-    border-top: 4px solid var(--brand-fg);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   .plan h3 {
-    margin: 0 0 12px;
-    font-size: 1.6rem;
+    margin: 0;
+  }
+  .price p {
+    margin: 0;
+  }
+  .price .mono,
+  .per {
+    color: var(--color-muted);
+  }
+  .amount {
+    margin-block: 6px 4px !important;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    line-height: 1;
   }
-  .plan-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 52px;
-    margin-top: 16px;
-    padding: 0 22px;
-    background: var(--brand-signal);
-    color: var(--brand-on-signal);
-    font-size: 17px;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .plan-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
-  /* Productos */
-  .products {
+  .features {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 12px;
-    margin: 28px 0;
+    flex: 1;
+    gap: 10px;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
+  .features li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .features li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.45em;
+    width: 12px;
+    height: 7px;
+    border-left: 2px solid var(--color-signal);
+    border-bottom: 2px solid var(--color-signal);
+    transform: rotate(-45deg);
+  }
+  .plan .btn {
+    width: 100%;
+  }
+
+  /* Equipo */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+  .products .card {
+    padding: 12px;
+  }
   .products h3 {
-    margin: 12px 0 2px;
-    font-size: 1.2rem;
-    font-weight: 800;
+    margin: 12px 0 4px;
+    font-size: 1.5rem;
   }
   .products p {
     margin: 0;
-    font-size: 17px;
-    color: var(--brand-muted);
+    color: var(--color-muted);
   }
 
   /* Galería */
   .gallery {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+  }
+  .g {
+    position: relative;
     margin: 0;
-    padding: 0;
-    list-style: none;
+  }
+  .g figcaption {
+    position: absolute;
+    left: 0;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+    padding: 6px 12px;
+    border-left: 3px solid var(--color-signal);
+    background: rgba(10, 10, 10, 0.88);
+    font-size: 11px;
   }
 
-  /* Solicitud de sesión: tema oscuro propio */
+  /* Solicitud */
   .signup {
-    background: var(--color-steel);
-    color: var(--color-concrete);
-    --brand-fg: var(--color-concrete);
-    --brand-bg: var(--color-steel);
-    --brand-muted: #aab0b3;
-    --brand-line: #4a4f52;
-    --brand-control: #8c9295;
-    --brand-signal: var(--color-concrete);
-    --brand-on-signal: var(--color-steel);
-    --brand-error: #ff8a8d;
-    --field-bg: #1a1c1d;
+    border-block: 1px solid var(--color-line);
+    background: var(--color-surface);
+    --field-bg: #0c0c0c;
   }
   .signup-grid {
     display: grid;
-    gap: 32px;
+    gap: 40px;
+  }
+  .signup .display {
+    font-size: clamp(2.8rem, 10vw, 4.6rem);
+  }
+  .form-card {
+    padding: 24px;
   }
 
   @media (min-width: 900px) {
-    .hero {
-      grid-template-columns: 1.4fr 1fr;
-      gap: 72px;
-      align-items: end;
-      padding-block: 72px 64px;
+    .hero-body {
+      padding-block: 88px 72px;
     }
     h1 {
-      max-width: none;
-      font-size: clamp(4rem, 6.2vw, 5.8rem);
+      font-size: clamp(6rem, 12.5vw, 11rem);
+    }
+    .hero-foot {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 64px;
     }
     .actions {
       grid-auto-flow: column;
-      justify-content: start;
-      gap: 32px;
+      align-items: center;
+      justify-content: end;
+      gap: 24px;
     }
-    .sheet {
-      grid-template-columns: repeat(5, 1fr);
+    .strip-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
-    .sheet-row {
-      padding: 24px 20px 24px 20px;
-      border-top: 0;
-      border-left: 1px solid var(--brand-line);
+    .strip-grid > div {
+      padding: 28px 24px 28px 0;
+      border-bottom: 0;
     }
-    .sheet-row:first-child {
-      border-left: 0;
-      padding-left: 0;
+    .strip-grid > div:nth-child(n + 2) {
+      padding-left: 24px;
+      border-left: 1px solid var(--color-line);
     }
     .about {
-      grid-template-columns: 1fr 1.3fr;
+      grid-template-columns: 0.85fr 1fr;
       gap: 80px;
-      align-items: start;
+      align-items: center;
     }
-    .steps {
-      grid-template-columns: repeat(3, 1fr);
+    .steps,
+    .cards.three,
+    .plans {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .service {
+      grid-template-columns: 1.4fr 1fr auto;
       gap: 40px;
-    }
-    .steps li {
-      padding: 64px 0 0;
-    }
-    .steps li::before {
-      top: 12px;
-      font-size: 3.4rem;
-    }
-    .goals li {
-      grid-template-columns: 1fr 1.2fr;
-      gap: 40px;
-      align-items: baseline;
+      padding: 32px 36px;
     }
     .places {
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
-    }
-    .plans {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-    }
-    .products {
-      grid-template-columns: repeat(5, 1fr);
       gap: 24px;
     }
-    .gallery {
-      grid-template-columns: repeat(3, 1fr);
+    .products {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 16px;
+    }
+    .gallery {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-rows: 460px 320px;
+      gap: 16px;
+    }
+    .g-a { grid-column: span 4; }
+    .g-b { grid-column: span 2; }
+    .g-c,
+    .g-d { grid-column: span 3; }
+    .g,
+    .g :global(.ref) {
+      height: 100%;
+    }
+    .g :global(.ref) {
+      aspect-ratio: auto !important;
     }
     .signup-grid {
       grid-template-columns: 1fr 1fr;
       gap: 80px;
+    }
+    .form-card {
+      padding: 36px;
     }
   }
 </style>

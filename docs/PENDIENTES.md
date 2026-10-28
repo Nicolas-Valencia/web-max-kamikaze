@@ -14,6 +14,11 @@ Actualizar este archivo en cada entrega. Los datos concretos que faltan están m
 - Mensaje de prelanzamiento de Kamikaze (sin fecha de apertura).
 - Texto de la política de privacidad y del consentimiento (Ley 1581 de 2012).
 
+## Diseño: referencias de los mockups
+- Las fotos de `src/assets/reference/` (11) son recortes de los mockups, de baja resolución y de otro gimnasio. Reemplazarlas por fotos reales de Max y de Kamikaze.
+- El rojo (`#D7191F`) se tomó del mockup; el logo de Kamikaze es solo blanco y negro. Confirmado por el equipo como color de marca.
+- Los textos, cifras y nombres del mockup (Santiago de Chile, precios, entrenadores, cupos, testimonios) no se usaron.
+
 ## Recursos por recibir
 - Logo definitivo de Kamikaze y logo de Max. El logo actual de Kamikaze es provisional.
 - Fotografías y videos reales, con permiso de uso. Hoy hay un marcador "Foto pendiente" en `/max`.

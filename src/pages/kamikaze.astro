@@ -1,120 +1,244 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
+import StickyCta from '../components/StickyCta.astro';
+import SectionHead from '../components/SectionHead.astro';
 import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import DayTabs from '../components/DayTabs.astro';
+import Testimonials from '../components/Testimonials.astro';
 import T from '../components/T.astro';
+import RefPhoto from '../components/RefPhoto.astro';
 import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import LeadForm from '../components/forms/LeadForm';
-import logo from '../assets/brand/kamikaze-logo-provisional.png';
+import heroPhoto from '../assets/reference/kamikaze-hero.jpg';
+import discMuay from '../assets/reference/disc-muay-thai.jpg';
+import discBjj from '../assets/reference/disc-bjj.jpg';
+import discLucha from '../assets/reference/disc-lucha.jpg';
+import discMma from '../assets/reference/disc-mma.jpg';
+import galleryBoxeo from '../assets/reference/gallery-2.jpg';
+import venueA from '../assets/reference/gallery-3.jpg';
+import venueB from '../assets/reference/gallery-4.jpg';
 import { kamikaze as c } from '../content/kamikaze';
 import { site } from '../content/site';
+
+const discPhotos = {
+  'muay-thai': { src: discMuay, position: '50% 40%' },
+  boxeo: { src: galleryBoxeo, position: '50% 28%' },
+  bjj: { src: discBjj, position: '50% 50%' },
+  lucha: { src: discLucha, position: '50% 50%' },
+  mma: { src: discMma, position: '50% 40%' },
+} as const;
+
+const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
 ---
 
 <Base title={c.meta.title} description={c.meta.description} brand="kamikaze">
-  <Header other={{ href: '/max', label: 'Entrenar con Max' }} />
+  <SiteHeader brand="kamikaze" links={c.nav} cta={c.cta} />
 
   <main id="contenido">
-    <section class="hero wrap">
-      <Image
-        class="hero-logo"
-        src={logo}
-        alt="Logo de Kamikaze Colombia (provisional)"
-        width={240}
-        height={240}
-        loading="eager"
-      />
-      <h1>{c.hero.title}</h1>
-      <p class="lead">{c.hero.text}</p>
-      <a class="cta" href="#interesado">{c.hero.action}</a>
-    </section>
-
-    <section class="disciplines" aria-labelledby="disciplinas">
-      <div class="wrap block">
-        <h2 id="disciplinas" class="section-title">{c.disciplines.title}</h2>
-        <ul class="discipline-list">
-          {c.disciplines.items.map((d) => <li>{d}</li>)}
-        </ul>
+    <!-- 1. Portada -->
+    <section class="hero" aria-labelledby="titular">
+      <div class="hero-photo">
+        <RefPhoto
+          src={heroPhoto}
+          alt="Peleador lanzando un golpe en una jaula"
+          fill
+          color
+          eager
+          position="35% 25%"
+          tag="bottom-right"
+        />
+      </div>
+      <div class="wrap hero-body">
+        <div class="hero-top mono">
+          <span class="left"><i></i>{c.hero.topLeft}</span>
+          <span class="right">{c.hero.topRight}</span>
+        </div>
+        <p class="hero-tag mono">{c.hero.tag}</p>
+        <h1 id="titular" class="display">
+          {c.hero.lines.map((l) => <span class="line">{l}</span>)}
+          <span class="line">Academia <span class="accent">{c.hero.accent}</span></span>
+        </h1>
+        <p class="lead">{c.hero.text}</p>
+        <div class="actions">
+          <a class="btn btn-primary btn-arrow" href="#interesado">{c.hero.primary}</a>
+          <a class="btn btn-outline btn-down" href="#disciplinas">{c.hero.secondary}</a>
+        </div>
       </div>
     </section>
 
-    <section class="wrap block about" aria-labelledby="academia">
-      <div>
-        <h2 id="academia" class="section-title">{c.about.title}</h2>
-        <p class="copy"><T text={c.about.text} /></p>
-      </div>
-      <div>
-        <h3 class="sub-title">{c.audience.title}</h3>
-        <dl class="rows">
-          {
-            c.audience.items.map((i) => (
-              <div>
-                <dt>{i.label}</dt>
-                <dd><T text={i.value} /></dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
-    </section>
-
-    <section class="wrap block start" aria-labelledby="empezar">
-      <h2 id="empezar" class="section-title">{c.start.title}</h2>
-      <div class="start-list">
+    <!-- 2. Franja de datos confirmados -->
+    <section class="strip" aria-label="Datos de la academia">
+      <dl class="wrap strip-grid">
         {
-          c.start.items.map((i) => (
-            <div class="start-item">
-              <h3>{i.title}</h3>
-              <p><T text={i.text} /></p>
+          c.strip.map((i) => (
+            <div>
+              <dt class="mono">{i.label}</dt>
+              <dd>{i.value}</dd>
             </div>
           ))
         }
-      </div>
+      </dl>
     </section>
 
-    <section class="wrap block" aria-labelledby="entrenadores">
-      <h2 id="entrenadores" class="section-title">{c.coaches.title}</h2>
-      <div class="coaches">
+    <!-- 3. La academia -->
+    <section id="academia" class="wrap block" aria-labelledby="t-academia">
+      <SectionHead id="t-academia" eyebrow={c.about.eyebrow} title={c.about.title} accent={c.about.accent}>
+        <T text={c.about.text} />
+      </SectionHead>
+      <div class="cards three">
         {
-          c.coaches.items.map((coach) => (
-            <article class="coach">
-              <PhotoPlaceholder ratio="1 / 1" note={coach.photo} />
-              <h3><T text={coach.name} /></h3>
-              <p class="role"><T text={coach.role} /></p>
-              <p class="bio"><T text={coach.bio} /></p>
+          c.about.cards.map((card) => (
+            <article class="card">
+              <p class="mono kicker">{card.label}</p>
+              <h3 class="display"><T text={card.title} /></h3>
+              <p class="body"><T text={card.text} /></p>
             </article>
           ))
         }
       </div>
     </section>
 
-    <section class="wrap block" aria-labelledby="horarios">
-      <h2 id="horarios" class="section-title">{c.schedule.title}</h2>
-      <table class="schedule">
-        <caption class="sr-only">Horario de clases por día, hora, disciplina y nivel</caption>
-        <thead>
-          <tr>{c.schedule.head.map((h) => <th scope="col">{h}</th>)}</tr>
-        </thead>
-        <tbody>
-          {
-            c.schedule.rows.map((row) => (
-              <tr>
-                {row.map((cell, i) => (
-                  <td data-label={c.schedule.head[i]}>
-                    <T text={cell} />
-                  </td>
-                ))}
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+    <!-- 4. Disciplinas -->
+    <section id="disciplinas" class="wrap block" aria-labelledby="t-disciplinas">
+      <SectionHead
+        id="t-disciplinas"
+        eyebrow={c.disciplines.eyebrow}
+        title={c.disciplines.title}
+        accent={c.disciplines.accent}
+        sub={c.disciplines.sub}
+      />
+      <div class="disciplines">
+        {
+          c.disciplines.items.map((d, i) => (
+            <article class="disc">
+              <div class="disc-media">
+                <RefPhoto
+                  src={discPhotos[d.id].src}
+                  alt=""
+                  ratio="16 / 8"
+                  position={discPhotos[d.id].position}
+                  tag="bottom-right"
+                />
+                <span class="mono disc-index">{`[Disciplina 0${i + 1}]`}</span>
+              </div>
+              <div class="disc-body">
+                <h3 class="display">{d.name}</h3>
+                <p class="body"><T text={d.desc} /></p>
+                <div class="disc-foot">
+                  <span class="mono"><T text={d.meta} /></span>
+                  <a class="link" href="#horarios">{c.disciplines.action}</a>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
     </section>
 
-    <section class="wrap block venue" aria-labelledby="sede">
-      <div>
-        <h2 id="sede" class="section-title">{c.venue.title}</h2>
+    <!-- 5. Cómo empezar -->
+    <section class="wrap block" aria-labelledby="t-empezar">
+      <SectionHead id="t-empezar" eyebrow={c.start.eyebrow} title={c.start.title} accent={c.start.accent} />
+      <div class="cards three">
+        {
+          c.start.items.map((s) => (
+            <article class="card">
+              <p class="mono kicker">{s.label}</p>
+              <h3 class="display">{s.title}</h3>
+              <p class="body"><T text={s.text} /></p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- 6. Entrenadores -->
+    <section class="wrap block" aria-labelledby="t-entrenadores">
+      <SectionHead
+        id="t-entrenadores"
+        eyebrow={c.coaches.eyebrow}
+        title={c.coaches.title}
+        accent={c.coaches.accent}
+      />
+      <div class="coaches">
+        {
+          c.coaches.items.map((coach) => (
+            <article class="coach">
+              <PhotoPlaceholder ratio="4 / 5" note={coach.photo} />
+              <h3 class="display"><T text={coach.name} /></h3>
+              <p class="mono role"><T text={coach.role} /></p>
+              <p class="body"><T text={coach.bio} /></p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- 7. Horarios -->
+    <section id="horarios" class="wrap block" aria-labelledby="t-horarios">
+      <SectionHead
+        id="t-horarios"
+        eyebrow={c.schedule.eyebrow}
+        title={c.schedule.title}
+        accent={c.schedule.accent}
+        sub={c.schedule.sub}
+      >
+        <T text={c.schedule.note} />
+      </SectionHead>
+      <DayTabs days={c.schedule.days} blocks={c.schedule.blocks} />
+    </section>
+
+    <!-- 8. Planes -->
+    <section id="planes" class="wrap block" aria-labelledby="t-planes">
+      <SectionHead
+        id="t-planes"
+        eyebrow={c.plans.eyebrow}
+        title={c.plans.title}
+        accent={c.plans.accent}
+        sub={c.plans.sub}
+      >
+        <T text={c.plans.note} />
+      </SectionHead>
+      <div class="plans">
+        {
+          c.plans.items.map((p, i) => (
+            <article class:list={['card', 'plan', { 'card-featured': i === c.plans.featured }]}>
+              <p class="mono kicker"><T text={p.tag} /></p>
+              <h3 class="display"><T text={p.name} /></h3>
+              <div class="price">
+                <p class="mono">{p.priceLabel}</p>
+                <p class="amount"><T text={p.price} /></p>
+                <p class="mono per"><T text={p.per} /></p>
+              </div>
+              <ul class="features">
+                {p.features.map((f) => <li><T text={f} /></li>)}
+              </ul>
+              <a
+                class:list={['btn', i === c.plans.featured ? 'btn-primary' : 'btn-outline']}
+                href="#interesado"
+              >
+                {c.plans.action}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- 9. Sede -->
+    <section id="sede" class="wrap block" aria-labelledby="t-sede">
+      <SectionHead
+        id="t-sede"
+        eyebrow={c.venue.eyebrow}
+        title={c.venue.title}
+        accent={c.venue.accent}
+        sub={c.venue.sub}
+      >
+        <T text={c.venue.note} />
+      </SectionHead>
+      <div class="venue">
         <dl class="rows">
           {
             c.venue.items.map((i) => (
@@ -125,22 +249,33 @@ import { site } from '../content/site';
             ))
           }
         </dl>
-      </div>
-      <div class="venue-photos">
-        {
-          c.venue.photos.map((note, i) => (
-            <div class:list={['venue-photo', { wide: i === 0 }]}>
-              <PhotoPlaceholder ratio={i === 0 ? '16 / 9' : '4 / 3'} note={note} />
-            </div>
-          ))
-        }
+        <div class="venue-photos">
+          <div class="wide">
+            <RefPhoto src={venueA} alt="" ratio="16 / 8" position="50% 40%" tag="bottom-right" />
+          </div>
+          <RefPhoto src={venueB} alt="" ratio="4 / 3" position="50% 40%" tag="bottom-right" />
+          <PhotoPlaceholder ratio="4 / 3" note="Zona de entrenamiento." />
+        </div>
       </div>
     </section>
 
+    <!-- 10. Testimonios -->
+    <section class="wrap block" aria-labelledby="t-alumnos">
+      <SectionHead
+        id="t-alumnos"
+        eyebrow={c.testimonials.eyebrow}
+        title={c.testimonials.title}
+        accent={c.testimonials.accent}
+      />
+      <Testimonials items={c.testimonials.items} />
+    </section>
+
+    <!-- 11. Próxima apertura y registro -->
     <section id="interesado" class="signup" aria-labelledby="registro">
       <div class="wrap block signup-grid">
         <div>
-          <h2 class="section-title">{c.opening.title}</h2>
+          <p class="eyebrow">02.10 // Registro</p>
+          <h2 class="display">{c.opening.title}</h2>
           <p class="copy">{c.opening.text}</p>
           <dl class="rows opening">
             <div>
@@ -148,140 +283,229 @@ import { site } from '../content/site';
               <dd><T text={c.opening.date.value} /></dd>
             </div>
           </dl>
-          <h3 id="registro" class="sub-title form-title">{c.form.title}</h3>
+          <h3 id="registro" class="form-title display">{c.form.title}</h3>
           <p class="copy">{c.form.text}</p>
         </div>
-        <LeadForm
-          client:visible
-          variant="kamikaze"
-          privacyHref="/privacidad"
-          fallback={{ href: site.socials.kamikaze.url, label: 'escribirnos por Instagram' }}
-        />
+        <div class="card form-card">
+          <LeadForm
+            client:visible
+            variant="kamikaze"
+            privacyHref="/privacidad"
+            fallback={{ href: site.socials.kamikaze.url, label: 'escribirnos por Instagram' }}
+          />
+        </div>
       </div>
     </section>
 
-    <Faq id="preguntas" title={c.faq.title} items={c.faq.items} />
+    <!-- 12. Preguntas frecuentes -->
+    <Faq id="preguntas" eyebrow={c.faq.eyebrow} title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
+
+    <!-- 13. Cierre -->
+    <FinalCta
+      title={c.final.title}
+      accent={c.final.accent}
+      text={c.final.text}
+      primary={{ href: '#interesado', label: c.final.primary }}
+      secondary={instagram}
+    />
   </main>
 
   <Footer />
+  <StickyCta href="#interesado" label={c.cta.label} />
 </Base>
 
 <style>
   main {
-    background: var(--brand-bg);
-    color: var(--brand-fg);
-    --ph-bg: var(--color-coal);
+    background: var(--color-ink);
+    --ph-bg: var(--color-card);
   }
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  .body {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-muted);
   }
-  .sub-title {
+  .kicker {
     margin: 0 0 12px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    font-stretch: 75%;
+    color: var(--color-signal);
   }
-  .form-title {
-    margin-top: 40px;
-  }
-
-  /* Portada */
-  .hero {
-    display: grid;
-    gap: 24px;
-    justify-items: start;
-    padding-block: 40px 56px;
-  }
-  .hero-logo {
-    width: 160px;
-    height: auto;
-  }
-  h1 {
-    margin: 0;
-    max-width: 11ch;
-    text-wrap: balance;
-    font-size: clamp(3rem, 15vw, 7.5rem);
-    font-weight: 900;
-    font-stretch: 62%;
-    line-height: 0.9;
-    text-transform: uppercase;
-  }
-  .lead {
-    max-width: 46ch;
-    margin: 0;
-    font-size: 20px;
-    line-height: 1.5;
-  }
-  .cta {
-    display: inline-flex;
-    align-items: center;
-    min-height: 56px;
-    padding: 0 28px;
-    background: var(--brand-signal);
-    color: var(--brand-on-signal);
-    font-size: 18px;
+  .link {
+    color: var(--color-signal);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     text-decoration: none;
   }
-  .cta:hover {
+  .link::after {
+    content: ' →';
+    font-family: var(--font-sans);
+  }
+  .link:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 
-  /* Disciplinas: el gesto tipográfico de la página */
-  .disciplines {
-    background: var(--color-paper);
-    color: var(--color-ink);
+  /* Portada */
+  .hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: min(86svh, 800px);
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-line);
   }
-  .discipline-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .hero-photo {
+    position: absolute;
+    inset: 0 0 38% 0;
+    mask-image: linear-gradient(to bottom, #000 55%, transparent);
   }
-  .discipline-list li {
-    padding-block: 6px 2px;
-    border-top: 3px solid var(--color-ink);
-    font-size: clamp(3.4rem, 19vw, 10rem);
-    font-weight: 900;
-    font-stretch: 62%;
-    line-height: 0.95;
+  .hero-photo :global(img) {
+    filter: brightness(3.2) contrast(1.1) saturate(1.1) blur(0.7px) !important;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--color-ink) 6%, rgba(10, 10, 10, 0.7) 42%, rgba(10, 10, 10, 0.2));
+    pointer-events: none;
+  }
+  .hero-body {
+    position: relative;
+    z-index: 2;
+    padding-block: 96px 48px;
+  }
+  .hero-top {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(242, 240, 235, 0.15);
+    color: var(--color-muted);
+  }
+  .hero-top .left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-bone);
+  }
+  .hero-top i {
+    width: 8px;
+    height: 8px;
+    background: var(--color-signal);
+  }
+  .hero-tag {
+    display: inline-block;
+    margin: 0 0 20px;
+    padding: 5px 10px;
+    background: var(--color-signal);
+    font-size: 11px;
+  }
+  h1 {
+    display: grid;
+    margin-bottom: 24px;
+    font-size: clamp(3.2rem, 17vw, 8.4rem);
+    line-height: 0.88;
+  }
+  .lead {
+    max-width: 52ch;
+    margin: 0 0 32px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(242, 240, 235, 0.85);
+  }
+  .actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  /* Franja de datos */
+  .strip {
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-surface);
+  }
+  .strip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-block: 0;
+  }
+  .strip-grid > div {
+    padding: 20px 12px 20px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .strip-grid > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+  dt {
+    color: var(--color-muted);
+  }
+  dd {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.1;
     text-transform: uppercase;
   }
-  .discipline-list li:last-child {
-    border-bottom: 3px solid var(--color-ink);
+
+  /* Tarjetas */
+  .cards {
+    display: grid;
+    gap: 16px;
+  }
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    line-height: 1;
   }
 
-  /* Presentación y público */
-  .about {
+  /* Disciplinas */
+  .disciplines {
     display: grid;
-    gap: 40px;
+    gap: 16px;
   }
-
-  /* Cómo empezar */
-  .start-list {
-    display: grid;
+  .disc {
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
   }
-  .start-item {
-    padding-block: 22px;
-    border-top: 1px solid var(--brand-line);
+  .disc-media {
+    position: relative;
   }
-  .start-item h3 {
-    margin: 0 0 6px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    font-stretch: 75%;
+  .disc-index {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 6px 10px;
+    background: rgba(10, 10, 10, 0.85);
+    color: var(--color-signal);
+    font-size: 11px;
   }
-  .start-item p {
-    max-width: 46ch;
-    margin: 0;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
+  .disc-body {
+    padding: 24px;
+  }
+  .disc-body h3 {
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+  }
+  .disc-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+  }
+  .disc-foot .mono {
+    color: var(--color-muted);
   }
 
   /* Entrenadores */
@@ -290,143 +514,180 @@ import { site } from '../content/site';
     gap: 40px;
   }
   .coach h3 {
-    margin: 20px 0 2px;
-    font-size: 1.6rem;
-    font-weight: 800;
-    font-stretch: 75%;
+    margin: 20px 0 4px;
+    font-size: 2rem;
   }
-  .coach p {
-    margin: 0;
-    font-size: 18px;
-    line-height: 1.5;
-  }
-  .coach .role {
-    color: var(--brand-muted);
-    margin-bottom: 8px;
+  .role {
+    margin: 0 0 10px;
+    color: var(--color-signal);
   }
 
-  /* Horarios: tabla en escritorio, filas apiladas en móvil */
-  .schedule {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .schedule thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-  .schedule tr {
+  /* Planes */
+  .plans {
     display: grid;
-    gap: 6px;
-    padding-block: 16px;
-    border-top: 1px solid var(--brand-line);
+    gap: 16px;
   }
-  .schedule tbody tr:last-child {
-    border-bottom: 1px solid var(--brand-line);
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
-  .schedule td {
+  .plan h3 {
+    margin: 0;
+  }
+  .price p {
+    margin: 0;
+  }
+  .price .mono {
+    color: var(--color-muted);
+  }
+  .amount {
+    margin-block: 6px 4px;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .per {
+    color: var(--color-muted);
+  }
+  .features {
     display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 12px;
-    align-items: baseline;
-    font-size: 18px;
-    font-weight: 700;
+    flex: 1;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  .schedule td::before {
-    content: attr(data-label);
+  .features li {
+    position: relative;
+    padding-left: 26px;
     font-size: 16px;
-    font-weight: 500;
-    color: var(--brand-muted);
+    line-height: 1.5;
+  }
+  .features li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.45em;
+    width: 12px;
+    height: 7px;
+    border-left: 2px solid var(--color-signal);
+    border-bottom: 2px solid var(--color-signal);
+    transform: rotate(-45deg);
+  }
+  .plan .btn {
+    width: 100%;
   }
 
   /* Sede */
   .venue {
     display: grid;
-    gap: 40px;
+    gap: 32px;
   }
   .venue-photos {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-  .venue-photo.wide {
+  .venue-photos .wide {
     grid-column: 1 / -1;
   }
 
-  /* Próxima apertura y registro */
+  /* Registro */
   .signup {
-    background: var(--color-coal);
+    border-block: 1px solid var(--color-line);
+    background: var(--color-surface);
   }
   .signup-grid {
     display: grid;
-    gap: 32px;
+    gap: 40px;
+  }
+  .signup .display {
+    font-size: clamp(2.8rem, 10vw, 4.6rem);
+  }
+  .form-title {
+    margin-top: 40px;
+    font-size: clamp(2rem, 7vw, 2.8rem) !important;
   }
   .opening {
     max-width: 52ch;
+    margin-bottom: 8px;
+  }
+  .form-card {
+    padding: 24px;
   }
 
   @media (min-width: 900px) {
-    .hero {
-      grid-template-columns: 1fr auto;
-      grid-template-areas:
-        'title logo'
-        'lead  logo'
-        'cta   logo';
-      column-gap: 64px;
+    .hero-photo {
+      inset: 0 0 0 auto;
+      width: min(54%, 760px);
+      mask-image: linear-gradient(to right, transparent 0%, #000 42%);
+    }
+    .hero::after {
+      background:
+        linear-gradient(to right, var(--color-ink) 36%, rgba(10, 10, 10, 0.55) 56%, rgba(10, 10, 10, 0.1) 100%),
+        linear-gradient(to top, var(--color-ink) 2%, transparent 40%);
+    }
+    .hero-body {
+      padding-block: 150px 72px;
+    }
+    .hero-top {
+      left: 40px;
+      right: 40px;
+    }
+    h1 {
+      font-size: clamp(5rem, 11vw, 9rem);
+    }
+    .actions {
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: 16px;
+    }
+    .strip-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .strip-grid > div {
+      padding: 28px 24px 28px 0;
+      border-bottom: 0;
+    }
+    .strip-grid > div:nth-child(n + 2) {
+      padding-left: 24px;
+      border-left: 1px solid var(--color-line);
+    }
+    .cards.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .disciplines {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .disc:last-child {
+      grid-column: 1 / -1;
+    }
+    .disc:last-child .disc-media :global(.ref) {
+      aspect-ratio: 16 / 5 !important;
+    }
+    .coaches {
+      grid-template-columns: repeat(2, minmax(0, 340px));
+      gap: 64px;
+    }
+    .plans {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .venue {
+      grid-template-columns: 1fr 1.5fr;
+      gap: 64px;
       align-items: start;
-      padding-block: 72px 88px;
     }
-    h1 { grid-area: title; }
-    .lead { grid-area: lead; }
-    .cta { grid-area: cta; }
-    .hero-logo {
-      grid-area: logo;
-      width: 340px;
-    }
-    .about,
-    .venue,
     .signup-grid {
       grid-template-columns: 1fr 1fr;
       gap: 80px;
     }
-    .start-list {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-    }
-    .coaches {
-      grid-template-columns: repeat(2, minmax(0, 360px));
-      gap: 64px;
-    }
-    .schedule thead {
-      position: static;
-      width: auto;
-      height: auto;
-      overflow: visible;
-      clip-path: none;
-    }
-    .schedule th {
-      padding: 0 16px 12px 0;
-      text-align: left;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--brand-muted);
-    }
-    .schedule tr {
-      display: table-row;
-      padding: 0;
-    }
-    .schedule td {
-      display: table-cell;
-      padding: 18px 16px 18px 0;
-      border-top: 1px solid var(--brand-line);
-    }
-    .schedule td::before {
-      content: none;
-    }
-    .schedule tbody tr:last-child td {
-      border-bottom: 1px solid var(--brand-line);
+    .form-card {
+      padding: 36px;
     }
   }
 </style>

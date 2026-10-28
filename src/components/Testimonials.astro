@@ -1,0 +1,73 @@
+---
+import T from './T.astro';
+
+/** Testimonios: solo estructura. No se inventan; cada campo queda como "Falta revisar". */
+interface Props {
+  items: readonly { quote: string; name: string; meta: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="grid">
+  {
+    items.map((t) => (
+      <figure class="card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote><T text={t.quote} /></blockquote>
+        <figcaption>
+          <strong><T text={t.name} /></strong>
+          <span class="mono"><T text={t.meta} /></span>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+  figure {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    min-width: 0;
+  }
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    font-weight: 800;
+    line-height: 0.6;
+    color: var(--color-signal);
+  }
+  blockquote {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  figcaption {
+    display: grid;
+    gap: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+  }
+  figcaption strong {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  figcaption span {
+    color: var(--color-muted);
+  }
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+</style>

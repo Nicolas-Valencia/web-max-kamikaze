@@ -1,9 +1,45 @@
 import { tbd, type Status } from './site';
 
+/** Un bloque horario con la estructura final; todos los datos faltan hasta que Max los confirme. */
+const scheduleBlock = (name: string) => ({
+  name,
+  range: tbd('horario del bloque'),
+  items: [
+    {
+      time: tbd('hora'),
+      title: tbd('nombre de la clase'),
+      text: tbd('descripción de la clase'),
+      coach: tbd('entrenador'),
+    },
+    {
+      time: tbd('hora'),
+      title: tbd('nombre de la clase'),
+      text: tbd('descripción de la clase'),
+      coach: tbd('entrenador'),
+    },
+  ],
+  note: tbd('aforo y requisitos del bloque'),
+});
+
+const plan = () => ({
+  tag: tbd('tipo de plan'),
+  name: tbd('nombre del plan'),
+  priceLabel: 'Precio',
+  price: tbd('precio'),
+  per: tbd('periodo de cobro'),
+  features: [tbd('qué incluye'), tbd('qué incluye'), tbd('qué incluye')],
+});
+
+const testimonial = () => ({
+  quote: tbd('testimonio autorizado de un alumno'),
+  name: tbd('nombre del alumno'),
+  meta: tbd('disciplina y tiempo entrenando'),
+});
+
 /**
- * Contenido de /kamikaze con la estructura final de la página.
+ * Contenido de /kamikaze con la estructura final de la página (tomada del mockup).
  * - Los textos confirmados vienen del brief de Max.
- * - Todo lo que falta está escrito con `tbd(...)` y se ve resaltado como "Falta revisar".
+ * - Lo que falta está escrito con `tbd(...)` y se ve resaltado como "Falta revisar".
  * - `status: 'provisional'` marca redacción de trabajo que Max debe aprobar.
  */
 export const kamikaze = {
@@ -14,53 +50,102 @@ export const kamikaze = {
     status: 'provisional' as Status,
   },
 
+  nav: [
+    { href: '#academia', label: 'Academia' },
+    { href: '#disciplinas', label: 'Disciplinas' },
+    { href: '#horarios', label: 'Horarios' },
+    { href: '#planes', label: 'Planes' },
+    { href: '#sede', label: 'Sede' },
+    { href: '#preguntas', label: 'Preguntas' },
+  ],
+  cta: { href: '#interesado', label: 'Quiero que me avisen' },
+
   hero: {
-    title: 'Kamikaze se está preparando en Armenia.',
+    topLeft: '02 // Kamikaze',
+    topRight: 'Armenia, Quindío // Próxima apertura',
+    tag: 'Deportes de combate // Armenia, Quindío',
+    lines: ['Kamikaze'],
+    accent: 'de combate',
     text: 'Muay Thai, boxeo, BJJ, lucha y MMA, para quien empieza y para quien ya entrena. Déjanos tu contacto y te escribimos primero.',
-    action: 'Quiero que me avisen',
+    primary: 'Quiero que me avisen',
+    secondary: 'Explorar disciplinas',
     status: 'provisional' as Status,
   },
 
-  disciplines: {
-    title: 'Cinco disciplinas',
-    items: ['Muay Thai', 'Boxeo', 'BJJ', 'Lucha', 'MMA'],
-    status: 'confirmed' as Status,
-  },
+  /** Franja de datos confirmados bajo la portada. */
+  strip: [
+    { label: 'Ciudad', value: 'Armenia, Quindío' },
+    { label: 'Disciplinas', value: 'Cinco' },
+    { label: 'Nivel de admisión', value: 'Abierto, sin experiencia' },
+    { label: 'Uniforme', value: 'No obligatorio' },
+  ],
 
   about: {
-    title: 'La academia',
+    eyebrow: '02.1 // La academia',
+    title: 'Entrena',
+    accent: 'con Kamikaze',
     text: tbd('presentación de Kamikaze: filosofía, propuesta de valor y qué la diferencia'),
+    cards: [
+      {
+        label: 'Principiantes',
+        title: 'Empieza desde cero',
+        text: 'No necesitas experiencia previa para comenzar.',
+      },
+      {
+        label: 'Con experiencia',
+        title: tbd('niveles'),
+        text: tbd('grupos y niveles disponibles'),
+      },
+      {
+        label: 'Edades',
+        title: tbd('edades'),
+        text: tbd('edad mínima y si se aceptan menores'),
+      },
+    ],
   },
 
-  audience: {
-    title: 'Para quién es',
+  disciplines: {
+    eyebrow: '02.2 // Entrenamiento',
+    title: 'Entra',
+    accent: 'al combate',
+    sub: 'Cinco disciplinas',
+    action: 'Consultar horario',
     items: [
-      { label: 'Si estás empezando', value: 'No necesitas experiencia previa.' },
-      { label: 'Si ya entrenas', value: tbd('niveles y grupos') },
-      { label: 'Edades', value: tbd('edades mínimas y si se aceptan menores') },
+      { id: 'muay-thai', name: 'Muay Thai', desc: tbd('descripción de la disciplina'), meta: tbd('duración y niveles') },
+      { id: 'boxeo', name: 'Boxeo', desc: tbd('descripción de la disciplina'), meta: tbd('duración y niveles') },
+      { id: 'bjj', name: 'BJJ', desc: tbd('descripción de la disciplina'), meta: tbd('duración y niveles') },
+      { id: 'lucha', name: 'Lucha', desc: tbd('descripción de la disciplina'), meta: tbd('duración y niveles') },
+      { id: 'mma', name: 'MMA', desc: tbd('descripción de la disciplina'), meta: tbd('duración y niveles') },
     ],
   },
 
   start: {
-    title: 'Cómo empezar',
+    eyebrow: '02.3 // Cómo empezar',
+    title: 'Cómo',
+    accent: 'empezar',
     items: [
       {
-        title: 'No necesitas experiencia',
+        label: 'Sin experiencia',
+        title: 'No la necesitas',
         text: 'La academia recibe personas de distintos niveles y objetivos.',
       },
       {
-        title: 'No necesitas uniforme',
+        label: 'Sin uniforme',
+        title: 'Ven como estás',
         text: 'Al comienzo puedes venir con tu ropa deportiva.',
       },
       {
-        title: 'Haz una clase de prueba',
+        label: 'Clase de prueba',
+        title: 'Haz una clase',
         text: tbd('cómo funcionan las clases de prueba y la inscripción'),
       },
     ],
   },
 
   coaches: {
-    title: 'Entrenadores',
+    eyebrow: '02.4 // Entrenadores',
+    title: 'Quién',
+    accent: 'te entrena',
     items: [
       {
         name: tbd('nombre del entrenador'),
@@ -78,28 +163,45 @@ export const kamikaze = {
   },
 
   schedule: {
-    title: 'Horarios',
-    head: ['Día', 'Hora', 'Disciplina', 'Nivel'],
-    rows: [
-      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
-      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
-      [tbd('día'), tbd('hora'), tbd('disciplina'), tbd('nivel')],
-    ],
+    eyebrow: '02.5 // Horarios',
+    title: 'Encuentra',
+    accent: 'tu momento',
+    sub: 'Programación de clases',
+    note: tbd('norma de puntualidad y llegada'),
+    days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    blocks: [scheduleBlock('Bloque mañana'), scheduleBlock('Bloque tarde'), scheduleBlock('Bloque noche')],
+  },
+
+  plans: {
+    eyebrow: '02.6 // Planes',
+    title: 'Elige',
+    accent: 'tu plan',
+    sub: tbd('mensaje breve sobre las condiciones'),
+    note: tbd('condiciones de pago, congelamiento y cancelación'),
+    action: 'Registrarme como interesado',
+    items: [plan(), plan(), plan()],
+    featured: 1,
   },
 
   venue: {
-    title: 'La sede',
+    eyebrow: '02.7 // Sede',
+    title: 'La',
+    accent: 'sede',
+    sub: 'Armenia, Quindío',
+    note: tbd('descripción de las instalaciones'),
     items: [
       { label: 'Ciudad', value: 'Armenia, Quindío' },
       { label: 'Dirección', value: tbd('dirección de la sede') },
       { label: 'Cómo llegar', value: tbd('indicaciones y referencias') },
       { label: 'Capacidad', value: tbd('cupos máximos por clase') },
     ],
-    photos: [
-      'Entrada de la sede.',
-      'Zona de entrenamiento.',
-      'Ring o tatami.',
-    ],
+  },
+
+  testimonials: {
+    eyebrow: '02.8 // Alumnos',
+    title: 'Lo que dicen',
+    accent: 'los alumnos',
+    items: [testimonial(), testimonial(), testimonial()],
   },
 
   opening: {
@@ -116,7 +218,9 @@ export const kamikaze = {
   },
 
   faq: {
-    title: 'Preguntas frecuentes',
+    eyebrow: '02.9 // Preguntas frecuentes',
+    title: 'Preguntas',
+    accent: 'frecuentes',
     items: [
       { q: '¿Necesito experiencia previa?', a: 'No. Puedes empezar desde cero.' },
       {
@@ -132,5 +236,14 @@ export const kamikaze = {
       { q: '¿Qué horarios habrá?', a: tbd('días y horas de las clases') },
       { q: '¿Habrá clase de prueba?', a: tbd('cómo funciona la clase de prueba') },
     ],
+  },
+
+  final: {
+    title: 'Da el primer paso.',
+    accent: 'Kamikaze te espera.',
+    text: 'No necesitas estar en forma para empezar: necesitas empezar. Regístrate y te escribimos primero.',
+    primary: 'Quiero que me avisen',
+    secondary: 'Escribir por Instagram',
+    status: 'provisional' as Status,
   },
 } as const;

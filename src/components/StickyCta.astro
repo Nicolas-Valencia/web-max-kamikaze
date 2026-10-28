@@ -1,0 +1,43 @@
+---
+/** Botón rojo fijo en la parte inferior del móvil, con la acción principal de la página. */
+interface Props {
+  href: string;
+  label: string;
+}
+const { href, label } = Astro.props;
+---
+
+<div class="sticky-cta">
+  <a class="btn btn-primary btn-arrow" href={href}>{label}</a>
+</div>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 25;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(10, 10, 10, 0.96);
+    border-top: 1px solid var(--color-line);
+  }
+  .sticky-cta .btn {
+    display: flex;
+    width: 100%;
+  }
+  @media (min-width: 900px) {
+    .sticky-cta {
+      display: none;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Deja espacio al final de la página para que el botón fijo no tape el pie. */
+  @media (max-width: 899px) {
+    body:has(.sticky-cta) {
+      padding-bottom: 84px;
+    }
+  }
+</style>

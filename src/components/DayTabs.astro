@@ -1,0 +1,215 @@
+---
+import T from './T.astro';
+
+/** Horarios por día en pestañas. Todos los días usan los mismos bloques mientras no haya datos reales. */
+interface ClassItem {
+  time: string;
+  title: string;
+  text: string;
+  coach: string;
+}
+interface Block {
+  name: string;
+  range: string;
+  items: readonly ClassItem[];
+  note: string;
+}
+interface Props {
+  days: readonly string[];
+  blocks: readonly Block[];
+}
+const { days, blocks } = Astro.props;
+---
+
+<div class="tabs" data-tabs>
+  <div class="tablist" role="tablist" aria-label="Día de la semana">
+    {
+      days.map((d, i) => (
+        <button
+          class="tab mono"
+          role="tab"
+          type="button"
+          id={`tab-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`panel-${i}`}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {d}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    days.map((d, i) => (
+      <div
+        class="panel"
+        role="tabpanel"
+        id={`panel-${i}`}
+        aria-labelledby={`tab-${i}`}
+        hidden={i !== 0}
+      >
+        {blocks.map((b) => (
+          <section class="block-card" aria-label={`${b.name}, ${d}`}>
+            <header>
+              <h3><T text={b.name} /></h3>
+              <p class="mono range"><T text={b.range} /></p>
+            </header>
+            <ul>
+              {b.items.map((c) => (
+                <li>
+                  <p class="mono time"><T text={c.time} /></p>
+                  <p class="title"><T text={c.title} /></p>
+                  <p class="text"><T text={c.text} /></p>
+                  <p class="mono coach"><T text={c.coach} /></p>
+                </li>
+              ))}
+            </ul>
+            <p class="mono note"><T text={b.note} /></p>
+          </section>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+
+    function select(index: number, focus = false) {
+      tabs.forEach((t, i) => {
+        const on = i === index;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        panels[i].hidden = !on;
+        if (on && focus) t.focus();
+      });
+    }
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        if (e.key === 'ArrowRight') select(i === last ? 0 : i + 1, true);
+        else if (e.key === 'ArrowLeft') select(i === 0 ? last : i - 1, true);
+        else if (e.key === 'Home') select(0, true);
+        else if (e.key === 'End') select(last, true);
+        else return;
+        e.preventDefault();
+      });
+    });
+  });
+</script>
+
+<style>
+  .tablist {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .tab {
+    flex: none;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-bone);
+    cursor: pointer;
+  }
+  .tab:hover {
+    border-color: var(--color-bone);
+  }
+  .tab[aria-selected='true'] {
+    border-color: var(--color-signal);
+    background: var(--color-signal);
+  }
+
+  .panel {
+    display: grid;
+    gap: 16px;
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  .block-card {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-signal);
+  }
+  .range {
+    margin: 0;
+    color: var(--color-muted);
+  }
+  ul {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding: 14px 16px;
+    border-left: 2px solid var(--color-signal);
+    background: #0f0f0f;
+  }
+  li p {
+    margin: 0;
+  }
+  .time {
+    color: var(--color-signal);
+  }
+  .title {
+    margin-block: 4px;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .coach {
+    margin-top: 6px;
+    color: var(--color-subtle);
+  }
+  .note {
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 900px) {
+    .panel {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+</style>

@@ -18,7 +18,7 @@ La primera versión se centra en **captación y presencia digital**. Las reserva
 - [Astro](https://astro.build) 7, con islas de React para las partes interactivas
 - Tailwind CSS 4, con un tema visual por marca (`data-brand`)
 - TypeScript
-- Archivo (variable, autoalojada) como única familia tipográfica
+- Barlow Condensed (titulares), Inter (texto) y Space Mono (etiquetas), autoalojadas
 - Despliegue en Vercel
 - Registro de formularios en Google Sheets (temporal; se migrará a una base de datos al llegar reservas y pagos)
 
@@ -49,7 +49,7 @@ Abre <http://localhost:4321> en el navegador.
 | `npm run build` | Genera la versión de producción |
 | `npm run preview` | Sirve localmente la versión de producción |
 | `npm test` | Pruebas de la validación de los formularios |
-| `npm run check:content` | Cuenta los datos que faltan y los textos sin aprobar; falla mientras quede alguno |
+| `npm run check:content` | Cuenta datos que faltan, textos sin aprobar y fotos de referencia; falla mientras quede alguno |
 
 ## Variables de entorno
 
@@ -73,7 +73,8 @@ Sin las tres variables de Google, el formulario de Kamikaze responde con un erro
 
 ```
 src/
-  assets/brand/   Logos (el de Kamikaze es provisional)
+  assets/brand/       Logo de Kamikaze (provisional) y su monograma
+  assets/reference/   Fotos de referencia tomadas de los mockups (reemplazar antes de publicar)
   components/     Componentes reutilizables (forms/ contiene el formulario, una isla React)
   lib/            Validación compartida (navegador y servidor) y cliente de Google Sheets
   content/        Textos y datos del sitio, separados de la interfaz
@@ -88,7 +89,8 @@ El contenido vive en `src/content/`. Las páginas tienen ya su estructura y dise
 
 - **Dato que falta:** se escribe con `tbd('qué falta')` y la página lo muestra resaltado en amarillo como "Falta revisar: ...". Nunca se pone un precio, horario, dirección o fecha de ejemplo: solo ese marcador.
 - **Texto de trabajo:** los bloques con `status: 'provisional'` están redactados pero Max aún no los aprueba.
-- **Fotos:** los marcadores punteados llevan el mismo rótulo "Falta revisar" y la descripción de la foto que va en ese lugar.
+- **Fotos de referencia:** las fotos en blanco y negro vienen recortadas de los mockups y llevan la etiqueta "Foto de referencia". **No son de Max ni de Kamikaze** (en algunas aparecen marcas de otros gimnasios). Viven en `src/assets/reference/`; para reemplazarlas, sustituye el archivo por la foto real y elimina la etiqueta.
+- **Fotos que faltan:** los marcadores punteados llevan el rótulo "Falta revisar" y la descripción de la foto que va en ese lugar.
 
 Para completar un dato, reemplaza la llamada `tbd(...)` por el valor real. Antes de publicar, `npm run check:content` debe terminar sin errores.
 

@@ -1,17 +1,20 @@
 ---
 import T from './T.astro';
+import SectionHead from './SectionHead.astro';
 
 interface Props {
-  title: string;
-  items: readonly { q: string; a: string }[];
   id: string;
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  items: readonly { q: string; a: string }[];
 }
-const { title, items, id } = Astro.props;
+const { id, eyebrow, title, accent, items } = Astro.props;
 ---
 
 <section class="wrap block" aria-labelledby={id}>
-  <h2 id={id} class="section-title">{title}</h2>
-  <div class="faq-list">
+  <SectionHead id={id} eyebrow={eyebrow} title={title} accent={accent} />
+  <div class="list">
     {
       items.map((f) => (
         <details>
@@ -24,26 +27,53 @@ const { title, items, id } = Astro.props;
 </section>
 
 <style>
-  details {
-    border-top: 1px solid var(--brand-line);
+  .list {
+    display: grid;
+    gap: 10px;
+    max-width: 900px;
   }
-  details:last-child {
-    border-bottom: 1px solid var(--brand-line);
+  details {
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+  }
+  details[open] {
+    border-color: #3a3a3a;
   }
   summary {
     display: flex;
     align-items: center;
-    min-height: 60px;
-    padding-block: 8px;
-    font-size: 19px;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    padding: 8px 20px;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
     font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
     cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '+';
+    flex: none;
+    font-family: var(--font-sans);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+  details[open] summary::after {
+    content: '−';
   }
   p {
-    max-width: 52ch;
-    margin: 0 0 20px;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--brand-muted);
+    max-width: 62ch;
+    margin: 0;
+    padding: 0 20px 22px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-muted);
   }
 </style>

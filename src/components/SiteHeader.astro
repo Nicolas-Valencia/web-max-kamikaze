@@ -1,0 +1,232 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/kamikaze-mark-provisional.png';
+
+/** Cabecera fija: marca, enlaces de sección y botón rojo. En móvil, menú desplegable. */
+interface Props {
+  brand: 'home' | 'max' | 'kamikaze';
+  links: readonly { href: string; label: string }[];
+  cta: { href: string; label: string };
+}
+const { brand, links, cta } = Astro.props;
+---
+
+<header class="bar" data-header>
+  <div class="inner wrap">
+    <a class="brand" href="/" aria-label="Max / Kamikaze, ir al inicio">
+      {
+        brand === 'kamikaze' ? (
+          <>
+            <Image class="mark" src={mark} alt="" width={40} height={40} />
+            <span class="brand-text">
+              <strong>Kamikaze</strong>
+              <small class="mono">Academia de combate</small>
+            </span>
+          </>
+        ) : (
+          <>
+            <span class="word">
+              <span class="accent">Max</span><span class="slash"> / </span>Kamikaze
+            </span>
+            {brand === 'max' && <span class="chip mono">1 a 1</span>}
+          </>
+        )
+      }
+    </a>
+
+    <nav class="nav" id="menu" aria-label="Secciones" data-nav>
+      <ul>
+        {links.map((l) => <li><a class="mono" href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <a class="btn btn-primary cta-in-menu" href={cta.href}>{cta.label}</a>
+    </nav>
+
+    <a class="btn btn-primary cta" href={cta.href}>{cta.label}</a>
+
+    <button
+      class="toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu"
+      aria-label="Abrir menú"
+      data-toggle
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+  function setOpen(open: boolean) {
+    if (!header || !toggle) return;
+    header.dataset.open = String(open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+</script>
+
+<style>
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(10, 10, 10, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 68px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    color: var(--color-bone);
+    text-decoration: none;
+  }
+  .word {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .slash {
+    color: var(--color-muted);
+  }
+  .chip {
+    padding: 3px 8px;
+    border: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+  .mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  .brand-text {
+    display: grid;
+    line-height: 1.1;
+  }
+  .brand-text strong {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .brand-text small {
+    font-size: 10px;
+    color: var(--color-muted);
+  }
+
+  /* Móvil: el menú es un panel desplegable */
+  .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    display: none;
+    padding: 8px 20px 24px;
+    background: var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+  }
+  [data-open='true'] .nav {
+    display: block;
+  }
+  .nav ul {
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+  }
+  .nav li a {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-bone);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .cta-in-menu {
+    display: flex;
+    width: 100%;
+  }
+  .cta {
+    display: none;
+  }
+  .toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 48px;
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    cursor: pointer;
+  }
+  .toggle span {
+    display: block;
+    height: 2px;
+    background: var(--color-bone);
+  }
+
+  @media (min-width: 1000px) {
+    .nav {
+      position: static;
+      display: block;
+      padding: 0;
+      background: none;
+      border: 0;
+    }
+    .nav ul {
+      display: flex;
+      gap: 4px;
+      margin: 0;
+    }
+    .nav li a {
+      min-height: 48px;
+      padding: 0 12px;
+      border: 0;
+      color: var(--color-subtle);
+    }
+    .nav li a:hover {
+      color: var(--color-bone);
+    }
+    .cta-in-menu {
+      display: none;
+    }
+    .cta {
+      display: inline-flex;
+      min-height: 48px;
+      font-size: 18px;
+    }
+    .toggle {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+import T from './T.astro';
+
+/** Cabecera de sección del mockup: etiqueta numerada, titular con frase roja, subtítulo y nota lateral. */
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  sub?: string;
+}
+const { id, eyebrow, title, accent, sub } = Astro.props;
+---
+
+<header class="head">
+  <div>
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id={id} class="display">
+      {title}{accent && <> <span class="accent">{accent}</span></>}
+    </h2>
+    {sub && <p class="sub"><T text={sub} /></p>}
+  </div>
+  <div class="aside"><slot /></div>
+</header>
+
+<style>
+  .head {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .display {
+    font-size: clamp(2.6rem, 9vw, 4.4rem);
+  }
+  .sub {
+    margin: 12px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-subtle);
+  }
+  .aside {
+    max-width: 44ch;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+  .aside:empty {
+    display: none;
+  }
+  @media (min-width: 900px) {
+    .head {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 64px;
+      margin-bottom: 56px;
+    }
+    .aside {
+      text-align: left;
+    }
+  }
+</style>

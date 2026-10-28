@@ -1,63 +1,52 @@
-@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
+@import '@fontsource/barlow-condensed/800.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
 @import 'tailwindcss';
 
 /*
-  Una sola familia, Archivo, con su eje de ancho:
-  Kamikaze usa el ancho condensado (como el logo); Max usa el ancho normal.
+  Dirección "Fight Editorial", tomada de los mockups:
+  negro, rojo y hueso. Titulares en Barlow Condensed, texto en Inter
+  y etiquetas técnicas en Space Mono.
 */
 @theme {
-  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
 
-  --color-ink: #000000;
-  --color-paper: #ffffff;
-  --color-coal: #1a1a1a;
-  --color-signal: #d4151b;
-  --color-concrete: #d8dbdc;
-  --color-steel: #0b0c0d;
+  --color-ink: #0a0a0a;
+  --color-surface: #111111;
+  --color-card: #141414;
+  --color-line: #2a2a2a;
+  --color-bone: #f2f0eb;
+  --color-muted: #9a9a9a;
+  --color-subtle: #c9a8a5;
+  --color-signal: #d7191f;
 }
 
-/* Tema por marca: los componentes leen estas variables, no colores fijos. */
-:root,
-[data-brand='kamikaze'] {
+/* Variables que leen los componentes (formularios, pie, etc.). */
+:root {
   --brand-bg: var(--color-ink);
-  --brand-fg: var(--color-paper);
-  --brand-muted: #a8a8a8;
-  --brand-line: #3a3a3a;
-  --brand-control: #8a8a8a;
+  --brand-fg: var(--color-bone);
+  --brand-muted: var(--color-muted);
+  --brand-line: var(--color-line);
+  --brand-control: #7a7a7a;
   --brand-signal: var(--color-signal);
-  --brand-on-signal: var(--color-paper);
+  --brand-on-signal: var(--color-bone);
   --brand-error: #ff8a8d;
-  --field-bg: var(--color-coal);
-  --brand-stretch: 62%;
-  --brand-display-weight: 900;
-  --brand-title-size: clamp(1.9rem, 7vw, 3rem);
-  --brand-title-case: uppercase;
-  --brand-title-tracking: 0;
-}
-
-[data-brand='max'] {
-  --brand-bg: var(--color-concrete);
-  --brand-fg: var(--color-steel);
-  --brand-muted: #4a4f52;
-  --brand-line: #a5aaad;
-  --brand-control: #6b7073;
-  --brand-signal: var(--color-steel);
-  --brand-on-signal: var(--color-concrete);
-  --brand-error: #b00020;
-  --field-bg: #eceeef;
-  --brand-stretch: 100%;
-  --brand-display-weight: 800;
-  --brand-title-size: clamp(2rem, 8vw, 3.2rem);
-  --brand-title-case: none;
-  --brand-title-tracking: -0.02em;
+  --field-bg: var(--color-card);
 }
 
 @layer base {
   html {
     background: var(--color-ink);
-    color: var(--color-paper);
+    color: var(--color-bone);
     font-family: var(--font-sans);
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
   }
 
   body {
@@ -66,38 +55,125 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-signal);
+    outline: 3px solid var(--color-bone);
     outline-offset: 3px;
+    box-shadow: 0 0 0 6px var(--color-signal);
   }
 }
 
-/* Piezas compartidas por las páginas internas */
+/* ---------- Piezas compartidas ---------- */
+
 .wrap {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin-inline: auto;
   padding-inline: 20px;
 }
 
 .block {
-  padding-block: 64px;
+  padding-block: 72px;
 }
 
-.section-title {
-  margin: 0 0 24px;
-  font-size: var(--brand-title-size);
-  font-weight: var(--brand-display-weight);
-  font-stretch: var(--brand-stretch);
-  letter-spacing: var(--brand-title-tracking);
-  line-height: 0.98;
-  text-transform: var(--brand-title-case);
+/* Titulares: condensada, mayúsculas; la frase de acento va en rojo. */
+.display {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+.accent {
+  color: var(--color-signal);
+}
+
+/* Etiqueta técnica en monoespaciada. */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-signal);
+}
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--color-signal);
 }
 
 .copy {
-  max-width: 52ch;
+  max-width: 54ch;
   margin: 0 0 14px;
   font-size: 18px;
-  line-height: 1.55;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+/* Botones: dicen qué pasa al pulsarlos. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 28px;
+  border: 1px solid transparent;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-primary {
+  background: var(--color-signal);
+  color: var(--color-bone);
+}
+.btn-primary:hover {
+  background: #ee2b31;
+}
+.btn-outline {
+  border-color: var(--color-bone);
+  background: transparent;
+  color: var(--color-bone);
+}
+.btn-outline:hover {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+.btn-arrow::after {
+  content: '→';
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.btn-down::after {
+  content: '↓';
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+/* Tarjeta con borde; la destacada lleva borde rojo. */
+.card {
+  padding: 28px;
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+}
+.card-featured {
+  border-color: var(--color-signal);
 }
 
 /* Filas etiqueta / valor separadas por filetes */
@@ -108,18 +184,22 @@
   display: grid;
   gap: 2px;
   padding-block: 14px;
-  border-top: 1px solid var(--brand-line);
+  border-top: 1px solid var(--color-line);
 }
 .rows dt {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--brand-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 .rows dd {
   margin: 0;
-  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 /* Dato que falta: se ve a propósito, para que nadie lo publique sin revisar */
@@ -127,7 +207,21 @@ mark.tbd {
   padding: 0 0.3em;
   background: #ffe14d;
   color: #000;
+  font-family: var(--font-sans);
+  font-size: 0.9em;
   font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Dentro de titulares y precios el marcador no debe crecer con la tipografía */
+.display mark.tbd,
+h3 mark.tbd,
+h4 mark.tbd,
+.amount mark.tbd {
+  display: inline-block;
+  font-size: 0.5em;
+  line-height: 1.5;
 }
 
 @media (min-width: 900px) {
@@ -135,11 +229,14 @@ mark.tbd {
     padding-inline: 40px;
   }
   .block {
-    padding-block: 96px;
+    padding-block: 112px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
