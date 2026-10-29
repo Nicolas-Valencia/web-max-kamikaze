@@ -52,10 +52,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
         />
       </div>
       <div class="wrap hero-body">
-        <div class="hero-top mono">
-          <span class="left"><i></i>{c.hero.topLeft}</span>
-          <span class="right">{c.hero.topRight}</span>
-        </div>
         <p class="hero-tag mono">{c.hero.tag}</p>
         <h1 id="titular" class="display">
           {c.hero.lines.map((l) => <span class="line">{l}</span>)}
@@ -63,8 +59,8 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
         </h1>
         <p class="lead">{c.hero.text}</p>
         <div class="actions">
-          <a class="btn btn-primary btn-arrow" href="#interesado">{c.hero.primary}</a>
-          <a class="btn btn-outline btn-down" href="#disciplinas">{c.hero.secondary}</a>
+          <a class="btn btn-primary" href="#interesado">{c.hero.primary}</a>
+          <a class="btn btn-outline" href="#disciplinas">{c.hero.secondary}</a>
         </div>
       </div>
     </section>
@@ -85,34 +81,33 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
 
     <!-- 3. La academia -->
     <section id="academia" class="wrap block" aria-labelledby="t-academia">
-      <SectionHead id="t-academia" eyebrow={c.about.eyebrow} title={c.about.title} accent={c.about.accent}>
+      <SectionHead id="t-academia" title={c.about.title} accent={c.about.accent}>
         <T text={c.about.text} />
       </SectionHead>
-      <div class="cards three">
+      <ul class="cols three">
         {
-          c.about.cards.map((card) => (
-            <article class="card">
-              <p class="mono kicker">{card.label}</p>
-              <h3 class="display"><T text={card.title} /></h3>
+          c.about.cards.map((card, i) => (
+            <li class:list={['col', { 'col-red': i === 0 }]}>
+              <p class="kicker">{card.label}</p>
+              <h3><T text={card.title} /></h3>
               <p class="body"><T text={card.text} /></p>
-            </article>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
 
     <!-- 4. Disciplinas -->
     <section id="disciplinas" class="wrap block" aria-labelledby="t-disciplinas">
       <SectionHead
         id="t-disciplinas"
-        eyebrow={c.disciplines.eyebrow}
         title={c.disciplines.title}
         accent={c.disciplines.accent}
         sub={c.disciplines.sub}
       />
       <div class="disciplines">
         {
-          c.disciplines.items.map((d, i) => (
+          c.disciplines.items.map((d) => (
             <article class="disc">
               <div class="disc-media">
                 <RefPhoto
@@ -122,7 +117,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
                   position={discPhotos[d.id].position}
                   tag="bottom-right"
                 />
-                <span class="mono disc-index">{`[Disciplina 0${i + 1}]`}</span>
               </div>
               <div class="disc-body">
                 <h3 class="display">{d.name}</h3>
@@ -140,25 +134,24 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
 
     <!-- 5. Cómo empezar -->
     <section class="wrap block" aria-labelledby="t-empezar">
-      <SectionHead id="t-empezar" eyebrow={c.start.eyebrow} title={c.start.title} accent={c.start.accent} />
-      <div class="cards three">
+      <SectionHead id="t-empezar" title={c.start.title} accent={c.start.accent} />
+      <ul class="cols three">
         {
-          c.start.items.map((s) => (
-            <article class="card">
-              <p class="mono kicker">{s.label}</p>
-              <h3 class="display">{s.title}</h3>
+          c.start.items.map((s, i) => (
+            <li class:list={['col', { 'col-red': i === 0 }]}>
+              <p class="kicker">{s.label}</p>
+              <h3>{s.title}</h3>
               <p class="body"><T text={s.text} /></p>
-            </article>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
 
     <!-- 6. Entrenadores -->
     <section class="wrap block" aria-labelledby="t-entrenadores">
       <SectionHead
         id="t-entrenadores"
-        eyebrow={c.coaches.eyebrow}
         title={c.coaches.title}
         accent={c.coaches.accent}
       />
@@ -180,7 +173,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     <section id="horarios" class="wrap block" aria-labelledby="t-horarios">
       <SectionHead
         id="t-horarios"
-        eyebrow={c.schedule.eyebrow}
         title={c.schedule.title}
         accent={c.schedule.accent}
         sub={c.schedule.sub}
@@ -194,7 +186,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     <section id="planes" class="wrap block" aria-labelledby="t-planes">
       <SectionHead
         id="t-planes"
-        eyebrow={c.plans.eyebrow}
         title={c.plans.title}
         accent={c.plans.accent}
         sub={c.plans.sub}
@@ -231,7 +222,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     <section id="sede" class="wrap block" aria-labelledby="t-sede">
       <SectionHead
         id="t-sede"
-        eyebrow={c.venue.eyebrow}
         title={c.venue.title}
         accent={c.venue.accent}
         sub={c.venue.sub}
@@ -263,7 +253,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     <section class="wrap block" aria-labelledby="t-alumnos">
       <SectionHead
         id="t-alumnos"
-        eyebrow={c.testimonials.eyebrow}
         title={c.testimonials.title}
         accent={c.testimonials.accent}
       />
@@ -274,7 +263,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     <section id="interesado" class="signup" aria-labelledby="registro">
       <div class="wrap block signup-grid">
         <div>
-          <p class="eyebrow">02.10 // Registro</p>
           <h2 class="display">{c.opening.title}</h2>
           <p class="copy">{c.opening.text}</p>
           <dl class="rows opening">
@@ -298,7 +286,7 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     </section>
 
     <!-- 12. Preguntas frecuentes -->
-    <Faq id="preguntas" eyebrow={c.faq.eyebrow} title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
+    <Faq id="preguntas" title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
 
     <!-- 13. Cierre -->
     <FinalCta
@@ -338,10 +326,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     text-transform: uppercase;
     text-decoration: none;
   }
-  .link::after {
-    content: ' →';
-    font-family: var(--font-sans);
-  }
   .link:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -375,30 +359,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     position: relative;
     z-index: 2;
     padding-block: 96px 48px;
-  }
-  .hero-top {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 6px 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(242, 240, 235, 0.15);
-    color: var(--color-muted);
-  }
-  .hero-top .left {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-bone);
-  }
-  .hero-top i {
-    width: 8px;
-    height: 8px;
-    background: var(--color-signal);
   }
   .hero-tag {
     display: inline-block;
@@ -455,17 +415,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     text-transform: uppercase;
   }
 
-  /* Tarjetas */
-  .cards {
-    display: grid;
-    gap: 16px;
-  }
-  .card h3 {
-    margin: 0 0 10px;
-    font-size: 2rem;
-    line-height: 1;
-  }
-
   /* Disciplinas */
   .disciplines {
     display: grid;
@@ -477,15 +426,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
   }
   .disc-media {
     position: relative;
-  }
-  .disc-index {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 6px 10px;
-    background: rgba(10, 10, 10, 0.85);
-    color: var(--color-signal);
-    font-size: 11px;
   }
   .disc-body {
     padding: 24px;
@@ -560,21 +500,10 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     list-style: none;
   }
   .features li {
-    position: relative;
-    padding-left: 26px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-line);
     font-size: 16px;
     line-height: 1.5;
-  }
-  .features li::before {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 0.45em;
-    width: 12px;
-    height: 7px;
-    border-left: 2px solid var(--color-signal);
-    border-bottom: 2px solid var(--color-signal);
-    transform: rotate(-45deg);
   }
   .plan .btn {
     width: 100%;
@@ -632,11 +561,7 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     .hero-body {
       padding-block: 150px 72px;
     }
-    .hero-top {
-      left: 40px;
-      right: 40px;
-    }
-    h1 {
+      h1 {
       font-size: clamp(5rem, 11vw, 9rem);
     }
     .actions {
@@ -654,10 +579,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     .strip-grid > div:nth-child(n + 2) {
       padding-left: 24px;
       border-left: 1px solid var(--color-line);
-    }
-    .cards.three {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
     }
     .disciplines {
       grid-template-columns: repeat(2, minmax(0, 1fr));

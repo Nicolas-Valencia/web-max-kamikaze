@@ -61,9 +61,7 @@ export const kamikaze = {
   cta: { href: '#interesado', label: 'Quiero que me avisen' },
 
   hero: {
-    topLeft: '02 // Kamikaze',
-    topRight: 'Armenia, Quindío // Próxima apertura',
-    tag: 'Deportes de combate // Armenia, Quindío',
+    tag: 'Deportes de combate en Armenia, Quindío',
     lines: ['Kamikaze'],
     accent: 'de combate',
     text: 'Muay Thai, boxeo, BJJ, lucha y MMA, para quien empieza y para quien ya entrena. Déjanos tu contacto y te escribimos primero.',
@@ -81,7 +79,6 @@ export const kamikaze = {
   ],
 
   about: {
-    eyebrow: '02.1 // La academia',
     title: 'Entrena',
     accent: 'con Kamikaze',
     text: tbd('presentación de Kamikaze: filosofía, propuesta de valor y qué la diferencia'),
@@ -105,7 +102,6 @@ export const kamikaze = {
   },
 
   disciplines: {
-    eyebrow: '02.2 // Entrenamiento',
     title: 'Entra',
     accent: 'al combate',
     sub: 'Cinco disciplinas',
@@ -120,7 +116,6 @@ export const kamikaze = {
   },
 
   start: {
-    eyebrow: '02.3 // Cómo empezar',
     title: 'Cómo',
     accent: 'empezar',
     items: [
@@ -143,7 +138,6 @@ export const kamikaze = {
   },
 
   coaches: {
-    eyebrow: '02.4 // Entrenadores',
     title: 'Quién',
     accent: 'te entrena',
     items: [
@@ -163,7 +157,6 @@ export const kamikaze = {
   },
 
   schedule: {
-    eyebrow: '02.5 // Horarios',
     title: 'Encuentra',
     accent: 'tu momento',
     sub: 'Programación de clases',
@@ -173,7 +166,6 @@ export const kamikaze = {
   },
 
   plans: {
-    eyebrow: '02.6 // Planes',
     title: 'Elige',
     accent: 'tu plan',
     sub: tbd('mensaje breve sobre las condiciones'),
@@ -184,7 +176,6 @@ export const kamikaze = {
   },
 
   venue: {
-    eyebrow: '02.7 // Sede',
     title: 'La',
     accent: 'sede',
     sub: 'Armenia, Quindío',
@@ -198,7 +189,6 @@ export const kamikaze = {
   },
 
   testimonials: {
-    eyebrow: '02.8 // Alumnos',
     title: 'Lo que dicen',
     accent: 'los alumnos',
     items: [testimonial(), testimonial(), testimonial()],
@@ -218,7 +208,6 @@ export const kamikaze = {
   },
 
   faq: {
-    eyebrow: '02.9 // Preguntas frecuentes',
     title: 'Preguntas',
     accent: 'frecuentes',
     items: [
@@ -239,9 +228,9 @@ export const kamikaze = {
   },
 
   final: {
-    title: 'Da el primer paso.',
-    accent: 'Kamikaze te espera.',
-    text: 'No necesitas estar en forma para empezar: necesitas empezar. Regístrate y te escribimos primero.',
+    title: 'Regístrate',
+    accent: 'y te avisamos.',
+    text: 'Déjanos tu contacto y te escribimos cuando haya novedades de la academia.',
     primary: 'Quiero que me avisen',
     secondary: 'Escribir por Instagram',
     status: 'provisional' as Status,

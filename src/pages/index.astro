@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
-import SectionHead from '../components/SectionHead.astro';
 import RefPhoto from '../components/RefPhoto.astro';
 import heroPhoto from '../assets/reference/home-hero.jpg';
 import maxPhoto from '../assets/reference/max-portrait.jpg';
@@ -41,19 +40,14 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
         </h1>
         <p class="lead">{c.hero.text}</p>
         <div class="actions">
-          <a class="btn btn-primary btn-down" href="#elige">{c.hero.action}</a>
+          <a class="btn btn-primary" href="#elige">{c.hero.action}</a>
           <span class="mono coord">{c.hero.coord}</span>
         </div>
       </div>
     </section>
 
-    <section id={c.select.id} class="wrap block" aria-labelledby="elige-titulo">
-      <SectionHead
-        id="elige-titulo"
-        eyebrow="División técnica"
-        title={c.select.title}
-        accent={c.select.accent}
-      />
+    <section id={c.select.id} class="select" aria-labelledby="elige-titulo">
+      <h2 id="elige-titulo" class="sr-only">{c.select.title} {c.select.accent}</h2>
       <div class="panels">
         {
           c.select.options.map((o) => (
@@ -69,7 +63,6 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
               </div>
               <div class="panel-shade" aria-hidden="true" />
               <div class="panel-top">
-                <span class="mono index">{o.index}</span>
                 <span class="mono tag">{o.tag}</span>
               </div>
               <div class="panel-body">
@@ -87,18 +80,17 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
       </div>
     </section>
 
-    <section class="values" aria-label="Por qué elegirnos">
-      <div class="wrap grid">
+    <section class="strip" aria-label="Datos clave">
+      <dl class="wrap strip-grid">
         {
-          c.values.map((v, i) => (
-            <div class="value">
-              <p class="mono label">{`0${i + 1}. ${v.label}`}</p>
-              <h3 class="display">{v.title}</h3>
-              <p>{v.text}</p>
+          c.values.map((v) => (
+            <div>
+              <dt class="mono">{v.label}</dt>
+              <dd>{v.value}</dd>
             </div>
           ))
         }
-      </div>
+      </dl>
     </section>
   </main>
 
@@ -177,26 +169,52 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     overflow-wrap: anywhere;
   }
 
-  /* Selector: dos paneles con foto */
+  /*
+    Selector: las dos opciones ocupan todo el alto visible bajo el menú (69 px).
+    Móvil: una arriba y otra abajo, mitad y mitad. Escritorio: lado a lado.
+    scroll-margin negativo: al llegar por el ancla, el selector queda justo bajo el menú.
+  */
+  .select {
+    min-height: calc(100svh - 69px);
+    scroll-margin-top: -19px;
+    border-bottom: 1px solid var(--color-line);
+  }
   .panels {
     display: grid;
-    gap: 16px;
+    grid-template-rows: 1fr 1fr;
+    min-height: calc(100svh - 69px);
   }
   .panel {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 32px;
-    min-height: 540px;
-    padding: 24px;
+    gap: 16px;
+    min-height: 0;
+    padding: 20px 20px 22px;
     overflow: hidden;
-    border: 1px solid var(--color-line);
     color: var(--color-bone);
     text-decoration: none;
   }
-  .panel:hover {
-    border-color: var(--color-signal);
+  .panel + .panel {
+    border-top: 1px solid var(--color-line);
+  }
+  /* Una barra roja marca la opción sobre la que estás */
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 3;
+    width: 0;
+    background: var(--color-signal);
+    transition: width 0.25s ease;
+  }
+  .panel:hover::before,
+  .panel:focus-visible::before {
+    width: 6px;
+  }
+  .panel:focus-visible {
+    outline-offset: -6px;
   }
   .panel-photo {
     position: absolute;
@@ -221,11 +239,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     justify-items: start;
     gap: 8px;
   }
-  .index {
-    color: var(--color-signal);
-    font-weight: 700;
-  }
-  .tag {
+    .tag {
     padding: 3px 8px;
     border: 1px solid rgba(242, 240, 235, 0.35);
     background: rgba(10, 10, 10, 0.6);
@@ -235,23 +249,24 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     color: var(--color-subtle);
   }
   .name {
-    margin: 6px 0 12px;
-    font-size: clamp(4rem, 16vw, 6.4rem);
+    margin: 4px 0 8px;
+    font-size: clamp(3.4rem, 15vw, 5.6rem);
+    line-height: 0.88;
   }
   .text {
     max-width: 40ch;
-    margin: 0 0 24px;
-    font-size: 17px;
-    line-height: 1.55;
-    color: rgba(242, 240, 235, 0.85);
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: rgba(242, 240, 235, 0.88);
   }
   .panel-foot {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 8px 16px;
-    padding-top: 16px;
+    gap: 6px 16px;
+    padding-top: 12px;
     border-top: 1px solid rgba(242, 240, 235, 0.25);
   }
   .go {
@@ -261,46 +276,51 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     letter-spacing: 0.02em;
     text-transform: uppercase;
   }
-  .go::after {
-    content: ' →';
-    font-family: var(--font-sans);
-  }
   .meta {
     color: var(--color-muted);
   }
 
-  /* Tres razones */
-  .values {
+  /* Móviles de poco alto: se omite el párrafo para que cada opción siga midiendo la mitad exacta */
+  @media (max-width: 899px) and (max-height: 720px) {
+    .panel {
+      gap: 8px;
+      padding-block: 14px;
+    }
+    .text {
+      display: none;
+    }
+    .name {
+      font-size: clamp(2.8rem, 12vw, 4rem);
+      margin-bottom: 10px;
+    }
+  }
+
+  /* Franja de datos */
+  .strip {
     border-top: 1px solid var(--color-line);
     background: var(--color-surface);
   }
-  .values .grid {
+  .strip-grid {
     display: grid;
-    gap: 0;
-    padding-block: 24px;
+    margin-block: 0;
   }
-  .value {
-    padding-block: 28px;
+  .strip-grid > div {
+    padding: 20px 0;
     border-top: 1px solid var(--color-line);
   }
-  .value:first-child {
+  .strip-grid > div:first-child {
     border-top: 0;
   }
-  .label {
-    margin: 0 0 10px;
-    color: var(--color-signal);
-  }
-  .value h3 {
-    margin-bottom: 8px;
-    font-size: 2.2rem;
-    line-height: 1;
-  }
-  .value p:last-child {
-    max-width: 40ch;
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.55;
+  .strip dt {
     color: var(--color-muted);
+  }
+  .strip dd {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
 
   @media (min-width: 900px) {
@@ -332,20 +352,38 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     }
     .panels {
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-rows: 1fr;
     }
     .panel {
-      min-height: 680px;
-      padding: 32px;
+      padding: 40px 48px 44px;
+      gap: 24px;
     }
-    .values .grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-      padding-block: 48px;
-    }
-    .value {
+    .panel + .panel {
       border-top: 0;
-      padding-block: 0;
+      border-left: 1px solid var(--color-line);
+    }
+    .name {
+      font-size: clamp(5.5rem, 11vw, 10rem);
+      margin: 8px 0 16px;
+    }
+    .text {
+      font-size: 18px;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .panel-foot {
+      padding-top: 18px;
+    }
+    .strip-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .strip-grid > div {
+      padding: 28px 24px 28px 0;
+      border-top: 0;
+    }
+    .strip-grid > div:nth-child(n + 2) {
+      padding-left: 24px;
+      border-left: 1px solid var(--color-line);
     }
   }
 </style>

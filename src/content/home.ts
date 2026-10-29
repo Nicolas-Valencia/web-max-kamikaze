@@ -17,12 +17,12 @@ export const home = {
   cta: { href: '#elige', label: 'Elegir camino' },
 
   hero: {
-    kicker: 'Max / Kamikaze // Dos caminos. Una mentalidad.',
+    kicker: 'Dos caminos. Una mentalidad.',
     lines: ['Entrena.', 'Lucha.', 'Evoluciona.'],
     accentLine: 1,
     text: 'Entrenamiento personalizado de Muay Thai con Max y la academia de deportes de combate Kamikaze, en Armenia, Quindío. Elige cómo quieres entrenar.',
     action: 'Descubre tu forma de entrenar',
-    coord: 'Armenia, Quindío, Colombia // 4.53° N / 75.68° O',
+    coord: 'Armenia, Quindío, Colombia',
     status: 'provisional' as Status,
   },
 
@@ -59,20 +59,8 @@ export const home = {
   },
 
   values: [
-    {
-      label: 'Sin experiencia',
-      title: 'Empieza desde cero',
-      text: 'Kamikaze recibe personas de todos los niveles. No necesitas experiencia previa.',
-    },
-    {
-      label: 'A tu medida',
-      title: 'Entrenamiento adaptado',
-      text: 'Max parte de una evaluación inicial y ajusta cada sesión a tu objetivo.',
-    },
-    {
-      label: 'En Armenia',
-      title: 'Donde te quede mejor',
-      text: 'Con Max puedes entrenar en Kamikaze o a domicilio, en Armenia.',
-    },
+    { label: 'Kamikaze', value: 'Sin experiencia previa' },
+    { label: 'Max', value: 'Parte de una evaluación inicial' },
+    { label: 'Con Max', value: 'En Kamikaze o a domicilio' },
   ],
 } as const;

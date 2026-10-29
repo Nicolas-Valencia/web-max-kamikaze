@@ -4,7 +4,7 @@ import T from './T.astro';
 /** Cabecera de sección del mockup: etiqueta numerada, titular con frase roja, subtítulo y nota lateral. */
 interface Props {
   id: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   accent?: string;
   sub?: string;
@@ -14,7 +14,7 @@ const { id, eyebrow, title, accent, sub } = Astro.props;
 
 <header class="head">
   <div>
-    <p class="eyebrow">{eyebrow}</p>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h2 id={id} class="display">
       {title}{accent && <> <span class="accent">{accent}</span></>}
     </h2>

@@ -1,7 +1,7 @@
 @import '@fontsource/barlow-condensed/600.css';
 @import '@fontsource/barlow-condensed/700.css';
 @import '@fontsource/barlow-condensed/800.css';
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/chivo';
 @import '@fontsource/space-mono/400.css';
 @import '@fontsource/space-mono/700.css';
 @import 'tailwindcss';
@@ -13,7 +13,7 @@
 */
 @theme {
   --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Chivo Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Space Mono', ui-monospace, monospace;
 
   --color-ink: #0a0a0a;
@@ -87,6 +87,16 @@
   color: var(--color-signal);
 }
 
+/* Solo para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Etiqueta técnica en monoespaciada. */
 .mono {
   font-family: var(--font-mono);
@@ -155,15 +165,48 @@
   background: var(--color-bone);
   color: var(--color-ink);
 }
-.btn-arrow::after {
-  content: '→';
-  font-family: var(--font-sans);
-  font-weight: 600;
+/* Columnas abiertas: una regla arriba en vez de una caja por cada elemento */
+.cols {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.btn-down::after {
-  content: '↓';
-  font-family: var(--font-sans);
-  font-weight: 600;
+.col {
+  padding: 22px 0 14px;
+  border-top: 1px solid var(--color-bone);
+}
+.col-red {
+  border-top: 3px solid var(--color-signal);
+}
+.col .kicker {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted) !important;
+}
+.col h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.col .body {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+@media (min-width: 900px) {
+  .cols.three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 48px;
+  }
 }
 
 /* Tarjeta con borde; la destacada lleva borde rojo. */

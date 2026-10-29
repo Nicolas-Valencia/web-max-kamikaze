@@ -51,7 +51,7 @@ export const max = {
   cta: { href: '#sesion', label: 'Entrenar con Max' },
 
   hero: {
-    chips: ['01 // Max', 'Entrenamiento personalizado / Muay Thai', '1 a 1'],
+    chips: ['Max', 'Entrenamiento personalizado', '1 a 1'],
     lines: ['Tu objetivo.', 'Tu ritmo.', 'Tu Muay Thai.'],
     text: 'Entrenamiento personalizado de Muay Thai con Max, en Armenia, Quindío. Empiezas con una evaluación y el plan se adapta a ti.',
     primary: 'Quiero entrenar con Max',
@@ -71,7 +71,6 @@ export const max = {
   ],
 
   about: {
-    eyebrow: '// Filosofía y entrenamiento',
     lines: ['Un entrenador.', 'Un plan.'],
     accent: 'Toda la atención.',
     quote: tbd('filosofía de entrenamiento de Max, con sus palabras'),
@@ -89,9 +88,8 @@ export const max = {
   },
 
   how: {
-    eyebrow: '// Método',
-    title: 'Un proceso claro.',
-    accent: 'Paso a paso.',
+    title: 'Cómo',
+    accent: 'funciona',
     steps: [
       {
         title: 'Evaluación inicial',
@@ -109,7 +107,6 @@ export const max = {
   },
 
   services: {
-    eyebrow: '// Servicios',
     title: 'Elige',
     accent: 'cómo entrenar',
     action: 'Consultar',
@@ -150,25 +147,24 @@ export const max = {
   },
 
   profiles: {
-    eyebrow: '// Accesibilidad y niveles',
     title: 'No necesitas ser un luchador',
     accent: 'para empezar.',
     text: 'El entrenamiento personalizado se adapta a tu punto de partida, sea cual sea.',
     items: [
       {
-        tag: '01 // Perfil',
+        tag: 'Perfil',
         title: 'Tu primera vez',
         text: 'Nunca has entrenado Muay Thai y quieres empezar bien. El plan parte desde cero.',
         goal: tbd('objetivo de este perfil'),
       },
       {
-        tag: '02 // Perfil',
+        tag: 'Perfil',
         title: 'Volver a empezar',
         text: 'Ya entrenaste antes y quieres retomar el ritmo con un plan a tu medida.',
         goal: tbd('objetivo de este perfil'),
       },
       {
-        tag: '03 // Perfil',
+        tag: 'Perfil',
         title: 'Dar el siguiente paso',
         text: 'Quieres mejorar tu nivel actual con atención individual.',
         goal: tbd('objetivo de este perfil'),
@@ -178,7 +174,6 @@ export const max = {
   },
 
   plans: {
-    eyebrow: '// Planes',
     title: 'Planes por',
     accent: 'número de sesiones',
     sub: tbd('mensaje breve sobre las condiciones'),
@@ -190,14 +185,12 @@ export const max = {
   },
 
   testimonials: {
-    eyebrow: '// Alumnos',
-    title: 'El progreso',
-    accent: 'también se siente.',
+    title: 'Lo que dicen',
+    accent: 'los alumnos',
     items: [testimonial(), testimonial(), testimonial()],
   },
 
   products: {
-    eyebrow: '// Equipo',
     title: 'Equipo',
     accent: 'deportivo',
     text: 'Max también vende equipo para entrenar. Consulta qué hay disponible.',
@@ -209,9 +202,8 @@ export const max = {
   },
 
   gallery: {
-    eyebrow: '// Registro visual',
-    title: 'Menos ruido.',
-    accent: 'Más entrenamiento.',
+    title: 'Entrenando',
+    accent: 'con Max',
     captions: [tbd('pie de foto'), tbd('pie de foto'), tbd('pie de foto'), tbd('pie de foto')],
   },
 
@@ -222,9 +214,8 @@ export const max = {
   },
 
   faq: {
-    eyebrow: '// Preguntas frecuentes',
-    title: 'Antes de dar',
-    accent: 'el primer paso.',
+    title: 'Preguntas',
+    accent: 'frecuentes',
     items: [
       { q: '¿Cuánto dura una sesión?', a: 'Generalmente entre 45 minutos y 1 hora.' },
       {
@@ -246,9 +237,9 @@ export const max = {
   },
 
   final: {
-    title: 'Tu cambio empieza',
-    accent: 'con una conversación.',
-    text: 'Cuéntanos tu objetivo y Max te escribe para acordar tu primera sesión.',
+    title: 'Agenda',
+    accent: 'tu primera sesión.',
+    text: 'Cuéntanos tu objetivo y Max te escribe por WhatsApp para acordar el horario.',
     primary: 'Quiero entrenar con Max',
     secondary: 'Escribir por WhatsApp',
     status: 'provisional' as Status,

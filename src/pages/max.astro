@@ -57,8 +57,8 @@ const gallery = [
         <div class="hero-foot">
           <p class="lead">{c.hero.text}</p>
           <div class="actions">
-            <a class="btn btn-primary btn-arrow" href="#sesion">{c.hero.primary}</a>
-            <a class="method mono" href="#metodo">{c.hero.method} ↓</a>
+            <a class="btn btn-primary" href="#sesion">{c.hero.primary}</a>
+            <a class="method mono" href="#metodo">{c.hero.method}</a>
             {
               heroWa && (
                 <a class="wa" href={heroWa} rel="noopener" target="_blank">
@@ -96,7 +96,6 @@ const gallery = [
         </div>
       </div>
       <div>
-        <p class="eyebrow">{c.about.eyebrow}</p>
         <h2 id="t-sobre" class="display">
           {c.about.lines.map((l) => <span class="line">{l}</span>)}
           <span class="line accent">{c.about.accent}</span>
@@ -118,12 +117,12 @@ const gallery = [
 
     <!-- 4. Método -->
     <section id="metodo" class="wrap block" aria-labelledby="t-metodo">
-      <SectionHead id="t-metodo" eyebrow={c.how.eyebrow} title={c.how.title} accent={c.how.accent} />
+      <SectionHead id="t-metodo" title={c.how.title} accent={c.how.accent} />
       <ol class="steps">
         {
           c.how.steps.map((s, i) => (
-            <li class="card">
-              <span class="num mono">{`0${i + 1}`}</span>
+            <li class="step">
+              <span class="num" aria-hidden="true">{`0${i + 1}`}</span>
               <h3 class="display">{s.title}</h3>
               <p class="body">{s.text}</p>
             </li>
@@ -136,7 +135,6 @@ const gallery = [
     <section id="servicios" class="wrap block" aria-labelledby="t-servicios">
       <SectionHead
         id="t-servicios"
-        eyebrow={c.services.eyebrow}
         title={c.services.title}
         accent={c.services.accent}
       />
@@ -198,31 +196,29 @@ const gallery = [
     <section id="perfiles" class="wrap block" aria-labelledby="t-perfiles">
       <SectionHead
         id="t-perfiles"
-        eyebrow={c.profiles.eyebrow}
         title={c.profiles.title}
         accent={c.profiles.accent}
       >
         {c.profiles.text}
       </SectionHead>
-      <div class="cards three">
+      <ul class="cols three">
         {
           c.profiles.items.map((p, i) => (
-            <article class:list={['card', { 'card-featured': i === 0 }]}>
-              <p class="mono kicker">{p.tag}</p>
-              <h3 class="display">{p.title}</h3>
+            <li class:list={['col', { 'col-red': i === 0 }]}>
+              <p class="kicker">{p.tag}</p>
+              <h3>{p.title}</h3>
               <p class="body">{p.text}</p>
               <p class="goal mono"><T text={p.goal} /></p>
-            </article>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
 
     <!-- 7. Planes -->
     <section id="planes" class="wrap block" aria-labelledby="t-planes">
       <SectionHead
         id="t-planes"
-        eyebrow={c.plans.eyebrow}
         title={c.plans.title}
         accent={c.plans.accent}
         sub={c.plans.sub}
@@ -261,7 +257,6 @@ const gallery = [
     <section class="wrap block" aria-labelledby="t-alumnos">
       <SectionHead
         id="t-alumnos"
-        eyebrow={c.testimonials.eyebrow}
         title={c.testimonials.title}
         accent={c.testimonials.accent}
       />
@@ -272,7 +267,6 @@ const gallery = [
     <section id="equipo" class="wrap block" aria-labelledby="t-equipo">
       <SectionHead
         id="t-equipo"
-        eyebrow={c.products.eyebrow}
         title={c.products.title}
         accent={c.products.accent}
       >
@@ -302,7 +296,6 @@ const gallery = [
     <section id="galeria" class="wrap block" aria-labelledby="t-galeria">
       <SectionHead
         id="t-galeria"
-        eyebrow={c.gallery.eyebrow}
         title={c.gallery.title}
         accent={c.gallery.accent}
       />
@@ -322,7 +315,6 @@ const gallery = [
     <section id="sesion" class="signup" aria-labelledby="registro">
       <div class="wrap block signup-grid">
         <div>
-          <p class="eyebrow">// Sesión de prueba</p>
           <h2 id="registro" class="display">{c.form.title}</h2>
           <p class="copy">{c.form.text}</p>
         </div>
@@ -338,7 +330,7 @@ const gallery = [
     </section>
 
     <!-- 12. Preguntas frecuentes -->
-    <Faq id="preguntas" eyebrow={c.faq.eyebrow} title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
+    <Faq id="preguntas" title={c.faq.title} accent={c.faq.accent} items={c.faq.items} />
 
     <!-- 13. Cierre -->
     <FinalCta
@@ -521,24 +513,27 @@ const gallery = [
   }
 
   /* Método */
-  .steps,
-  .cards {
+  .steps {
     display: grid;
-    gap: 16px;
+    gap: 32px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    margin-bottom: 18px;
-    background: var(--color-signal);
-    font-weight: 700;
+  .step {
+    padding-top: 18px;
+    border-top: 1px solid var(--color-bone);
   }
+  .num {
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+    font-size: 4.6rem;
+    font-weight: 800;
+    line-height: 0.9;
+    color: var(--color-signal);
+  }
+  .step h3,
   .card h3 {
     margin: 0 0 10px;
     font-size: 2rem;
@@ -635,21 +630,10 @@ const gallery = [
     list-style: none;
   }
   .features li {
-    position: relative;
-    padding-left: 26px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-line);
     font-size: 16px;
     line-height: 1.5;
-  }
-  .features li::before {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 0.45em;
-    width: 12px;
-    height: 7px;
-    border-left: 2px solid var(--color-signal);
-    border-bottom: 2px solid var(--color-signal);
-    transform: rotate(-45deg);
   }
   .plan .btn {
     width: 100%;
@@ -748,7 +732,6 @@ const gallery = [
       align-items: center;
     }
     .steps,
-    .cards.three,
     .plans {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 24px;

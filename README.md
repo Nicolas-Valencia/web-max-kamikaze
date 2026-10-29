@@ -18,7 +18,7 @@ La primera versión se centra en **captación y presencia digital**. Las reserva
 - [Astro](https://astro.build) 7, con islas de React para las partes interactivas
 - Tailwind CSS 4, con un tema visual por marca (`data-brand`)
 - TypeScript
-- Barlow Condensed (titulares), Inter (texto) y Space Mono (etiquetas), autoalojadas
+- Barlow Condensed (titulares), Chivo (texto) y Space Mono (etiquetas), autoalojadas
 - Despliegue en Vercel
 - Registro de formularios en Google Sheets (temporal; se migrará a una base de datos al llegar reservas y pagos)
 

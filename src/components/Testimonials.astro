@@ -12,7 +12,6 @@ const { items } = Astro.props;
   {
     items.map((t) => (
       <figure class="card">
-        <span class="quote-mark" aria-hidden="true">“</span>
         <blockquote><T text={t.quote} /></blockquote>
         <figcaption>
           <strong><T text={t.name} /></strong>
@@ -34,19 +33,13 @@ const { items } = Astro.props;
     margin: 0;
     min-width: 0;
   }
-  .quote-mark {
-    font-family: var(--font-display);
-    font-size: 3.4rem;
-    font-weight: 800;
-    line-height: 0.6;
-    color: var(--color-signal);
-  }
   blockquote {
     margin: 0;
+    padding-left: 16px;
+    border-left: 3px solid var(--color-signal);
     min-width: 0;
     overflow-wrap: anywhere;
     font-size: 17px;
-    font-style: italic;
     line-height: 1.6;
   }
   figcaption {
