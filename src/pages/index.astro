@@ -243,12 +243,17 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     display: block;
   }
   @media (prefers-reduced-motion: no-preference) {
+    /* Cada línea "golpea": entra rápido, sube un poco de más y asienta. Entre una y otra hay pausa. */
     :global(html.js) .line {
-      transform: translateY(110%);
-      animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-      animation-delay: calc(var(--i) * 90ms + 120ms);
+      transform: translateY(115%) skewY(8deg);
+      transform-origin: left bottom;
+      animation: slam 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      animation-delay: calc(var(--i) * 300ms + 250ms);
     }
-    @keyframes rise {
+    @keyframes slam {
+      70% {
+        transform: translateY(-4%) skewY(-1.5deg);
+      }
       to {
         transform: none;
       }
