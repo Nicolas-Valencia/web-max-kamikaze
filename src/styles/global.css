@@ -100,7 +100,7 @@
 /* Etiqueta técnica en monoespaciada. */
 .mono {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -110,7 +110,7 @@
   gap: 10px;
   margin: 0 0 14px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-signal);
@@ -183,7 +183,7 @@
 .col .kicker {
   margin: 0 0 12px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-muted) !important;
@@ -191,7 +191,7 @@
 .col h3 {
   margin: 0 0 10px;
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 1.9rem;
   font-weight: 800;
   line-height: 1;
   text-transform: uppercase;
@@ -231,7 +231,7 @@
 }
 .rows dt {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-muted);
