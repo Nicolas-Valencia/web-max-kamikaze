@@ -1,5 +1,7 @@
 # Web Max / Kamikaze
 
+> **Documento rector:** [`docs/PROYECTO.md`](docs/PROYECTO.md) reúne el negocio, los requisitos, las reglas inviolables, la arquitectura y las decisiones. Léelo antes de cambiar nada.
+
 Plataforma web para **Max** (entrenamiento personalizado de Muay Thai) y **Kamikaze** (academia de deportes de combate), en Armenia, Quindío, Colombia.
 
 Un solo sitio con tres experiencias:

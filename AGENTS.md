@@ -1,3 +1,7 @@
+## Proyecto
+
+Antes de cambiar nada, lee `docs/PROYECTO.md` (fuente de verdad) y `CLAUDE.md` (reglas resumidas).
+
 ## Development
 
 When starting the dev server, use background mode:
