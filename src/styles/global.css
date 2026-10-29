@@ -267,6 +267,24 @@ h4 mark.tbd,
   line-height: 1.5;
 }
 
+/* Inicio: portada y selector son dos pantallas del tamaño de la ventana.
+   El "encaje" entre ambas lo hace un script que solo actúa cuando dejas de desplazarte entre ellas
+   (scroll-snap de CSS atrapaba al visitante en el selector). Aquí solo se alinean los anclajes. */
+html[data-snap] {
+  scroll-padding-top: 69px;
+}
+
+/* Al elegir Max o Kamikaze, el panel se expande hasta la portada de esa página.
+   Chrome y Safari recientes; en el resto la página simplemente se abre. */
+@view-transition {
+  navigation: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 @media (min-width: 900px) {
   .wrap {
     padding-inline: 40px;

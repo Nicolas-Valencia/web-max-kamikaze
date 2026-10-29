@@ -83,6 +83,14 @@ src/
   styles/         Tokens de diseño y estilos globales
 ```
 
+## Comportamiento del inicio
+
+- La portada y el selector miden cada una `100svh - 69px` (la altura visible bajo el menú).
+- El botón rojo de la portada baja al selector (ancla `#elige`). Al entrar el selector, las dos mitades llegan desde los lados.
+- Si el visitante se queda quieto entre la portada y el selector, un script pequeño (en `src/pages/index.astro`) completa el movimiento hacia la pantalla a la que iba. Debajo del selector el scroll es libre. Se probó `scroll-snap` de CSS (`mandatory`), pero atrapaba al visitante en el selector; por eso no se usa.
+- Al elegir Max o Kamikaze, el panel se expande hasta la portada de esa página (View Transitions entre documentos; solo Chrome y Safari recientes, en el resto la página se abre sin animación). Los nombres `path-max` y `path-kamikaze` deben coincidir en origen y destino.
+- Con "reducir movimiento" no hay animaciones ni encaje asistido; sin JavaScript la página se ve y se usa completa.
+
 ## Reglas de contenido
 
 El contenido vive en `src/content/`. Las páginas tienen ya su estructura y diseño finales; lo que falta se rellena así:

@@ -6,15 +6,21 @@ interface Props {
   title: string;
   description: string;
   brand?: 'max' | 'kamikaze';
+  /** Inicio: portada y selector como dos pantallas con scroll-snap. */
+  snap?: boolean;
 }
 
-const { title, description, brand = 'kamikaze' } = Astro.props;
+const { title, description, brand = 'kamikaze', snap = false } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es-CO">
+<html lang="es-CO" data-snap={snap || undefined}>
   <head>
     <meta charset="utf-8" />
+    <!-- Marca que hay JavaScript antes de pintar, para que las animaciones de entrada no parpadeen. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />

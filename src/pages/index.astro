@@ -12,7 +12,7 @@ const photos = { max: maxPhoto, kamikaze: kamikazePhoto } as const;
 const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
 ---
 
-<Base title={c.meta.title} description={c.meta.description}>
+<Base title={c.meta.title} description={c.meta.description} snap>
   <SiteHeader brand="home" links={c.nav} cta={c.cta} />
 
   <main id="contenido">
@@ -34,7 +34,11 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
         <h1 id="titular" class="display">
           {
             c.hero.lines.map((line, i) => (
-              <span class:list={['line', { accent: i === c.hero.accentLine }]}>{line}</span>
+              <span class="line-mask">
+                <span class:list={['line', { accent: i === c.hero.accentLine }]} style={`--i:${i}`}>
+                  {line}
+                </span>
+              </span>
             ))
           }
         </h1>
@@ -51,7 +55,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
       <div class="panels">
         {
           c.select.options.map((o) => (
-            <a class="panel" href={o.href}>
+            <a class="panel" href={o.href} data-id={o.id} style={`view-transition-name: path-${o.id}`}>
               <div class="panel-photo">
                 <RefPhoto
                   src={photos[o.id]}
@@ -59,6 +63,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
                   fill
                   position={positions[o.id]}
                   tag="bottom-right"
+                  eager
                 />
               </div>
               <div class="panel-shade" aria-hidden="true" />
@@ -97,6 +102,72 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   <Footer />
 </Base>
 
+<script is:inline>
+  /* 1) Cuando el selector entra en pantalla, las dos mitades llegan desde los lados.
+     2) Si te quedas quieto entre la portada y el selector, se completa el movimiento hacia
+        la pantalla a la que ibas. Debajo del selector el scroll es libre. Con "reducir movimiento"
+        no se hace nada. Si algo falla, se quita la clase "js" y todo queda visible y quieto. */
+  (function () {
+    var root = document.documentElement;
+    var main = document.querySelector('main');
+    var target = document.getElementById('elige');
+    if (!main || !target || !('IntersectionObserver' in window)) {
+      root.classList.remove('js');
+      return;
+    }
+    try {
+      new IntersectionObserver(
+        function (entries) {
+          main.classList.toggle('in', entries[0].isIntersecting);
+        },
+        { threshold: 0.4 },
+      ).observe(target);
+    } catch (e) {
+      root.classList.remove('js');
+      return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var HEADER = 69;
+    var rest, busyTimer;
+    var busy = false;
+    var anchor = window.scrollY; // última posición en reposo: de dónde viene el gesto
+
+    function selectorY() {
+      return Math.round(target.getBoundingClientRect().top + window.scrollY - HEADER);
+    }
+    function goTo(y) {
+      busy = true;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      clearTimeout(busyTimer);
+      busyTimer = setTimeout(function () {
+        busy = false;
+        anchor = window.scrollY;
+      }, 900);
+    }
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (busy) return;
+        clearTimeout(rest);
+        rest = setTimeout(function () {
+          var y = window.scrollY;
+          var top = selectorY();
+          var from = anchor;
+          anchor = y;
+          if (y <= 8 || y >= top - 8) return; // ya está en una pantalla (o más abajo)
+          if (from <= 8) goTo(y > 40 ? top : 0); // venía de la portada
+          else if (Math.abs(from - top) <= 8) goTo(top - y > 40 ? 0 : top); // venía del selector
+          else goTo(y > top / 2 ? top : 0); // venía de más abajo: la pantalla más cercana
+        }, 140);
+      },
+      { passive: true },
+    );
+  })();
+</script>
+
 <style>
   main {
     background: var(--color-ink);
@@ -107,7 +178,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     position: relative;
     display: grid;
     align-items: end;
-    min-height: min(88svh, 820px);
+    min-height: calc(100svh - 69px);
     overflow: hidden;
     border-bottom: 1px solid var(--color-line);
   }
@@ -137,20 +208,20 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   .hero-body {
     position: relative;
     z-index: 2;
-    padding-block: 120px 56px;
+    padding-block: 56px 36px;
   }
   .hero-body .eyebrow {
     color: var(--color-subtle);
   }
   h1 {
     display: grid;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: clamp(3rem, 15.5vw, 6rem);
     line-height: 0.86;
   }
   .lead {
     max-width: 52ch;
-    margin: 0 0 32px;
+    margin: 0 0 24px;
     font-size: 18px;
     line-height: 1.6;
     color: rgba(242, 240, 235, 0.82);
@@ -162,6 +233,26 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   }
   .actions .btn {
     width: 100%;
+  }
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.03em;
+  }
+  .line {
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .line {
+      transform: translateY(110%);
+      animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+      animation-delay: calc(var(--i) * 90ms + 120ms);
+    }
+    @keyframes rise {
+      to {
+        transform: none;
+      }
+    }
   }
   .coord {
     max-width: 100%;
@@ -176,8 +267,29 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   */
   .select {
     min-height: calc(100svh - 69px);
-    scroll-margin-top: -19px;
     border-bottom: 1px solid var(--color-line);
+    overflow: hidden; /* los paneles llegan desde fuera de la pantalla sin crear scroll horizontal */
+  }
+  /* Entrada: Max llega desde la izquierda y Kamikaze desde la derecha. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .panel {
+      transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    :global(html.js) .panel[data-id='max'] {
+      transform: translateX(-100%);
+    }
+    :global(html.js) .panel[data-id='kamikaze'] {
+      transform: translateX(100%);
+    }
+    :global(html.js) main:global(.in) .panel {
+      transform: none;
+    }
+    :global(html.js) .hero {
+      transition: opacity 0.6s ease;
+    }
+    :global(html.js) main:global(.in) .hero {
+      opacity: 0.35;
+    }
   }
   .panels {
     display: grid;
@@ -336,7 +448,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
         linear-gradient(to top, var(--color-ink) 2%, transparent 40%);
     }
     .hero-body {
-      padding-block: 160px 72px;
+      padding-block: 96px 64px;
     }
     h1 {
       font-size: clamp(4.4rem, 8vw, 7rem);
