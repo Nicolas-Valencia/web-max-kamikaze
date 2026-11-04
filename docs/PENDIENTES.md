@@ -33,3 +33,7 @@ Actualizar este archivo en cada entrega. Los datos concretos que faltan están m
 
 ## Fase 2 (no incluida en la primera versión)
 - Reservas, pagos y suscripciones: requieren definir procesos, pasarela para Colombia y presupuesto aparte.
+- Se cotiza por etapas (A pagos de sesiones y paquetes, B mensualidad de Kamikaze, C reservas, D panel). Detalle en `docs/PROYECTO.md`, sección 12. Se recomienda empezar solo por la A.
+- Verificar qué pasarela de Colombia ofrece enlace de pago alojado y cobros recurrentes, con comisiones.
+- Preguntas abiertas con Max: si los paquetes de sesiones vencen; si el comprador necesita factura o basta el correo de confirmación.
+- Precio de la cotización: pendiente de acordar con Max (el PDF vive fuera del repo).

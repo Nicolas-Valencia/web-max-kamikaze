@@ -14,7 +14,13 @@ de los parámetros iniciales.
 Documentos relacionados: `README.md` (cómo arrancar), `docs/PENDIENTES.md` (qué falta),
 `CLAUDE.md` (resumen de reglas para el asistente).
 
-Última revisión: 2026-10-29.
+Última revisión: 2026-11-04.
+
+**Documentos fuente (fuera del repositorio, en el equipo de Nicolas):**
+- `~/Documents/CnD Connections/Docs/Max/Brief_Web_MAX_KAMIKAZE_Contenido_y_Entrevista.docx`: brief de contenido y guía de entrevista.
+- `~/Documents/CnD Connections/Docs/Max/Propuesta - Web integral MAX_KAMIKAZE_v4.pdf`: propuesta aprobada (también existe una versión en `.pages`).
+- `~/Downloads/Mockups - Max:Kamikaze.zip`: mockups de referencia de estilo (los recortes usados están en `src/assets/reference/`).
+- `~/Documents/CnD Connections/Docs/Max/Cotizacion - Web MAX_KAMIKAZE.pdf`: cotización comercial. **Los montos no se copian al repositorio** (ver sección 14).
 
 ---
 
@@ -22,6 +28,7 @@ Documentos relacionados: `README.md` (cómo arrancar), `docs/PENDIENTES.md` (qu�
 
 **Quién:** Nicolas Valencia Vergara (CnD Connections) desarrolla la web para Max. La propuesta
 ("Web integral MAX_KAMIKAZE v4", 15 de octubre de 2026) fue **aprobada por Max**: una plataforma, dos experiencias.
+**Quien paga el proyecto es Max** (como persona y dueño de Kamikaze). El precio aún **no está acordado**: la propuesta v4 no trae valores y la cotización se envía aparte.
 
 ### Max
 - Entrenador personal de **Muay Thai** y propietario de la academia Kamikaze. Instagram: `@maxtrainermuaythai`.
@@ -133,7 +140,7 @@ horarios (pestañas por día), planes, sede, testimonios, registro, preguntas, c
 | Analítica | **Vercel Web Analytics** (decidida, **sin instalar**) | Sin cookies, no requiere banner |
 | Tipografía | Barlow Condensed, Chivo, Space Mono (autoalojadas con Fontsource) | Del mockup; sin llamadas a Google |
 
-**Migración prevista:** Google Sheets es temporal. Al llegar reservas y pagos, pasar a **Supabase** (Postgres).
+**Migración prevista:** Google Sheets es temporal. Al llegar reservas, panel de administración o suscripciones con cuentas propias, pasar a **Supabase** (Postgres). La primera etapa de pagos (ver sección 12) puede registrar los pagos en la hoja sin migrar.
 **Dependencias:** añadir una nueva exige explicar qué aporta; evitar sobrearquitecturar.
 
 ---
@@ -228,6 +235,10 @@ El detalle por responsable está en `docs/PENDIENTES.md`.
 | 2026-10-28 | Escala tipográfica reducida a la del mockup (ver sección 7). |
 | 2026-10-28 | Inicio interactivo. `scroll-snap` obligatorio probado y **descartado** por atrapar al visitante. |
 | 2026-10-29 | Entrada del titular más agresiva (0,42 s por línea, pausa de 300 ms). |
+| 2026-11-02 | Se preparó la cotización en PDF (fuera del repo). Paga Max; precio sin acordar. |
+| 2026-11-02 | **Fase 2 se cotiza por etapas independientes:** A pagos de sesiones y paquetes (Max); B mensualidad de Kamikaze; C reservas y cupos; D panel de administración. Idea: usar enlace de pago alojado por la pasarela y registrar pagos en la hoja, para abaratar. **Supuesto sin verificar:** que la pasarela elegida ofrezca enlace alojado y cobros recurrentes. |
+| 2026-11-02 | Las etapas B, C y D dependen de que Kamikaze tenga sede, horarios y precios; se recomienda empezar solo por la A. |
+| 2026-11-04 | Documentos de rumbo actualizados (`PROYECTO.md`, `CLAUDE.md`, `PENDIENTES.md`): documentos fuente, Fase 2 por etapas y normas de trato. |
 
 ---
 
@@ -238,6 +249,14 @@ qué se cobra (sesiones, paquetes, matrícula, mensualidad); precios y planes; p
 cómo funcionan las reservas y se confirma la disponibilidad; qué pasa si un pago falla; cancelaciones,
 reprogramaciones y devoluciones; qué notificaciones se envían; quién administra las transacciones;
 y, para Kamikaze, si se recibirán pagos antes de abrir y qué compra exactamente la persona.
+
+**Etapas acordadas para cotizar (independientes, cada una la decide Max):**
+- **A. Pagos de sesiones y paquetes (Max):** sesión suelta o paquete con la pasarela; incluye la sesión de definición de procesos, registro de cada pago en la hoja y correo de confirmación. Pregunta abierta: si los paquetes vencen (añade trabajo).
+- **B. Mensualidad de Kamikaze:** cobro recurrente administrado desde el panel de la pasarela. No hay cuentas de usuario para alumnos.
+- **C. Reservas y cupos:** calendario, cupos, confirmación y cancelación.
+- **D. Panel de administración:** acceso seguro para ver alumnos, pagos y reservas.
+- Hoy Max cobra por **sesión o paquete de sesiones personalizadas** y por **mensualidad en Kamikaze**. B, C y D no tienen sentido mientras Kamikaze no tenga sede, horarios y precios.
+- Por verificar antes de cerrar precio: qué pasarelas de Colombia (Wompi, ePayco, Mercado Pago, PayU) ofrecen enlace de pago alojado y cobros recurrentes, y sus comisiones (las paga el cliente). Si la factura electrónica es necesaria, es tema de Max y su contador.
 
 Reglas: evaluar una pasarela adecuada para Colombia con sus requisitos reales; usar la integración oficial;
 verificar las notificaciones de transacción en el servidor; **no** guardar tarjetas; no simular transacciones.
@@ -264,3 +283,6 @@ verificar las notificaciones de transacción en el servidor; **no** guardar tarj
 4. Commits pequeños y con mensaje claro en español. No subir `.env`, credenciales ni `node_modules`.
 5. Cualquier decisión que afecte arquitectura, costos o sea difícil de revertir se explica **antes** de comprometerla.
 6. Al terminar, actualiza este archivo, `docs/PENDIENTES.md` y, si cambió, el `README.md`.
+7. **Trato con Nicolas:** responde en español; escribe su nombre **"Nicolas" sin tilde**; da tu opinión honesta y razonada, no la que le gustaría oír; haz preguntas cuando una decisión es suya; no hagas `git push` ni acciones externas sin que lo pida (el remoto de GitHub ya existe y puede estar por delante o por detrás: revisa `git status -sb`).
+8. **Dinero:** los precios de la cotización viven solo en el PDF, fuera del repositorio (que se sube a GitHub). Nunca los copies a código, contenido ni documentos del repo. Los precios de planes de Max o Kamikaze en la web son otro asunto: son de Max y se escriben solo cuando él los confirme.
+9. **Entorno:** el shell puede arrancar con un Node antiguo; ejecuta `source ~/.nvm/nvm.sh && nvm use 24.22.1` antes de `npm`. Las pruebas en navegador real se hicieron con Chrome sin interfaz (de `~/.cache/puppeteer`) y scripts CDP temporales; no están en el repo.

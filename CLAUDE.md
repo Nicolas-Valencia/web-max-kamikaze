@@ -18,6 +18,11 @@ Negro, hueso y rojo; Barlow Condensed + Chivo + Space Mono; escala tipográfica 
 Sin etiquetas numeradas sobre los títulos, flechas en botones, `//`, adornos ni frases hechas.
 El selector del inicio mide exactamente mitad y mitad.
 
+## Trato y límites
+Español. El usuario es **Nicolas** (sin tilde). Opinión honesta y preguntas cuando la decisión es suya.
+No hacer `git push` ni acciones externas sin que lo pida. Los precios de la cotización (PDF fuera del repo)
+nunca se copian aquí. Documentos fuente, discrepancias y Fase 2 por etapas: ver `docs/PROYECTO.md`.
+
 ## Comandos
 `npm run dev` · `npm run check` · `npm test` · `npm run build` · `npm run check:content`
 Node 24.22.1 (`nvm use`). Ver también `AGENTS.md` y `README.md`.
