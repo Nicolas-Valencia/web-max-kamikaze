@@ -16,6 +16,7 @@ arquitectura y decisiones). Si lo que te piden la contradice, detente y pregunta
 ## Diseño (no reintroducir lo descartado)
 Negro, hueso y rojo; Barlow Condensed + Chivo + Space Mono; escala tipográfica del mockup.
 Sin etiquetas numeradas sobre los títulos, flechas en botones, `//`, adornos ni frases hechas.
+Rojo solo en portadas, acciones y el bloque de cierre (no una frase roja en cada título). Una franja hueso con texto negro por página. Planes como lista, sin plan destacado. Mayúsculas solo en `h1`/`h2`.
 El selector del inicio mide exactamente mitad y mitad.
 
 ## Trato y límites

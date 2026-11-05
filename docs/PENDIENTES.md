@@ -5,9 +5,9 @@ Actualizar este archivo en cada entrega. Los datos concretos que faltan están m
 ## Contenido por aprobar con Max
 - Todos los textos de `src/content/home.ts` y `src/content/kamikaze.ts` marcados `provisional`.
 - Qué datos del formulario conservar y por cuánto tiempo, y quién responde a los interesados.
-- Biografía, trayectoria y certificaciones de Max (la sección "Sobre Max" está oculta con `about.enabled: false` en `src/content/max.ts`).
-- Si los productos deportivos se promocionan en la web (sección oculta con `products.enabled: false`).
-- **Discrepancia:** el brief dice que Max entrena "en las instalaciones de Kamikaze o a domicilio", pero Kamikaze aún no tiene sede. Confirmar qué opciones existen hoy.
+- Biografía, trayectoria y certificaciones de Max. **Hoy la sección "Sobre Max" se muestra completa con "Falta revisar"**: antes decía que estaba oculta con `about.enabled`, pero esa bandera no existe en el código. Decidir si se oculta hasta tener el contenido.
+- Productos deportivos: la sección se quitó de `/max` el 2026-11-04. Retomar solo si se monta un ecommerce (Fase 2 o posterior).
+- **Discrepancia (sigue viva en `/max`: franja "Lugar", servicio, FAQ):** el brief dice que Max entrena "en las instalaciones de Kamikaze o a domicilio", pero Kamikaze aún no tiene sede. Confirmar qué opciones existen hoy.
 - Modalidades, planes, precios y condiciones de reserva.
 - Zonas de cobertura de los entrenamientos a domicilio.
 - Filosofía, entrenadores, horarios y sede de Kamikaze.

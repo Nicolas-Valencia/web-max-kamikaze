@@ -108,8 +108,10 @@ Un solo proyecto, un solo dominio (por ahora, subdominio de Vercel), cuatro ruta
 | `/privacidad` | Política de privacidad | **Borrador provisional**, `noindex` |
 | `/api/interesados`, `/api/sesion-prueba` | Endpoints de los formularios (servidor) | Hechos; **guardado real sin probar** |
 
-Secciones de `/max`: portada, franja de datos, filosofía y retrato, método, servicios, dónde entrenas, perfiles,
-planes, testimonios, equipo, galería, solicitud de sesión, preguntas, cierre.
+Secciones de `/max`: portada (un solo botón), franja de datos, filosofía y retrato, galería, método y perfiles
+(franja hueso), sesión suelta o paquetes con "Dónde entrenas", testimonios, solicitud de sesión, preguntas, cierre.
+No hay sección de "servicios": Max vende un solo servicio y lo que varía es cómo cobra (sesión suelta o paquete). **Sin sección de equipo deportivo**
+(se quitó el 2026-11-04; si vuelve, será con un ecommerce, no como lista de precios).
 Secciones de `/kamikaze`: portada, franja de datos, la academia, disciplinas, cómo empezar, entrenadores,
 horarios (pestañas por día), planes, sede, testimonios, registro, preguntas, cierre.
 
@@ -166,10 +168,13 @@ horarios (pestañas por día), planes, sede, testimonios, registro, preguntas, c
 
 Los mockups mandan en estilo; los documentos mandan en requisitos. Ambas páginas son oscuras (Max **no** va en gris claro).
 
-- **Color:** negro `#0a0a0a`, hueso `#f2f0eb`, rojo `#d7191f` (confirmado por el equipo aunque el logo de Kamikaze sea blanco y negro). El rojo va en la frase final de cada titular, botones, tarjeta destacada y marcas de acción.
+- **Color:** negro `#0a0a0a`, hueso `#f2f0eb`, rojo `#d7191f` (confirmado por el equipo aunque el logo de Kamikaze sea blanco y negro). El rojo se reserva para: una frase de las portadas, botones y acciones, y el **bloque de cierre en rojo sólido** (texto hueso; segunda línea del titular en negro). Superficies: `ink #0a0a0a`, `surface #171717`, `card #1e1e1e`; gris secundario `#bdbab3`. **Una franja hueso con texto negro** (`.band-bone`) por página para dar contraste: método y perfiles en `/max`, "Cómo empezar" en `/kamikaze`. Dentro de ella se redefinen los tonos con variables; no usar colores fijos. **No** va en una frase de cada título de sección (se quitó el 2026-11-04 por parecer plantilla).
 - **Tipografía:** Barlow Condensed (titulares), Chivo (texto; **no Inter**), Space Mono (etiquetas pequeñas).
 - **Escala (escritorio 1440px):** titulares de portada 112px (inicio y Kamikaze) y 128px (Max); títulos de sección 48px; nombres del selector 96px; números de pasos 44px; precios 36px; texto 17-18px; etiquetas mínimo 12-13px. Móvil aproximadamente 12% menor. Se redujo porque estaba 1,4 a 1,8 veces por encima del mockup. **No agrandar sin comparar con el mockup.**
-- **Se quitó a propósito (no reintroducir):** etiquetas rojas sobre cada título y numeración tipo 02.1, flechas en botones y enlaces, `//` en textos, coordenadas, índices entre corchetes, comillas y checks decorativos, frases hechas ("Da el primer paso"), filas de tres tarjetas idénticas (hoy son columnas abiertas con filete), Inter.
+- **Se quitó a propósito (no reintroducir):** acento rojo en cada título de sección, chips sobre la portada de Max, "Modalidad 0N" y "Perfil" repetido como etiqueta, tabla de planes con uno destacado y primera columna con filete rojo (los planes son una lista de filas, `PlanList.astro`), etiquetas rojas sobre cada título y numeración tipo 02.1, flechas en botones y enlaces, `//` en textos, coordenadas, índices entre corchetes, comillas y checks decorativos, frases hechas ("Da el primer paso"), filas de tres tarjetas idénticas (hoy son columnas abiertas con filete), Inter.
+- **Tipografía por nivel:** mayúsculas solo en titulares `h1` y `h2` y en los nombres del selector; `h3`/`h4`, valores y preguntas frecuentes van en frase normal. Interletrado de titulares grandes en negativo (`-0.015em` a `-0.02em`). Ningún texto por debajo de 12px.
+- **Ritmo de `/max` y `/kamikaze`:** franjas a ancho completo con fondo `surface` (`.band`) alternadas con secciones sobre fondo `ink`; servicios y sedes en filas y columnas abiertas, sin tarjeta.
+- **Respuesta al tocar:** `.btn:active` y paneles responden al pulsar; en pantallas sin hover la barra roja de los paneles queda siempre visible.
 - **Navegación:** menú de anclas con botón rojo en escritorio; menú desplegable y botón rojo fijo inferior en móvil.
 - **Fotos:** hoy son 11 recortes de los mockups en `src/assets/reference/`, con etiqueta amarilla **"Foto de referencia"**. **No son de Max ni de Kamikaze** (en algunas aparece un cartel de otro gimnasio llamado Kamikaze): deben reemplazarse antes de publicar. Los huecos sin foto muestran un marcador "Falta revisar".
 - **Logo:** el de Kamikaze es **provisional** (`assets/brand/`). La identidad visual de Max no existe: no inventar logo ni manual de marca.
@@ -193,13 +198,13 @@ Los mockups mandan en estilo; los documentos mandan en requisitos. Ambas página
 
 - Todo el texto está en `src/content/`. Cada bloque lleva `status: 'confirmed' | 'provisional'` (provisional = redacción de trabajo **sin aprobar** por Max).
 - Un dato que falta se escribe con `tbd('qué falta')`; la página lo muestra resaltado en amarillo como **"Falta revisar: ..."**. **Nunca** se pone un número, horario, precio o fecha de ejemplo en su lugar.
-- `npm run check:content` cuenta datos que faltan, textos sin aprobar y fotos de referencia, y **falla mientras quede alguno**. Debe terminar sin errores antes de publicar. Hoy: 97 datos, 17 textos sin aprobar y 11 fotos de referencia.
+- `npm run check:content` cuenta datos que faltan, textos sin aprobar y fotos de referencia, y **falla mientras quede alguno**. Debe terminar sin errores antes de publicar. Hoy: 96 datos, 16 textos sin aprobar y 11 fotos de referencia.
 - Los mockups contienen datos inventados (Santiago de Chile, precios, nombres de entrenadores, cupos, testimonios, "Edición 2025"). **Solo son referencia de estilo y estructura**; nada de eso se publica.
 - Testimonios: solo con autorización; hasta entonces, estructura con "Falta revisar".
 
 ---
 
-## 10. Estado actual (2026-10-29)
+## 10. Estado actual (2026-10-29; el diseño se ajustó el 2026-11-04, ver sección 11)
 
 **Hecho:** las cuatro páginas con su diseño y estructura; inicio interactivo; formularios con validación en navegador y servidor; endpoints; documentación; 10 pruebas automáticas; el repositorio tiene el remoto de GitHub configurado y parte del código ya subido.
 
@@ -238,6 +243,12 @@ El detalle por responsable está en `docs/PENDIENTES.md`.
 | 2026-11-02 | Se preparó la cotización en PDF (fuera del repo). Paga Max; precio sin acordar. |
 | 2026-11-02 | **Fase 2 se cotiza por etapas independientes:** A pagos de sesiones y paquetes (Max); B mensualidad de Kamikaze; C reservas y cupos; D panel de administración. Idea: usar enlace de pago alojado por la pasarela y registrar pagos en la hoja, para abaratar. **Supuesto sin verificar:** que la pasarela elegida ofrezca enlace alojado y cobros recurrentes. |
 | 2026-11-02 | Las etapas B, C y D dependen de que Kamikaze tenga sede, horarios y precios; se recomienda empezar solo por la A. |
+| 2026-11-04 | **Revisión de "se ve genérica" aplicada:** acento rojo solo en portadas y cierre; fuera chips, "Modalidad 0N" y "Perfil"; servicios y sedes sin tarjeta; planes como lista sin plan destacado; franjas alternas; h3 en frase normal; textos mínimos de 12px; respuesta táctil. Inicio: portada sin eyebrow ni coordenadas, un solo nombre para la acción ("Elegir cómo entrenar") y sin afirmar "En Kamikaze" como lugar. Se arregló el enlace "Saltar al contenido" (usaba una variable inexistente). **No se hizo:** acortar la portada del inicio (rompería "dos pantallas" y el script de encaje). |
+| 2026-11-04 | **Segunda pasada de diseño (a pedido de Nicolas):** se quitó la sección "Equipo" de `/max` (queda para un futuro ecommerce); los **testimonios se quedan visibles** a propósito, para que Max vea cómo se verá la sección; servicios y planes en una sola sección; perfiles dentro de método; horarios de Kamikaze en lista (revertido, ver la fila siguiente); gris secundario más claro y superficies más distinguibles; franja hueso con texto negro; cierre en rojo sólido; el golpe del titular se reutiliza en las portadas de `/max` y `/kamikaze` (clase global `slam`). Menos rojo decorativo. |
+| 2026-11-04 | **Horarios de Kamikaze:** Nicolas prefiere las **tarjetas por bloque** (título rojo, clases con filete rojo, pestaña activa roja) a la lista. Se restauraron; no volver a la lista sin preguntar. |
+| 2026-11-04 | **Confirmado por Nicolas:** Max cobra la sesión suelta y paquetes de **3, 6 y 12 sesiones** (cuatro filas en `/max`; los precios siguen en "Falta revisar"). En Kamikaze la portada **conserva** "Explorar disciplinas" junto al botón principal. |
+| 2026-11-04 | **Tercera pasada (a pedido de Nicolas):** portada de `/max` con un solo botón; se quitó "Elige cómo entrenar" (eran 3 servicios inventados; solo hay uno); "Planes" pasó a "Sesión suelta o paquetes" (sin plan destacado; sin afirmar que el paquete sea más barato); galería movida justo tras "Sobre Max" (confianza antes de pedir datos); método con números grandes y perfiles en composición asimétrica (título a la izquierda, filas a la derecha). Menú de `/max`: Sobre Max, Galería, Método, Precios, Preguntas. |
+| 2026-11-04 | **Revisión con Web Interface Guidelines aplicada:** `color-scheme: dark` y `theme-color` igual al fondo; `scroll-padding-bottom` por el botón fijo; `text-wrap: balance` en titulares; `touch-action: manipulation`; barra roja del panel con `transform` en vez de `width`; cifras tabulares en precios y horas; `hover` en preguntas frecuentes; espacios duros entre número y unidad; `spellCheck` apagado en el formulario. **Pendiente de esa revisión:** precarga de tipografías, pestaña de día en la URL y etiquetas específicas en los botones "Consultar". |
 | 2026-11-04 | Documentos de rumbo actualizados (`PROYECTO.md`, `CLAUDE.md`, `PENDIENTES.md`): documentos fuente, Fase 2 por etapas y normas de trato. |
 
 ---
@@ -271,7 +282,7 @@ verificar las notificaciones de transacción en el servidor; **no** guardar tarj
 - **D4. Dominio y hosting.** La propuesta los pone a nombre del cliente; por ahora se usa el subdominio de Vercel.
 - **D5. Contacto.** Falta el correo de contacto y confirmar si Kamikaze tendrá WhatsApp propio.
 - **D6. Responsable de los datos** para la política de privacidad.
-- **D7. Productos deportivos.** El brief dice "si se confirma que deben promocionarse"; hoy se muestran con precios "Falta revisar".
+- **D7. Productos deportivos.** El brief dice "si se confirma que deben promocionarse". Se retiró la sección de `/max` (2026-11-04); queda para un futuro ecommerce.
 
 ---
 

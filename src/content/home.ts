@@ -10,19 +10,16 @@ export const home = {
   },
 
   nav: [
-    { href: '#elige', label: 'Elige tu camino' },
     { href: '/max', label: 'Max' },
     { href: '/kamikaze', label: 'Kamikaze' },
   ],
-  cta: { href: '#elige', label: 'Elegir camino' },
+  cta: { href: '#elige', label: 'Elegir cómo entrenar' },
 
   hero: {
-    kicker: 'Dos caminos. Una mentalidad.',
     lines: ['Entrena.', 'Lucha.', 'Evoluciona.'],
     accentLine: 1,
-    text: 'Entrenamiento personalizado de Muay Thai con Max y la academia de deportes de combate Kamikaze, en Armenia, Quindío. Elige cómo quieres entrenar.',
-    action: 'Descubre tu forma de entrenar',
-    coord: 'Armenia, Quindío, Colombia',
+    text: 'Muay Thai personalizado con Max y la academia Kamikaze, en Armenia, Quindío. Elige cómo entrenar.',
+    action: 'Elegir cómo entrenar',
     status: 'provisional' as Status,
   },
 
@@ -34,11 +31,10 @@ export const home = {
       {
         id: 'max',
         href: '/max',
-        index: '01 // Max',
-        tag: '1 a 1 personalizado',
+        tag: '1\u00a0a\u00a01 personalizado',
         kind: 'Entrenamiento personalizado',
         name: 'Max',
-        text: 'Sesiones de Muay Thai uno a uno, adaptadas a tu objetivo. En Kamikaze o a domicilio.',
+        text: 'Sesiones de Muay Thai uno a uno, adaptadas a tu objetivo.',
         action: 'Conocer entrenamiento',
         meta: 'Armenia, Quindío',
         status: 'provisional' as Status,
@@ -46,7 +42,6 @@ export const home = {
       {
         id: 'kamikaze',
         href: '/kamikaze',
-        index: '02 // Kamikaze',
         tag: 'Clases grupales',
         kind: 'Academia de combate',
         name: 'Kamikaze',
@@ -61,6 +56,6 @@ export const home = {
   values: [
     { label: 'Kamikaze', value: 'Sin experiencia previa' },
     { label: 'Max', value: 'Parte de una evaluación inicial' },
-    { label: 'Con Max', value: 'En Kamikaze o a domicilio' },
+    { label: 'Con Max', value: 'Sesiones de 45\u00a0min a 1\u00a0hora' },
   ],
 } as const;

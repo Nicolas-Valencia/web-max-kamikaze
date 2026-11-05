@@ -15,16 +15,6 @@ const testimonial = () => ({
   meta: tbd('nivel y tiempo entrenando'),
 });
 
-const service = () => ({
-  title: tbd('nombre del servicio'),
-  desc: tbd('descripción del servicio'),
-  specs: [
-    { label: 'Duración', value: tbd('duración') },
-    { label: 'Ubicación', value: tbd('dónde se realiza') },
-    { label: 'Precio', value: tbd('precio') },
-  ],
-});
-
 /**
  * Contenido de /max con la estructura final de la página (tomada del mockup).
  * - Los textos confirmados vienen del brief de Max.
@@ -41,22 +31,17 @@ export const max = {
 
   nav: [
     { href: '#sobre', label: 'Sobre Max' },
-    { href: '#metodo', label: 'Método' },
-    { href: '#servicios', label: 'Servicios' },
-    { href: '#perfiles', label: 'Perfiles' },
-    { href: '#planes', label: 'Planes' },
     { href: '#galeria', label: 'Galería' },
+    { href: '#metodo', label: 'Método' },
+    { href: '#planes', label: 'Precios' },
     { href: '#preguntas', label: 'Preguntas' },
   ],
   cta: { href: '#sesion', label: 'Entrenar con Max' },
 
   hero: {
-    chips: ['Max', 'Entrenamiento personalizado', '1 a 1'],
     lines: ['Tu objetivo.', 'Tu ritmo.', 'Tu Muay Thai.'],
     text: 'Entrenamiento personalizado de Muay Thai con Max, en Armenia, Quindío. Empiezas con una evaluación y el plan se adapta a ti.',
     primary: 'Quiero entrenar con Max',
-    method: 'Conocer el método',
-    whatsapp: 'Consultar disponibilidad por WhatsApp',
     whatsappMessage:
       'Hola Max, quiero consultar disponibilidad para una sesión de entrenamiento.',
     status: 'provisional' as Status,
@@ -64,9 +49,9 @@ export const max = {
 
   /** Franja de datos confirmados bajo la portada. */
   strip: [
-    { label: 'Formato', value: '1 a 1 individual' },
+    { label: 'Formato', value: '1\u00a0a\u00a01 individual' },
     { label: 'Especialidad', value: 'Muay Thai' },
-    { label: 'Duración', value: '45 min a 1 hora' },
+    { label: 'Duración', value: '45\u00a0min a 1\u00a0hora' },
     { label: 'Lugar', value: 'Kamikaze o a domicilio' },
   ],
 
@@ -101,27 +86,8 @@ export const max = {
       },
       {
         title: 'Sesiones con horario acordado',
-        text: 'Duran entre 45 minutos y 1 hora. Acuerdas el horario con Max.',
+        text: 'Duran entre 45\u00a0minutos y 1\u00a0hora. Acuerdas el horario con Max.',
       },
-    ],
-  },
-
-  services: {
-    title: 'Elige',
-    accent: 'cómo entrenar',
-    action: 'Consultar',
-    items: [
-      {
-        title: 'Muay Thai personalizado',
-        desc: 'Sesiones uno a uno, adaptadas a tu objetivo y a tu nivel.',
-        specs: [
-          { label: 'Duración', value: '45 min a 1 hora' },
-          { label: 'Ubicación', value: 'Kamikaze o a domicilio' },
-          { label: 'Precio', value: tbd('precio') },
-        ],
-      },
-      service(),
-      service(),
     ],
   },
 
@@ -174,31 +140,24 @@ export const max = {
   },
 
   plans: {
-    title: 'Planes por',
-    accent: 'número de sesiones',
+    title: 'Sesión suelta',
+    accent: 'o paquete de 3, 6 o 12',
     sub: tbd('mensaje breve sobre las condiciones'),
     note: tbd('vigencia, cancelación y reprogramación de sesiones'),
-    action: 'Consultar este plan',
-    whatsappMessage: 'Hola Max, quiero información sobre los planes de entrenamiento.',
-    items: [plan(), plan(), plan()],
-    featured: 1,
+    action: 'Consultar precio',
+    whatsappMessage: 'Hola Max, quiero información sobre precios de sesiones y paquetes.',
+    items: [
+      { ...plan(), name: 'Sesión suelta', tag: 'Individual' },
+      { ...plan(), name: '3 sesiones', tag: 'Paquete' },
+      { ...plan(), name: '6 sesiones', tag: 'Paquete' },
+      { ...plan(), name: '12 sesiones', tag: 'Paquete' },
+    ],
   },
 
   testimonials: {
     title: 'Lo que dicen',
     accent: 'los alumnos',
     items: [testimonial(), testimonial(), testimonial()],
-  },
-
-  products: {
-    title: 'Equipo',
-    accent: 'deportivo',
-    text: 'Max también vende equipo para entrenar. Consulta qué hay disponible.',
-    items: ['Vendas', 'Guantes', 'Ropa', 'Espinilleras', 'Coderas'],
-    price: tbd('precio'),
-    action: 'Consultar disponibilidad por WhatsApp',
-    whatsappMessage: 'Hola Max, quiero consultar qué equipo deportivo tienes disponible.',
-    status: 'provisional' as Status,
   },
 
   gallery: {
@@ -217,7 +176,7 @@ export const max = {
     title: 'Preguntas',
     accent: 'frecuentes',
     items: [
-      { q: '¿Cuánto dura una sesión?', a: 'Generalmente entre 45 minutos y 1 hora.' },
+      { q: '¿Cuánto dura una sesión?', a: 'Generalmente entre 45\u00a0minutos y 1\u00a0hora.' },
       {
         q: '¿Cómo se acuerda el horario?',
         a: 'Directamente con Max, según lo que te sirva a ti.',

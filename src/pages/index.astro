@@ -17,7 +17,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
 
   <main id="contenido">
     <section class="hero" aria-labelledby="titular">
-      <div class="hero-photo" aria-hidden="false">
+      <div class="hero-photo">
         <RefPhoto
           src={heroPhoto}
           alt="Dos peleadores de Muay Thai en un ring"
@@ -30,8 +30,7 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
       </div>
 
       <div class="wrap hero-body">
-        <p class="eyebrow">{c.hero.kicker}</p>
-        <h1 id="titular" class="display">
+        <h1 id="titular" class="display slam">
           {
             c.hero.lines.map((line, i) => (
               <span class="line-mask">
@@ -45,7 +44,6 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
         <p class="lead">{c.hero.text}</p>
         <div class="actions">
           <a class="btn btn-primary" href="#elige">{c.hero.action}</a>
-          <span class="mono coord">{c.hero.coord}</span>
         </div>
       </div>
     </section>
@@ -210,13 +208,11 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     z-index: 2;
     padding-block: 56px 36px;
   }
-  .hero-body .eyebrow {
-    color: var(--color-subtle);
-  }
   h1 {
     display: grid;
     margin-bottom: 20px;
     font-size: clamp(3rem, 15.5vw, 6rem);
+    letter-spacing: -0.02em;
     line-height: 0.86;
   }
   .lead {
@@ -234,35 +230,8 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   .actions .btn {
     width: 100%;
   }
-  .line-mask {
-    display: block;
-    overflow: hidden;
-    padding-block: 0.03em;
-  }
   .line {
     display: block;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    /* Cada línea "golpea": entra rápido, sube un poco de más y asienta. Entre una y otra hay pausa. */
-    :global(html.js) .line {
-      transform: translateY(115%) skewY(8deg);
-      transform-origin: left bottom;
-      animation: slam 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
-      animation-delay: calc(var(--i) * 300ms + 250ms);
-    }
-    @keyframes slam {
-      70% {
-        transform: translateY(-4%) skewY(-1.5deg);
-      }
-      to {
-        transform: none;
-      }
-    }
-  }
-  .coord {
-    max-width: 100%;
-    color: var(--color-muted);
-    overflow-wrap: anywhere;
   }
 
   /*
@@ -322,13 +291,25 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     position: absolute;
     inset: 0 auto 0 0;
     z-index: 3;
-    width: 0;
+    width: 6px;
     background: var(--color-signal);
-    transition: width 0.25s ease;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
   }
   .panel:hover::before,
-  .panel:focus-visible::before {
-    width: 6px;
+  .panel:focus-visible::before,
+  .panel:active::before {
+    transform: none;
+  }
+  /* En pantallas táctiles no existe el hover: la barra queda siempre y la foto responde al tocar */
+  @media (hover: none) {
+    .panel::before {
+      transform: none;
+    }
+  }
+  .panel:active .panel-photo {
+    transform: scale(1.04);
   }
   .panel:focus-visible {
     outline-offset: -6px;
@@ -367,6 +348,8 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
   }
   .name {
     margin: 4px 0 8px;
+    letter-spacing: -0.015em;
+    text-transform: uppercase;
     font-size: clamp(2.8rem, 12.5vw, 4.4rem);
     line-height: 0.88;
   }
@@ -392,6 +375,8 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     font-weight: 700;
     letter-spacing: 0.02em;
     text-transform: uppercase;
+    text-decoration: underline 2px var(--color-signal);
+    text-underline-offset: 6px;
   }
   .meta {
     color: var(--color-muted);
@@ -437,7 +422,6 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 1.1;
-    text-transform: uppercase;
   }
 
   @media (min-width: 900px) {
@@ -451,6 +435,9 @@ const positions = { max: '50% 18%', kamikaze: '50% 40%' } as const;
       background:
         linear-gradient(to right, var(--color-ink) 36%, rgba(10, 10, 10, 0.55) 56%, rgba(10, 10, 10, 0.1) 100%),
         linear-gradient(to top, var(--color-ink) 2%, transparent 40%);
+    }
+    .hero {
+      align-items: center;
     }
     .hero-body {
       padding-block: 96px 64px;

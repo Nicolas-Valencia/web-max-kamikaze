@@ -1,7 +1,7 @@
 ---
 import T from './T.astro';
 
-/** Cabecera de sección del mockup: etiqueta numerada, titular con frase roja, subtítulo y nota lateral. */
+/** Cabecera de sección: titular, subtítulo y nota lateral. El rojo se reserva para portadas y cierre. */
 interface Props {
   id: string;
   eyebrow?: string;
@@ -16,7 +16,7 @@ const { id, eyebrow, title, accent, sub } = Astro.props;
   <div>
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h2 id={id} class="display">
-      {title}{accent && <> <span class="accent">{accent}</span></>}
+      {title}{accent && <> {accent}</>}
     </h2>
     {sub && <p class="sub"><T text={sub} /></p>}
   </div>
@@ -35,10 +35,9 @@ const { id, eyebrow, title, accent, sub } = Astro.props;
   .sub {
     margin: 12px 0 0;
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: var(--color-subtle);
   }
   .aside {

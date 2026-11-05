@@ -1,5 +1,5 @@
 ---
-/** Cierre de página: titular grande con frase roja y dos acciones. */
+/** Cierre de página: bloque rojo sólido. Texto hueso (5:1) y segunda línea en negro (titular grande, 3,4:1). */
 interface Props {
   title: string;
   accent: string;
@@ -17,7 +17,7 @@ const { title, accent, text, primary, secondary } = Astro.props;
     </h2>
     <p class="copy">{text}</p>
     <div class="actions">
-      <a class="btn btn-primary btn-arrow" href={primary.href}>{primary.label}</a>
+      <a class="btn btn-primary" href={primary.href}>{primary.label}</a>
       {
         secondary && (
           <a class="btn btn-outline" href={secondary.href} rel="noopener" target="_blank">
@@ -31,22 +31,46 @@ const { title, accent, text, primary, secondary } = Astro.props;
 
 <style>
   .final {
-    border-top: 1px solid var(--color-line);
-    background: var(--color-surface);
+    background: var(--color-signal);
+    color: var(--color-bone);
     text-align: center;
   }
   .display {
     font-size: clamp(2.6rem, 9vw, 6.2rem);
+    letter-spacing: -0.02em;
+  }
+  .accent {
+    color: var(--color-ink);
   }
   .copy {
     margin: 24px auto 32px;
     color: var(--color-bone);
-    opacity: 0.8;
+    font-weight: 500;
   }
   .actions {
     display: grid;
     gap: 12px;
     justify-items: stretch;
+  }
+  /* Sobre rojo, el botón principal pasa a negro y el secundario a contorno hueso */
+  .final :global(.btn-primary) {
+    background: var(--color-ink);
+    color: var(--color-bone);
+  }
+  .final :global(.btn-primary:hover) {
+    background: #262626;
+  }
+  .final :global(.btn-outline) {
+    border-color: var(--color-bone);
+    color: var(--color-bone);
+  }
+  .final :global(.btn-outline:hover) {
+    background: var(--color-bone);
+    color: var(--color-ink);
+  }
+  .final :global(:focus-visible) {
+    outline-color: var(--color-bone);
+    box-shadow: 0 0 0 6px var(--color-ink);
   }
   @media (min-width: 700px) {
     .actions {

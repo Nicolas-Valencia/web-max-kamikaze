@@ -252,6 +252,7 @@ export default function LeadForm({ variant, privacyHref, fallback }: Props) {
                 type={f.kind}
                 inputMode={f.kind === 'tel' ? 'tel' : undefined}
                 autoComplete={f.autoComplete}
+                spellCheck={false}
                 value={value}
                 onChange={(e) => set(f.name, e.target.value)}
                 {...a11y(f.name)}

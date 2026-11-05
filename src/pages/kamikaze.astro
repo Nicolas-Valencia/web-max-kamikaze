@@ -11,6 +11,7 @@ import Testimonials from '../components/Testimonials.astro';
 import T from '../components/T.astro';
 import RefPhoto from '../components/RefPhoto.astro';
 import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
+import PlanList from '../components/PlanList.astro';
 import LeadForm from '../components/forms/LeadForm';
 import heroPhoto from '../assets/reference/kamikaze-hero.jpg';
 import discMuay from '../assets/reference/disc-muay-thai.jpg';
@@ -53,9 +54,17 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
       </div>
       <div class="wrap hero-body">
         <p class="hero-tag mono">{c.hero.tag}</p>
-        <h1 id="titular" class="display">
-          {c.hero.lines.map((l) => <span class="line">{l}</span>)}
-          <span class="line">Academia <span class="accent">{c.hero.accent}</span></span>
+        <h1 id="titular" class="display slam">
+          {
+            c.hero.lines.map((l, i) => (
+              <span class="line-mask"><span class="line" style={`--i:${i}`}>{l}</span></span>
+            ))
+          }
+          <span class="line-mask">
+            <span class="line" style={`--i:${c.hero.lines.length}`}>
+              Academia <span class="accent">{c.hero.accent}</span>
+            </span>
+          </span>
         </h1>
         <p class="lead">{c.hero.text}</p>
         <div class="actions">
@@ -86,8 +95,8 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
       </SectionHead>
       <ul class="cols three">
         {
-          c.about.cards.map((card, i) => (
-            <li class:list={['col', { 'col-red': i === 0 }]}>
+          c.about.cards.map((card) => (
+            <li class="col">
               <p class="kicker">{card.label}</p>
               <h3><T text={card.title} /></h3>
               <p class="body"><T text={card.text} /></p>
@@ -133,12 +142,13 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     </section>
 
     <!-- 5. Cómo empezar -->
-    <section class="wrap block" aria-labelledby="t-empezar">
+    <section class="band-bone" aria-labelledby="t-empezar">
+     <div class="wrap block">
       <SectionHead id="t-empezar" title={c.start.title} accent={c.start.accent} />
       <ul class="cols three">
         {
-          c.start.items.map((s, i) => (
-            <li class:list={['col', { 'col-red': i === 0 }]}>
+          c.start.items.map((s) => (
+            <li class="col">
               <p class="kicker">{s.label}</p>
               <h3>{s.title}</h3>
               <p class="body"><T text={s.text} /></p>
@@ -146,6 +156,7 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
           ))
         }
       </ul>
+     </div>
     </section>
 
     <!-- 6. Entrenadores -->
@@ -170,7 +181,8 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     </section>
 
     <!-- 7. Horarios -->
-    <section id="horarios" class="wrap block" aria-labelledby="t-horarios">
+    <section id="horarios" class="band" aria-labelledby="t-horarios">
+     <div class="wrap block">
       <SectionHead
         id="t-horarios"
         title={c.schedule.title}
@@ -180,10 +192,12 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
         <T text={c.schedule.note} />
       </SectionHead>
       <DayTabs days={c.schedule.days} blocks={c.schedule.blocks} />
+     </div>
     </section>
 
     <!-- 8. Planes -->
-    <section id="planes" class="wrap block" aria-labelledby="t-planes">
+    <section id="planes" class="band" aria-labelledby="t-planes">
+     <div class="wrap block">
       <SectionHead
         id="t-planes"
         title={c.plans.title}
@@ -192,30 +206,8 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
       >
         <T text={c.plans.note} />
       </SectionHead>
-      <div class="plans">
-        {
-          c.plans.items.map((p, i) => (
-            <article class:list={['card', 'plan', { 'card-featured': i === c.plans.featured }]}>
-              <p class="mono kicker"><T text={p.tag} /></p>
-              <h3 class="display"><T text={p.name} /></h3>
-              <div class="price">
-                <p class="mono">{p.priceLabel}</p>
-                <p class="amount"><T text={p.price} /></p>
-                <p class="mono per"><T text={p.per} /></p>
-              </div>
-              <ul class="features">
-                {p.features.map((f) => <li><T text={f} /></li>)}
-              </ul>
-              <a
-                class:list={['btn', i === c.plans.featured ? 'btn-primary' : 'btn-outline']}
-                href="#interesado"
-              >
-                {c.plans.action}
-              </a>
-            </article>
-          ))
-        }
-      </div>
+      <PlanList items={c.plans.items} action={c.plans.action} href="#interesado" />
+     </div>
     </section>
 
     <!-- 9. Sede -->
@@ -313,22 +305,18 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     line-height: 1.6;
     color: var(--color-muted);
   }
-  .kicker {
-    margin: 0 0 12px;
-    color: var(--color-signal);
-  }
   .link {
-    color: var(--color-signal);
+    color: var(--color-bone);
+    text-decoration: underline 2px var(--color-signal);
+    text-underline-offset: 5px;
     font-family: var(--font-display);
     font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    text-decoration: none;
   }
   .link:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration-color: var(--color-bone);
   }
 
   /* Portada */
@@ -365,11 +353,13 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     display: inline-block;
     margin: 0 0 20px;
     padding: 5px 10px;
-    background: var(--color-signal);
+    border: 1px solid rgba(242, 240, 235, 0.45);
+    background: rgba(10, 10, 10, 0.6);
     font-size: 12px;
   }
   h1 {
     display: grid;
+    letter-spacing: -0.02em;
     margin-bottom: 24px;
     font-size: clamp(3rem, 15vw, 6rem);
     line-height: 0.88;
@@ -413,7 +403,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     font-size: 1.35rem;
     font-weight: 700;
     line-height: 1.1;
-    text-transform: uppercase;
   }
 
   /* Disciplinas */
@@ -460,54 +449,7 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
   }
   .role {
     margin: 0 0 10px;
-    color: var(--color-signal);
-  }
-
-  /* Planes */
-  .plans {
-    display: grid;
-    gap: 16px;
-  }
-  .plan {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .plan h3 {
-    margin: 0;
-  }
-  .price p {
-    margin: 0;
-  }
-  .price .mono {
     color: var(--color-muted);
-  }
-  .amount {
-    margin-block: 6px 4px;
-    font-family: var(--font-display);
-    font-size: 2.25rem;
-    font-weight: 800;
-    line-height: 1;
-  }
-  .per {
-    color: var(--color-muted);
-  }
-  .features {
-    display: grid;
-    flex: 1;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .features li {
-    padding-top: 10px;
-    border-top: 1px solid var(--color-line);
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  .plan .btn {
-    width: 100%;
   }
 
   /* Sede */
@@ -534,6 +476,7 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     gap: 40px;
   }
   .signup .display {
+    margin-bottom: 16px;
     font-size: clamp(2.4rem, 8vw, 3.4rem);
   }
   .form-title {
@@ -594,10 +537,6 @@ const instagram = { href: site.socials.kamikaze.url, label: c.final.secondary };
     .coaches {
       grid-template-columns: repeat(2, minmax(0, 340px));
       gap: 64px;
-    }
-    .plans {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
     }
     .venue {
       grid-template-columns: 1fr 1.5fr;

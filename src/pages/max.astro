@@ -9,7 +9,7 @@ import FinalCta from '../components/FinalCta.astro';
 import Testimonials from '../components/Testimonials.astro';
 import T from '../components/T.astro';
 import RefPhoto from '../components/RefPhoto.astro';
-import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
+import PlanList from '../components/PlanList.astro';
 import LeadForm from '../components/forms/LeadForm';
 import portrait from '../assets/reference/max-portrait.jpg';
 import gallery1 from '../assets/reference/gallery-1.jpg';
@@ -25,9 +25,6 @@ const wa = (message: string) =>
 
 const heroWa = wa(c.hero.whatsappMessage);
 const plansWa = wa(c.plans.whatsappMessage);
-const productsWa = wa(c.products.whatsappMessage);
-const consultHref = heroWa ?? '#sesion';
-const consultExternal = Boolean(heroWa);
 
 const gallery = [
   { src: gallery1, ratio: '16 / 9', position: '50% 40%', area: 'a' },
@@ -44,13 +41,14 @@ const gallery = [
     <!-- 1. Portada tipográfica -->
     <section class="hero" aria-labelledby="titular">
       <div class="wrap hero-body">
-        <ul class="chips mono">
-          {c.hero.chips.map((chip, i) => <li class:list={{ red: i === 0 }}>{chip}</li>)}
-        </ul>
-        <h1 id="titular" class="display">
+        <h1 id="titular" class="display slam">
           {
             c.hero.lines.map((l, i) => (
-              <span class:list={['line', { accent: i === c.hero.lines.length - 1 }]}>{l}</span>
+              <span class="line-mask">
+                <span class:list={['line', { accent: i === c.hero.lines.length - 1 }]} style={`--i:${i}`}>
+                  {l}
+                </span>
+              </span>
             ))
           }
         </h1>
@@ -58,14 +56,6 @@ const gallery = [
           <p class="lead">{c.hero.text}</p>
           <div class="actions">
             <a class="btn btn-primary" href="#sesion">{c.hero.primary}</a>
-            <a class="method mono" href="#metodo">{c.hero.method}</a>
-            {
-              heroWa && (
-                <a class="wa" href={heroWa} rel="noopener" target="_blank">
-                  {c.hero.whatsapp}
-                </a>
-              )
-            }
           </div>
         </div>
       </div>
@@ -98,7 +88,7 @@ const gallery = [
       <div>
         <h2 id="t-sobre" class="display">
           {c.about.lines.map((l) => <span class="line">{l}</span>)}
-          <span class="line accent">{c.about.accent}</span>
+          <span class="line">{c.about.accent}</span>
         </h2>
         <blockquote class="quote"><T text={c.about.quote} /></blockquote>
         <p class="body"><T text={c.about.text} /></p>
@@ -115,66 +105,83 @@ const gallery = [
       </div>
     </section>
 
-    <!-- 4. Método -->
-    <section id="metodo" class="wrap block" aria-labelledby="t-metodo">
-      <SectionHead id="t-metodo" title={c.how.title} accent={c.how.accent} />
-      <ol class="steps">
-        {
-          c.how.steps.map((s, i) => (
-            <li class="step">
-              <span class="num" aria-hidden="true">{`0${i + 1}`}</span>
-              <h3 class="display">{s.title}</h3>
-              <p class="body">{s.text}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
-
-    <!-- 5. Servicios -->
-    <section id="servicios" class="wrap block" aria-labelledby="t-servicios">
+    <!-- 4. Galería: tras la filosofía, antes de pedir nada -->
+    <section id="galeria" class="wrap block" aria-labelledby="t-galeria">
       <SectionHead
-        id="t-servicios"
-        title={c.services.title}
-        accent={c.services.accent}
+        id="t-galeria"
+        title={c.gallery.title}
+        accent={c.gallery.accent}
       />
-      <div class="services">
+      <div class="gallery">
         {
-          c.services.items.map((s, i) => (
-            <article class="card service">
-              <div class="service-main">
-                <p class="mono kicker">{`Modalidad 0${i + 1}`}</p>
-                <h3 class="display"><T text={s.title} /></h3>
-                <p class="body"><T text={s.desc} /></p>
-              </div>
-              <dl class="specs">
-                {
-                  s.specs.map((sp) => (
-                    <div>
-                      <dt class="mono">{sp.label}</dt>
-                      <dd><T text={sp.value} /></dd>
-                    </div>
-                  ))
-                }
-              </dl>
-              <a
-                class="btn btn-outline"
-                href={consultHref}
-                target={consultExternal ? '_blank' : undefined}
-                rel={consultExternal ? 'noopener' : undefined}
-              >
-                {c.services.action}
-              </a>
-            </article>
+          gallery.map((g, i) => (
+            <figure class={`g g-${g.area}`}>
+              <RefPhoto src={g.src} alt="" ratio={g.ratio} position={g.position} tag="top-right" />
+              <figcaption class="mono"><T text={c.gallery.captions[i]} /></figcaption>
+            </figure>
           ))
         }
       </div>
+    </section>
+
+    <!-- 5. Método y para quién es: franja hueso -->
+    <section id="metodo" class="band-bone" aria-labelledby="t-metodo">
+      <div class="wrap block">
+        <SectionHead id="t-metodo" title={c.how.title} accent={c.how.accent} />
+        <ol class="steps">
+          {
+            c.how.steps.map((s, i) => (
+              <li class="step">
+                <span class="num" aria-hidden="true">{`0${i + 1}`}</span>
+                <h3 class="display">{s.title}</h3>
+                <p class="body">{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="profiles">
+          <div class="profiles-head">
+            <h3 id="perfiles" class="sub-title display">{c.profiles.title} {c.profiles.accent}</h3>
+            <p class="body">{c.profiles.text}</p>
+          </div>
+          <ul class="profile-list">
+            {
+              c.profiles.items.map((p) => (
+                <li class="profile">
+                  <h3 class="display">{p.title}</h3>
+                  <p class="body">{p.text}</p>
+                  <p class="goal mono"><T text={p.goal} /></p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Sesión suelta, paquetes y lugares -->
+    <section id="planes" class="wrap block" aria-labelledby="t-planes">
+      <SectionHead
+        id="t-planes"
+        title={c.plans.title}
+        accent={c.plans.accent}
+        sub={c.plans.sub}
+      >
+        <T text={c.plans.note} />
+      </SectionHead>
+      <PlanList
+        items={c.plans.items}
+        action={c.plans.action}
+        href={plansWa ?? '#sesion'}
+        external={Boolean(plansWa)}
+      />
 
       <h3 class="places-title display">{c.places.title}</h3>
       <div class="places">
         {
           c.places.items.map((p) => (
-            <article class="card">
+            <article class="place">
               <h4 class="display">{p.title}</h4>
               <dl class="rows">
                 {
@@ -192,67 +199,6 @@ const gallery = [
       </div>
     </section>
 
-    <!-- 6. Perfiles -->
-    <section id="perfiles" class="wrap block" aria-labelledby="t-perfiles">
-      <SectionHead
-        id="t-perfiles"
-        title={c.profiles.title}
-        accent={c.profiles.accent}
-      >
-        {c.profiles.text}
-      </SectionHead>
-      <ul class="cols three">
-        {
-          c.profiles.items.map((p, i) => (
-            <li class:list={['col', { 'col-red': i === 0 }]}>
-              <p class="kicker">{p.tag}</p>
-              <h3>{p.title}</h3>
-              <p class="body">{p.text}</p>
-              <p class="goal mono"><T text={p.goal} /></p>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <!-- 7. Planes -->
-    <section id="planes" class="wrap block" aria-labelledby="t-planes">
-      <SectionHead
-        id="t-planes"
-        title={c.plans.title}
-        accent={c.plans.accent}
-        sub={c.plans.sub}
-      >
-        <T text={c.plans.note} />
-      </SectionHead>
-      <div class="plans">
-        {
-          c.plans.items.map((p, i) => (
-            <article class:list={['card', 'plan', { 'card-featured': i === c.plans.featured }]}>
-              <p class="mono kicker"><T text={p.tag} /></p>
-              <h3 class="display"><T text={p.name} /></h3>
-              <div class="price">
-                <p class="mono">{p.priceLabel}</p>
-                <p class="amount"><T text={p.price} /></p>
-                <p class="mono per"><T text={p.per} /></p>
-              </div>
-              <ul class="features">
-                {p.features.map((f) => <li><T text={f} /></li>)}
-              </ul>
-              <a
-                class:list={['btn', i === c.plans.featured ? 'btn-primary' : 'btn-outline']}
-                href={plansWa ?? '#sesion'}
-                target={plansWa ? '_blank' : undefined}
-                rel={plansWa ? 'noopener' : undefined}
-              >
-                {c.plans.action}
-              </a>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
     <!-- 8. Testimonios -->
     <section class="wrap block" aria-labelledby="t-alumnos">
       <SectionHead
@@ -261,54 +207,6 @@ const gallery = [
         accent={c.testimonials.accent}
       />
       <Testimonials items={c.testimonials.items} />
-    </section>
-
-    <!-- 9. Equipo deportivo -->
-    <section id="equipo" class="wrap block" aria-labelledby="t-equipo">
-      <SectionHead
-        id="t-equipo"
-        title={c.products.title}
-        accent={c.products.accent}
-      >
-        {c.products.text}
-      </SectionHead>
-      <ul class="products">
-        {
-          c.products.items.map((name) => (
-            <li class="card">
-              <PhotoPlaceholder ratio="1 / 1" note={`Foto de ${name.toLowerCase()}.`} />
-              <h3 class="display">{name}</h3>
-              <p class="mono"><T text={c.products.price} /></p>
-            </li>
-          ))
-        }
-      </ul>
-      {
-        productsWa && (
-          <a class="btn btn-outline products-cta" href={productsWa} rel="noopener" target="_blank">
-            {c.products.action}
-          </a>
-        )
-      }
-    </section>
-
-    <!-- 10. Galería -->
-    <section id="galeria" class="wrap block" aria-labelledby="t-galeria">
-      <SectionHead
-        id="t-galeria"
-        title={c.gallery.title}
-        accent={c.gallery.accent}
-      />
-      <div class="gallery">
-        {
-          gallery.map((g, i) => (
-            <figure class={`g g-${g.area}`}>
-              <RefPhoto src={g.src} alt="" ratio={g.ratio} position={g.position} tag="top-right" />
-              <figcaption class="mono"><T text={c.gallery.captions[i]} /></figcaption>
-            </figure>
-          ))
-        }
-      </div>
     </section>
 
     <!-- 11. Solicitud de sesión -->
@@ -356,10 +254,6 @@ const gallery = [
     line-height: 1.6;
     color: var(--color-muted);
   }
-  .kicker {
-    margin: 0 0 12px;
-    color: var(--color-signal);
-  }
   .line {
     display: block;
   }
@@ -372,28 +266,8 @@ const gallery = [
   .hero-body {
     padding-block: 56px 56px;
   }
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 0 32px;
-    padding: 0;
-    list-style: none;
-  }
-  .chips li {
-    padding: 6px 10px;
-    border: 1px solid var(--color-line);
-    background: var(--color-card);
-    color: var(--color-subtle);
-    font-size: 12px;
-  }
-  .chips li.red {
-    border-color: var(--color-signal);
-    background: var(--color-signal);
-    color: var(--color-bone);
-    font-weight: 700;
-  }
   h1 {
+    letter-spacing: -0.02em;
     margin-bottom: 40px;
     font-size: clamp(3rem, 15.5vw, 6rem);
     line-height: 0.88;
@@ -414,24 +288,6 @@ const gallery = [
     gap: 8px;
     justify-items: stretch;
   }
-  .method,
-  .wa {
-    display: inline-flex;
-    align-items: center;
-    min-height: 48px;
-    color: var(--color-subtle);
-    text-decoration: none;
-  }
-  .wa {
-    font-size: 15px;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-  .method:hover,
-  .wa:hover {
-    color: var(--color-bone);
-  }
-
   /* Franja de datos */
   .strip {
     border-bottom: 1px solid var(--color-line);
@@ -458,7 +314,6 @@ const gallery = [
     font-size: 1.35rem;
     font-weight: 700;
     line-height: 1.1;
-    text-transform: uppercase;
   }
 
   /* Filosofía */
@@ -479,20 +334,19 @@ const gallery = [
     right: 12px;
     bottom: 12px;
     padding: 16px 18px;
-    border-left: 3px solid var(--color-signal);
+    border-left: 3px solid var(--color-bone);
     background: rgba(10, 10, 10, 0.88);
   }
   .about-card p {
     margin: 0;
   }
   .about-card .mono {
-    color: var(--color-signal);
+    color: var(--color-muted);
   }
   .who {
     font-family: var(--font-display);
     font-size: 1.8rem;
     font-weight: 800;
-    text-transform: uppercase;
   }
   .role {
     font-size: 15px;
@@ -529,9 +383,10 @@ const gallery = [
     display: block;
     margin-bottom: 8px;
     font-family: var(--font-display);
-    font-size: 2.75rem;
+    font-size: clamp(4.5rem, 12vw, 8rem);
     font-weight: 800;
-    line-height: 0.9;
+    letter-spacing: -0.03em;
+    line-height: 0.82;
     color: var(--color-signal);
   }
   .step h3,
@@ -541,38 +396,38 @@ const gallery = [
     line-height: 1;
   }
 
-  /* Servicios en filas */
-  .services {
-    display: grid;
-    gap: 16px;
+  /* Sedes: columnas abiertas, separadas por una regla, sin caja */
+  .place {
+    padding-top: 22px;
+    border-top: 1px solid var(--color-bone);
   }
-  .service {
+  /* Perfiles: título en columna estrecha y filas grandes al lado (composición asimétrica) */
+  .profiles {
     display: grid;
-    gap: 24px;
-    align-items: center;
+    gap: 28px;
+    margin-top: 88px;
   }
-  .service-main h3 {
-    margin-bottom: 10px;
-    font-size: 2rem;
+  .sub-title {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+    line-height: 1;
   }
-  .specs {
-    display: grid;
-    gap: 8px;
+  .profile {
+    padding-block: 26px;
+    border-top: 1px solid var(--color-bone);
+  }
+  .profile:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .profile h3 {
+    margin: 0 0 8px;
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+  .profile-list {
     margin: 0;
-  }
-  .specs > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 12px;
-  }
-  .specs dt {
-    min-width: 96px;
-    color: var(--color-muted);
-  }
-  .specs dd {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
+    padding: 0;
+    list-style: none;
   }
   .places-title {
     margin: 56px 0 20px;
@@ -595,72 +450,6 @@ const gallery = [
     color: var(--color-muted);
   }
 
-  /* Planes */
-  .plans {
-    display: grid;
-    gap: 16px;
-  }
-  .plan {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .plan h3 {
-    margin: 0;
-  }
-  .price p {
-    margin: 0;
-  }
-  .price .mono,
-  .per {
-    color: var(--color-muted);
-  }
-  .amount {
-    margin-block: 6px 4px !important;
-    font-family: var(--font-display);
-    font-size: 2.25rem;
-    font-weight: 800;
-    line-height: 1;
-  }
-  .features {
-    display: grid;
-    flex: 1;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .features li {
-    padding-top: 10px;
-    border-top: 1px solid var(--color-line);
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  .plan .btn {
-    width: 100%;
-  }
-
-  /* Equipo */
-  .products {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 0 0 28px;
-    padding: 0;
-    list-style: none;
-  }
-  .products .card {
-    padding: 12px;
-  }
-  .products h3 {
-    margin: 12px 0 4px;
-    font-size: 1.5rem;
-  }
-  .products p {
-    margin: 0;
-    color: var(--color-muted);
-  }
-
   /* Galería */
   .gallery {
     display: grid;
@@ -676,9 +465,9 @@ const gallery = [
     bottom: 12px;
     max-width: calc(100% - 24px);
     padding: 6px 12px;
-    border-left: 3px solid var(--color-signal);
+    border-left: 3px solid var(--color-bone);
     background: rgba(10, 10, 10, 0.88);
-    font-size: 11px;
+    font-size: 12px;
   }
 
   /* Solicitud */
@@ -692,6 +481,7 @@ const gallery = [
     gap: 40px;
   }
   .signup .display {
+    margin-bottom: 16px;
     font-size: clamp(2.4rem, 8vw, 3.4rem);
   }
   .form-card {
@@ -732,23 +522,22 @@ const gallery = [
       gap: 80px;
       align-items: center;
     }
-    .steps,
-    .plans {
+    .steps {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 24px;
     }
-    .service {
-      grid-template-columns: 1.4fr 1fr auto;
-      gap: 40px;
-      padding: 32px 36px;
+    .profiles {
+      grid-template-columns: 0.8fr 1.3fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .profiles-head {
+      position: sticky;
+      top: 110px;
     }
     .places {
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-    }
-    .products {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 16px;
     }
     .gallery {
       grid-template-columns: repeat(6, minmax(0, 1fr));

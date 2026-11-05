@@ -1,0 +1,113 @@
+---
+import T from './T.astro';
+
+/**
+ * Planes como lista de filas, no como tabla de precios: ninguno se destaca,
+ * porque todavía no se sabe cuál ofrece Max ni cuál es el principal.
+ */
+interface Props {
+  items: readonly {
+    tag: string;
+    name: string;
+    priceLabel: string;
+    price: string;
+    per: string;
+    features: readonly string[];
+  }[];
+  action: string;
+  href: string;
+  external?: boolean;
+}
+const { items, action, href, external = false } = Astro.props;
+---
+
+<ul class="plans">
+  {
+    items.map((p) => (
+      <li class="plan">
+        <div class="who">
+          <p class="tag"><T text={p.tag} /></p>
+          <h3 class="display"><T text={p.name} /></h3>
+        </div>
+        <ul class="features">
+          {p.features.map((f) => <li><T text={f} /></li>)}
+        </ul>
+        <div class="price">
+          <p class="amount"><T text={p.price} /></p>
+          <p class="per"><T text={p.per} /></p>
+        </div>
+        <a
+          class="btn btn-outline"
+          href={href}
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener' : undefined}
+        >
+          {action}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .plans {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .plan {
+    display: grid;
+    gap: 18px;
+    padding-block: 28px;
+    border-top: 1px solid var(--color-line);
+  }
+  .plan p {
+    margin: 0;
+  }
+  .tag {
+    margin-bottom: 6px !important;
+    font-size: 15px;
+    color: var(--color-muted);
+  }
+  .plan h3 {
+    font-size: 2.1rem;
+    line-height: 1;
+  }
+  .features {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .amount {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .per {
+    margin-top: 4px !important;
+    font-size: 15px;
+    color: var(--color-muted);
+  }
+  .plan .btn {
+    width: 100%;
+  }
+  @media (min-width: 900px) {
+    .plan {
+      grid-template-columns: 1.1fr 1.5fr 0.9fr auto;
+      align-items: center;
+      gap: 40px;
+      padding-block: 36px;
+    }
+    .plan .btn {
+      width: auto;
+    }
+  }
+</style>
